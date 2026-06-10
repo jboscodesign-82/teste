@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfólio</title>
+  <meta name="description" content="Portfólio pessoal" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f5f6f8;
+      --text: #1a1d24;
+      --text-soft: #5b6472;
+      --border: #e6e8ec;
+      --accent: #2f6fed;
+      --radius: 14px;
+      --max: 960px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1115;
+        --bg-soft: #171a21;
+        --text: #eef0f4;
+        --text-soft: #9aa3b2;
+        --border: #262a33;
+        --accent: #5b8cff;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+    /* Navbar */
+    header.nav {
+      position: sticky; top: 0; z-index: 10;
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      backdrop-filter: saturate(180%) blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .brand { font-weight: 700; font-size: 1.05rem; letter-spacing: -.01em; }
+    .nav-links { display: flex; gap: 22px; }
+    .nav-links a { color: var(--text-soft); font-size: .95rem; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    @media (max-width: 560px) { .nav-links { display: none; } }
+
+    /* Hero */
+    .hero { padding: 96px 0 72px; }
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 3.4rem);
+      line-height: 1.1; margin: 0 0 16px;
+      letter-spacing: -.02em;
+    }
+    .hero p { font-size: 1.15rem; color: var(--text-soft); max-width: 600px; margin: 0 0 28px; }
+    .cta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block; padding: 12px 22px; border-radius: var(--radius);
+      font-weight: 600; font-size: .95rem; transition: transform .15s ease, opacity .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-ghost { border: 1px solid var(--border); color: var(--text); }
+
+    /* Sections */
+    section { padding: 64px 0; border-top: 1px solid var(--border); }
+    section h2 {
+      font-size: 1.6rem; margin: 0 0 8px; letter-spacing: -.01em;
+    }
+    .section-sub { color: var(--text-soft); margin: 0 0 32px; }
+
+    /* Projects grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .card {
+      background: var(--bg-soft); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px;
+      transition: transform .18s ease, border-color .18s ease;
+    }
+    .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .card h3 { margin: 0 0 8px; font-size: 1.1rem; }
+    .card p { margin: 0 0 16px; color: var(--text-soft); font-size: .95rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { font-size: .78rem; color: var(--text-soft); background: var(--bg); border: 1px solid var(--border); padding: 3px 10px; border-radius: 999px; }
+
+    /* About */
+    .about p { color: var(--text-soft); max-width: 680px; }
+
+    /* Contact */
+    .contact-links { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+
+    /* Footer */
+    footer { padding: 40px 0; border-top: 1px solid var(--border); color: var(--text-soft); font-size: .9rem; text-align: center; }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <span class="brand">Seu Nome</span>
+      <nav class="nav-links">
+        <a href="#projetos">Projetos</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" style="border-top:none">
+      <div class="wrap">
+        <h1>Olá, eu sou o Seu Nome.</h1>
+        <p>Uma frase curta sobre quem você é e o que você faz. Edite este texto com a sua descrição.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#projetos">Ver projetos</a>
+          <a class="btn btn-ghost" href="#contato">Entrar em contato</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="projetos">
+      <div class="wrap">
+        <h2>Projetos</h2>
+        <p class="section-sub">Alguns dos trabalhos em que estive envolvido.</p>
+        <div class="grid">
+          <article class="card">
+            <h3>Projeto 1</h3>
+            <p>Descrição breve do projeto, o problema que resolve e seu papel nele.</p>
+            <div class="tags"><span class="tag">Tag</span><span class="tag">Tag</span></div>
+          </article>
+          <article class="card">
+            <h3>Projeto 2</h3>
+            <p>Descrição breve do projeto, o problema que resolve e seu papel nele.</p>
+            <div class="tags"><span class="tag">Tag</span><span class="tag">Tag</span></div>
+          </article>
+          <article class="card">
+            <h3>Projeto 3</h3>
+            <p>Descrição breve do projeto, o problema que resolve e seu papel nele.</p>
+            <div class="tags"><span class="tag">Tag</span><span class="tag">Tag</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="sobre" class="about">
+      <div class="wrap">
+        <h2>Sobre</h2>
+        <p class="section-sub">Um pouco mais sobre mim.</p>
+        <p>Escreva aqui sua trajetória, suas habilidades e o que te motiva. Este é um parágrafo de exemplo que você pode substituir pelo seu conteúdo real.</p>
+      </div>
+    </section>
+
+    <section id="contato">
+      <div class="wrap">
+        <h2>Contato</h2>
+        <p class="section-sub">Vamos conversar.</p>
+        <div class="contact-links">
+          <a href="mailto:seu@email.com">E-mail</a>
+          <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">© <span id="ano"></span> Seu Nome. Todos os direitos reservados.</div>
+  </footer>
+
+  <script>
+    document.getElementById('ano').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
