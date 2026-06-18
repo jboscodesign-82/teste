@@ -1,0 +1,114 @@
+import type { LyricLine } from "@/types";
+import { normalizeText } from "./textNormalization";
+
+function levenshteinDistance(a: string, b: string): number {
+  const m = a.length;
+  const n = b.length;
+  const dp: number[][] = Array.from({ length: m + 1 }, (_, i) =>
+    Array.from({ length: n + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
+  );
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      dp[i][j] =
+        a[i - 1] === b[j - 1]
+          ? dp[i - 1][j - 1]
+          : 1 + Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return dp[m][n];
+}
+
+function wordOverlapScore(a: string, b: string): number {
+  if (!a || !b) return 0;
+  const wordsA = new Set(a.split(" ").filter(Boolean));
+  const wordsB = new Set(b.split(" ").filter(Boolean));
+  if (wordsA.size === 0 || wordsB.size === 0) return 0;
+  let overlap = 0;
+  wordsA.forEach((w) => { if (wordsB.has(w)) overlap++; });
+  return (overlap * 2) / (wordsA.size + wordsB.size);
+}
+
+function levenshteinScore(a: string, b: string): number {
+  if (!a && !b) return 1;
+  if (!a || !b) return 0;
+  const maxLen = Math.max(a.length, b.length);
+  if (maxLen === 0) return 1;
+  return 1 - levenshteinDistance(a, b) / maxLen;
+}
+
+function containsScore(transcript: string, line: string): number {
+  if (!transcript || !line) return 0;
+  const tWords = transcript.split(" ").filter(Boolean);
+  const lWords = line.split(" ").filter(Boolean);
+  if (tWords.length === 0 || lWords.length === 0) return 0;
+
+  let maxRun = 0;
+  let currentRun = 0;
+  let tIdx = 0;
+  for (const lw of lWords) {
+    if (tIdx < tWords.length && tWords[tIdx] === lw) {
+      currentRun++;
+      tIdx++;
+      maxRun = Math.max(maxRun, currentRun);
+    } else {
+      currentRun = 0;
+    }
+  }
+  return maxRun / Math.max(tWords.length, lWords.length);
+}
+
+export function computeScore(transcript: string, lineText: string): number {
+  if (!lineText) return 0;
+  const normTranscript = normalizeText(transcript);
+  const normLine = normalizeText(lineText);
+  if (!normLine) return 0;
+
+  const overlap = wordOverlapScore(normTranscript, normLine);
+  const lev = levenshteinScore(normTranscript, normLine);
+  const contains = containsScore(normTranscript, normLine);
+
+  // Weighted combination
+  return overlap * 0.5 + lev * 0.2 + contains * 0.3;
+}
+
+export interface MatchResult {
+  lineIndex: number;
+  score: number;
+}
+
+export function findBestMatch(
+  transcript: string,
+  lines: LyricLine[],
+  currentLineIndex: number,
+  windowSize = 20
+): MatchResult {
+  if (!transcript.trim()) return { lineIndex: currentLineIndex, score: 0 };
+
+  const lyricsLines = lines.filter((l) => !l.isChord && !l.isEmpty);
+  if (lyricsLines.length === 0) return { lineIndex: 0, score: 0 };
+
+  // Expand window around current position — prefer nearby lines to avoid jumps
+  const currentLyricIdx = lyricsLines.findIndex((l) => l.index >= currentLineIndex);
+  const safeIdx = currentLyricIdx === -1 ? 0 : currentLyricIdx;
+
+  const start = Math.max(0, safeIdx - Math.floor(windowSize / 2));
+  const end = Math.min(lyricsLines.length - 1, safeIdx + Math.ceil(windowSize / 2));
+  const candidates = lyricsLines.slice(start, end + 1);
+
+  let best: MatchResult = { lineIndex: currentLineIndex, score: 0 };
+
+  for (const line of candidates) {
+    let score = computeScore(transcript, line.text);
+
+    // Proximity bonus: lines closer to current position get a small boost
+    const distance = Math.abs(lyricsLines.indexOf(line) - safeIdx);
+    const proximityBonus = Math.max(0, 0.1 - distance * 0.01);
+    score += proximityBonus;
+
+    if (score > best.score) {
+      best = { lineIndex: line.index, score };
+    }
+  }
+
+  return best;
+}
