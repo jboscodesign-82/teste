@@ -25,6 +25,14 @@ export default function Teleprompter({ song }: TeleprompterProps) {
   const { lines, syncState, processTranscript, registerLineRef, setStatus, reset } =
     useLyricSync(song.lyrics);
 
+  // Solicita permissão do microfone ao abrir a tela, evitando prompt a cada início
+  useEffect(() => {
+    navigator.mediaDevices
+      ?.getUserMedia({ audio: true })
+      .then((stream) => stream.getTracks().forEach((t) => t.stop()))
+      .catch(() => {});
+  }, []);
+
   const handleSpeechResult = useCallback(
     (transcript: string, isFinal: boolean) => {
       processTranscript(transcript, isFinal);
