@@ -92,19 +92,12 @@ export interface MatchResult {
   score: number;
 }
 
-/**
- * Viés de posição: música progride pra frente, então favorecemos a próxima
- * linha/estrofe. Sem isso, ao pausar no fim de uma estrofe a linha atual
- * "segura" o destaque e o avanço para a linha de baixo demora.
- */
+// Viés mínimo — só desempata quando os scores de texto são idênticos.
+// Valores altos aqui fazem o algoritmo avançar antes da hora.
 function positionBias(delta: number): number {
-  if (delta === 0) return 0.04;             // estabilidade na linha atual
-  if (delta > 0) {
-    // avanço: pico nas 1-3 linhas seguintes, decai gradualmente
-    return Math.max(0, 0.16 - (delta - 1) * 0.018);
-  }
-  // voltar é menos comum (repetição de refrão): bônus pequeno
-  return Math.max(0, 0.03 - Math.abs(delta) * 0.008);
+  if (delta === 0) return 0.02; // leve preferência por ficar na linha atual
+  if (delta === 1) return 0.01; // mínimo para a linha imediatamente seguinte
+  return 0;
 }
 
 export function findBestMatch(

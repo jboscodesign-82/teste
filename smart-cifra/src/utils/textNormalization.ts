@@ -79,12 +79,20 @@ export function stripChordAnnotations(text: string): string {
   return text.replace(/\[([A-G][#b]?[^\]]*)\]/g, "").replace(/\s+/g, " ").trim();
 }
 
+// Marcadores de seção: [Intro], [Verso], [Refrão], [Bridge], etc.
+// São exibidos normalmente mas ignorados no matching de voz.
+function isSectionMarker(line: string): boolean {
+  return /^\s*\[.+\]\s*$/.test(line);
+}
+
 export function parseLyrics(lyrics: string): LyricLine[] {
   const rawLines = lyrics.split("\n");
   return rawLines.map((raw, index) => {
     const stripped = stripChordAnnotations(raw);
     const chord = isChordLine(stripped);
-    const text = chord ? "" : stripped;
+    const section = isSectionMarker(raw.trim());
+    // Marcadores de seção têm text="" para não participar do matching
+    const text = (chord || section) ? "" : stripped;
     return {
       index,
       raw,
