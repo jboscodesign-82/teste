@@ -93,17 +93,17 @@ export default function Teleprompter({ song }: TeleprompterProps) {
 
   return (
     <div className={darkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-white dark:bg-gray-950 flex flex-col">
+      <div className="min-h-screen bg-white dark:bg-ink flex flex-col">
         {/* Top bar */}
-        <header className="sticky top-0 z-40 flex items-center gap-2 px-4 py-3 bg-white/90 dark:bg-gray-950/90 backdrop-blur border-b border-gray-100 dark:border-gray-800">
+        <header className="sticky top-0 z-40 flex items-center gap-2 px-4 py-3 bg-white/90 dark:bg-ink/80 backdrop-blur-xl border-b border-gray-100 dark:border-white/5 animate-fade-in">
           <button
             onClick={() => router.back()}
-            className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="p-2.5 rounded-full text-gray-500 dark:text-gray-300 bg-gray-100/60 dark:bg-surface-light hover:bg-gray-200 dark:hover:bg-surface-lighter transition-colors active:scale-95"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
 
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 px-1">
             <p className="font-semibold text-gray-900 dark:text-white truncate text-sm">{song.title}</p>
             {song.artist && (
               <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{song.artist}</p>
@@ -113,28 +113,28 @@ export default function Teleprompter({ song }: TeleprompterProps) {
           <div className="flex items-center gap-1">
             <button
               onClick={() => cycleFontSize("down")}
-              className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-2 rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-surface-light transition-colors active:scale-95"
               title="Diminuir fonte"
             >
               <ZoomOut className="w-4 h-4" />
             </button>
             <button
               onClick={() => cycleFontSize("up")}
-              className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-2 rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-surface-light transition-colors active:scale-95"
               title="Aumentar fonte"
             >
               <ZoomIn className="w-4 h-4" />
             </button>
             <button
               onClick={() => setDarkMode((d) => !d)}
-              className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-2 rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-surface-light transition-colors active:scale-95"
               title="Alternar tema"
             >
               {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
             <button
               onClick={toggleFullscreen}
-              className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-2 rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-surface-light transition-colors active:scale-95"
               title="Tela cheia"
             >
               <Maximize2 className="w-4 h-4" />

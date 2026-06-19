@@ -15,7 +15,7 @@ export default function SongPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [song, setSong] = useState<Song | null>(null);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const isEditing = searchParams.get("edit") === "1";
 
   useEffect(() => {
@@ -56,16 +56,16 @@ export default function SongPage() {
 
   return (
     <div className={darkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-white dark:bg-gray-950">
-        <header className="sticky top-0 z-10 bg-white/90 dark:bg-gray-950/90 backdrop-blur border-b border-gray-100 dark:border-gray-800">
+      <div className="min-h-screen bg-white dark:bg-ink">
+        <header className="sticky top-0 z-10 bg-white/90 dark:bg-ink/80 backdrop-blur-xl border-b border-gray-100 dark:border-white/5 animate-fade-in">
           <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-2">
             <Link
               href="/"
-              className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-2.5 rounded-full text-gray-500 dark:text-gray-300 bg-gray-100/60 dark:bg-surface-light hover:bg-gray-200 dark:hover:bg-surface-lighter transition-colors active:scale-95"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 px-1">
               <p className="font-semibold text-gray-900 dark:text-white truncate">{song.title}</p>
               {song.artist && (
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{song.artist}</p>
@@ -73,23 +73,23 @@ export default function SongPage() {
             </div>
             <button
               onClick={() => setDarkMode((d) => !d)}
-              className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-2 rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-surface-light transition-colors active:scale-95"
             >
               {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
           </div>
         </header>
 
-        <main className="max-w-2xl mx-auto px-4 py-6 pb-28">
+        <main className="max-w-2xl mx-auto px-4 py-6 pb-28 animate-fade-in">
           <ChordDisplay lines={lines} fontSize="md" />
         </main>
 
         <div className="fixed bottom-6 left-0 right-0 flex justify-center px-4 z-10">
           <Link
             href={`/musicas/${song.id}/apresentar`}
-            className="flex items-center gap-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 px-8 py-4 text-white font-semibold text-lg shadow-xl shadow-indigo-200 dark:shadow-indigo-900 transition-colors"
+            className="flex items-center gap-2 rounded-3xl bg-brand hover:bg-brand-dark px-8 py-4 text-ink font-bold text-lg shadow-xl shadow-brand/25 transition-all active:scale-95 animate-slide-up"
           >
-            <Play className="w-5 h-5" />
+            <Play className="w-5 h-5 fill-ink" />
             Apresentar com voz
           </Link>
         </div>

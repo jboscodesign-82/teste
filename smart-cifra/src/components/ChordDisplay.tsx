@@ -34,14 +34,14 @@ export default function ChordDisplay({
             key={line.index}
             ref={registerRef ? (el) => registerRef(line.index, el) : undefined}
             className={`
-              px-2 py-0.5 rounded transition-all duration-300
+              px-3 py-0.5 rounded-xl transition-all duration-300
               ${line.isEmpty ? "h-4" : ""}
               ${line.isChord
-                ? "text-indigo-500 dark:text-indigo-400 font-bold"
+                ? "text-brand-dark dark:text-brand font-bold"
                 : "text-gray-800 dark:text-gray-100"}
               ${isHighlighted && !line.isChord && !line.isEmpty
-                ? "bg-yellow-100 dark:bg-yellow-900/40 text-gray-900 dark:text-yellow-100 scale-[1.01] shadow-sm"
-                : ""}
+                ? "bg-brand/15 dark:bg-brand/15 text-gray-900 dark:text-white border-l-2 border-brand scale-[1.01]"
+                : "border-l-2 border-transparent"}
             `}
           >
             {line.isEmpty ? " " : line.raw}
