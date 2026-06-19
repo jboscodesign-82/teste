@@ -25,12 +25,15 @@ export default function Teleprompter({ song }: TeleprompterProps) {
   const { lines, syncState, processTranscript, registerLineRef, setStatus, reset } =
     useLyricSync(song.lyrics);
 
-  // Solicita permissão do microfone ao abrir a tela, evitando prompt a cada início
+  // Solicita e mantém o stream de microfone aberto durante toda a tela,
+  // evitando o prompt de permissão a cada início/parada
   useEffect(() => {
+    let stream: MediaStream | null = null;
     navigator.mediaDevices
       ?.getUserMedia({ audio: true })
-      .then((stream) => stream.getTracks().forEach((t) => t.stop()))
+      .then((s) => { stream = s; })
       .catch(() => {});
+    return () => { stream?.getTracks().forEach((t) => t.stop()); };
   }, []);
 
   const handleSpeechResult = useCallback(
