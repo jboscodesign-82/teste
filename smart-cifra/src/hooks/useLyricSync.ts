@@ -76,8 +76,13 @@ export function useLyricSync(lyrics: string) {
         transcript: isFinal ? transcript : prev.transcript,
       }));
 
+      // Usa só as últimas palavras faladas: ao virar de estrofe, evita que
+      // o texto acumulado da estrofe anterior puxe o match de volta.
+      const words = transcript.trim().split(/\s+/);
+      const recent = words.slice(-8).join(" ");
+
       const result = findBestMatch(
-        transcript,
+        recent,
         lines,
         currentLineIndexRef.current
       );

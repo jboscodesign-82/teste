@@ -92,6 +92,21 @@ export interface MatchResult {
   score: number;
 }
 
+/**
+ * Viés de posição: música progride pra frente, então favorecemos a próxima
+ * linha/estrofe. Sem isso, ao pausar no fim de uma estrofe a linha atual
+ * "segura" o destaque e o avanço para a linha de baixo demora.
+ */
+function positionBias(delta: number): number {
+  if (delta === 0) return 0.04;             // estabilidade na linha atual
+  if (delta > 0) {
+    // avanço: pico nas 1-3 linhas seguintes, decai gradualmente
+    return Math.max(0, 0.16 - (delta - 1) * 0.018);
+  }
+  // voltar é menos comum (repetição de refrão): bônus pequeno
+  return Math.max(0, 0.03 - Math.abs(delta) * 0.008);
+}
+
 export function findBestMatch(
   transcript: string,
   lines: LyricLine[],
@@ -113,12 +128,11 @@ export function findBestMatch(
   let best: MatchResult = { lineIndex: currentLineIndex, score: 0 };
 
   for (const line of candidates) {
-    let score = computeScore(transcript, line.text);
+    const textScore = computeScore(transcript, line.text);
+    if (textScore <= 0) continue; // sem nenhuma semelhança textual, não considera
 
-    // Bônus de proximidade: linhas mais próximas da posição atual
-    const distance = Math.abs(lyricsLines.indexOf(line) - safeIdx);
-    const proximityBonus = Math.max(0, 0.1 - distance * 0.01);
-    score += proximityBonus;
+    const delta = lyricsLines.indexOf(line) - safeIdx;
+    const score = textScore + positionBias(delta);
 
     if (score > best.score) {
       best = { lineIndex: line.index, score };
@@ -127,3 +141,4 @@ export function findBestMatch(
 
   return best;
 }
+
