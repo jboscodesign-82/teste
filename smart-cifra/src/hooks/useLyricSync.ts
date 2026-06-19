@@ -44,7 +44,25 @@ export function useLyricSync(lyrics: string) {
   const scrollToLine = useCallback((lineIndex: number) => {
     const el = lineRefs.current.get(lineIndex);
     if (!el) return;
-    el.scrollIntoView({ behavior: SCROLL_BEHAVIOR, block: "center" });
+
+    const LOOK_AHEAD = 6; // linhas à frente para antecipar o scroll
+    const TOP_OFFSET = 0.28; // posição da linha atual: 28% do topo da tela
+
+    const allIndices = Array.from(lineRefs.current.keys()).sort((a, b) => a - b);
+    const currentPos = allIndices.indexOf(lineIndex);
+    const lookAheadPos = Math.min(currentPos + LOOK_AHEAD, allIndices.length - 1);
+    const hasAhead = lookAheadPos > currentPos;
+
+    if (hasAhead) {
+      // Posiciona linha atual a ~28% do topo, revelando conteúdo futuro abaixo
+      const rect = el.getBoundingClientRect();
+      const absoluteTop = rect.top + window.scrollY;
+      const targetY = absoluteTop - window.innerHeight * TOP_OFFSET;
+      window.scrollTo({ top: Math.max(0, targetY), behavior: SCROLL_BEHAVIOR });
+    } else {
+      // Últimas linhas: centraliza normalmente
+      el.scrollIntoView({ behavior: SCROLL_BEHAVIOR, block: "center" });
+    }
   }, []);
 
   const processTranscript = useCallback(
