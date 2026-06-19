@@ -5,6 +5,7 @@ export interface Song {
   lyrics: string;
   createdAt: number;
   updatedAt: number;
+  coverImage?: string;
 }
 
 export interface LyricLine {

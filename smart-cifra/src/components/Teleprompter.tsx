@@ -100,7 +100,7 @@ export default function Teleprompter({ song }: TeleprompterProps) {
             onClick={() => router.back()}
             className="p-2.5 rounded-full text-gray-500 dark:text-gray-300 bg-gray-100/60 dark:bg-surface-light hover:bg-gray-200 dark:hover:bg-surface-lighter transition-colors active:scale-95"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5" strokeWidth={1.5} />
           </button>
 
           <div className="flex-1 min-w-0 px-1">
@@ -116,28 +116,28 @@ export default function Teleprompter({ song }: TeleprompterProps) {
               className="p-2 rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-surface-light transition-colors active:scale-95"
               title="Diminuir fonte"
             >
-              <ZoomOut className="w-4 h-4" />
+              <ZoomOut className="w-4 h-4" strokeWidth={1.5} />
             </button>
             <button
               onClick={() => cycleFontSize("up")}
               className="p-2 rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-surface-light transition-colors active:scale-95"
               title="Aumentar fonte"
             >
-              <ZoomIn className="w-4 h-4" />
+              <ZoomIn className="w-4 h-4" strokeWidth={1.5} />
             </button>
             <button
               onClick={() => setDarkMode((d) => !d)}
               className="p-2 rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-surface-light transition-colors active:scale-95"
               title="Alternar tema"
             >
-              {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              {darkMode ? <Sun className="w-4 h-4" strokeWidth={1.5} /> : <Moon className="w-4 h-4" strokeWidth={1.5} />}
             </button>
             <button
               onClick={toggleFullscreen}
               className="p-2 rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-surface-light transition-colors active:scale-95"
               title="Tela cheia"
             >
-              <Maximize2 className="w-4 h-4" />
+              <Maximize2 className="w-4 h-4" strokeWidth={1.5} />
             </button>
           </div>
         </header>

@@ -28,7 +28,7 @@ export default function PresentationControls({
         className="fixed bottom-8 right-6 z-50 w-16 h-16 rounded-full bg-red-500 hover:bg-red-600 text-white shadow-2xl shadow-red-900/40 flex items-center justify-center transition-all active:scale-95 animate-scale-in"
         title="Parar acompanhamento"
       >
-        <Square className="w-6 h-6 fill-white" />
+        <Square className="w-6 h-6" strokeWidth={1.5} fill="white" />
         <span className="absolute inset-0 rounded-full animate-ping bg-red-400 opacity-30" />
       </button>
     );
@@ -57,7 +57,7 @@ export default function PresentationControls({
             disabled={!isSupported}
             className="w-full flex items-center justify-center gap-3 py-4 rounded-3xl bg-brand hover:bg-brand-dark disabled:opacity-40 disabled:cursor-not-allowed text-ink font-bold text-lg shadow-lg shadow-brand/25 transition-all active:scale-[0.98]"
           >
-            <Mic className="w-5 h-5" />
+            <Mic className="w-5 h-5" strokeWidth={1.5} />
             Iniciar acompanhamento
           </button>
         </div>

@@ -8,7 +8,7 @@ export default function HomePage() {
         <div className="max-w-2xl mx-auto px-5 pt-6 pb-4 flex items-center justify-between animate-fade-in">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-brand flex items-center justify-center shadow-lg shadow-brand/20">
-              <Music2 className="w-5 h-5 text-ink" />
+              <Music2 className="w-5 h-5 text-ink" strokeWidth={1.5} />
             </div>
             <div>
               <p className="text-xs text-gray-400 leading-none">Bem-vindo ao</p>

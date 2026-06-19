@@ -7,6 +7,7 @@ export const DEFAULT_SONGS: Song[] = [
     artist: "Skank",
     createdAt: 0,
     updatedAt: 0,
+    coverImage: "/skank.jpg",
     lyrics: `A
 Bola na trave não altera o placar
 

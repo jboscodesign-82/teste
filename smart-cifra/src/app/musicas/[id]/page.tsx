@@ -63,7 +63,7 @@ export default function SongPage() {
               href="/"
               className="p-2.5 rounded-full text-gray-500 dark:text-gray-300 bg-gray-100/60 dark:bg-surface-light hover:bg-gray-200 dark:hover:bg-surface-lighter transition-colors active:scale-95"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-5 h-5" strokeWidth={1.5} />
             </Link>
             <div className="flex-1 min-w-0 px-1">
               <p className="font-semibold text-gray-900 dark:text-white truncate">{song.title}</p>
@@ -75,7 +75,7 @@ export default function SongPage() {
               onClick={() => setDarkMode((d) => !d)}
               className="p-2 rounded-full text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-surface-light transition-colors active:scale-95"
             >
-              {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              {darkMode ? <Sun className="w-4 h-4" strokeWidth={1.5} /> : <Moon className="w-4 h-4" strokeWidth={1.5} />}
             </button>
           </div>
         </header>
@@ -89,7 +89,7 @@ export default function SongPage() {
             href={`/musicas/${song.id}/apresentar`}
             className="flex items-center gap-2 rounded-3xl bg-brand hover:bg-brand-dark px-8 py-4 text-ink font-bold text-lg shadow-xl shadow-brand/25 transition-all active:scale-95 animate-slide-up"
           >
-            <Play className="w-5 h-5 fill-ink" />
+            <Play className="w-5 h-5" strokeWidth={1.5} fill="none" />
             Apresentar com voz
           </Link>
         </div>
