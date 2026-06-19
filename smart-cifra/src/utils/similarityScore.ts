@@ -1,5 +1,5 @@
 import type { LyricLine } from "@/types";
-import { normalizeText } from "./textNormalization";
+import { normalizeText, phoneticNormalize } from "./textNormalization";
 
 function levenshteinDistance(a: string, b: string): number {
   const m = a.length;
@@ -59,16 +59,32 @@ function containsScore(transcript: string, line: string): number {
 
 export function computeScore(transcript: string, lineText: string): number {
   if (!lineText) return 0;
-  const normTranscript = normalizeText(transcript);
-  const normLine = normalizeText(lineText);
-  if (!normLine) return 0;
 
-  const overlap = wordOverlapScore(normTranscript, normLine);
-  const lev = levenshteinScore(normTranscript, normLine);
-  const contains = containsScore(normTranscript, normLine);
+  // Camada 1: normalização textual padrão
+  const normT = normalizeText(transcript);
+  const normL = normalizeText(lineText);
+  if (!normL) return 0;
 
-  // Weighted combination
-  return overlap * 0.5 + lev * 0.2 + contains * 0.3;
+  const overlap   = wordOverlapScore(normT, normL);
+  const lev       = levenshteinScore(normT, normL);
+  const contains  = containsScore(normT, normL);
+
+  // Camada 2: normalização fonética (PT-BR + EN)
+  const phonT = phoneticNormalize(transcript);
+  const phonL = phoneticNormalize(lineText);
+
+  const phonOverlap  = wordOverlapScore(phonT, phonL);
+  const phonContains = containsScore(phonT, phonL);
+
+  // Score composto: 80% texto + 20% fonética
+  // A camada fonética desempata quando a grafia difere mas o som é similar
+  return (
+    overlap        * 0.35 +
+    lev            * 0.15 +
+    contains       * 0.30 +
+    phonOverlap    * 0.10 +
+    phonContains   * 0.10
+  );
 }
 
 export interface MatchResult {
@@ -87,7 +103,6 @@ export function findBestMatch(
   const lyricsLines = lines.filter((l) => !l.isChord && !l.isEmpty);
   if (lyricsLines.length === 0) return { lineIndex: 0, score: 0 };
 
-  // Expand window around current position — prefer nearby lines to avoid jumps
   const currentLyricIdx = lyricsLines.findIndex((l) => l.index >= currentLineIndex);
   const safeIdx = currentLyricIdx === -1 ? 0 : currentLyricIdx;
 
@@ -100,7 +115,7 @@ export function findBestMatch(
   for (const line of candidates) {
     let score = computeScore(transcript, line.text);
 
-    // Proximity bonus: lines closer to current position get a small boost
+    // Bônus de proximidade: linhas mais próximas da posição atual
     const distance = Math.abs(lyricsLines.indexOf(line) - safeIdx);
     const proximityBonus = Math.max(0, 0.1 - distance * 0.01);
     score += proximityBonus;
