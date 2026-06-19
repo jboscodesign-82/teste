@@ -1,6 +1,6 @@
 import Link from "next/link";
 import SongList from "@/components/SongList";
-import { Plus, Music2 } from "lucide-react";
+import { Music2 } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -11,15 +11,8 @@ export default function HomePage() {
             <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
               <Music2 className="w-4 h-4 text-white" />
             </div>
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">Smart Cifra</h1>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">SingFlow</h1>
           </div>
-          <Link
-            href="/nova"
-            className="flex items-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 px-4 py-2 text-white font-medium transition-colors text-sm"
-          >
-            <Plus className="w-4 h-4" />
-            Nova música
-          </Link>
         </div>
       </header>
 

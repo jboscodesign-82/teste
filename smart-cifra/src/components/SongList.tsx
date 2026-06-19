@@ -3,24 +3,15 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Song } from "@/types";
-import { deleteSong, getAllSongs } from "@/services/songStorage";
-import { Music, Trash2, Play, Edit3, ChevronRight } from "lucide-react";
+import { getAllSongs } from "@/services/songStorage";
+import { Music, Play, ChevronRight } from "lucide-react";
 
 export default function SongList() {
   const [songs, setSongs] = useState<Song[]>([]);
-  const [deleting, setDeleting] = useState<string | null>(null);
 
   useEffect(() => {
     setSongs(getAllSongs());
   }, []);
-
-  function handleDelete(id: string, title: string) {
-    if (!confirm(`Excluir "${title}"?`)) return;
-    setDeleting(id);
-    deleteSong(id);
-    setSongs((prev) => prev.filter((s) => s.id !== id));
-    setDeleting(null);
-  }
 
   if (songs.length === 0) {
     return (
@@ -68,21 +59,6 @@ export default function SongList() {
             >
               <Play className="w-4 h-4" />
             </Link>
-            <Link
-              href={`/musicas/${song.id}?edit=1`}
-              className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              title="Editar"
-            >
-              <Edit3 className="w-4 h-4" />
-            </Link>
-            <button
-              onClick={() => handleDelete(song.id, song.title)}
-              disabled={deleting === song.id}
-              className="p-2 rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
-              title="Excluir"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
           </div>
 
           <Link href={`/musicas/${song.id}`} className="text-gray-300 dark:text-gray-600 group-hover:text-gray-400">

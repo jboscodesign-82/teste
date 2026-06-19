@@ -8,7 +8,7 @@ import { getSongById } from "@/services/songStorage";
 import { parseLyrics } from "@/utils/textNormalization";
 import ChordDisplay from "@/components/ChordDisplay";
 import SongForm from "@/components/SongForm";
-import { ArrowLeft, Play, Edit3, Sun, Moon } from "lucide-react";
+import { ArrowLeft, Play, Sun, Moon } from "lucide-react";
 
 export default function SongPage() {
   const params = useParams();
@@ -77,12 +77,6 @@ export default function SongPage() {
             >
               {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
-            <Link
-              href={`/musicas/${song.id}?edit=1`}
-              className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            >
-              <Edit3 className="w-4 h-4" />
-            </Link>
           </div>
         </header>
 

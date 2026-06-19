@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Smart Cifra",
+  title: "SingFlow",
   description: "Visualize cifras com auto-scroll inteligente por voz",
   manifest: "/manifest.json",
 };
