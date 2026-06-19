@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { Song } from "@/types";
 import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
 import { useLyricSync } from "@/hooks/useLyricSync";
+import { useWakeLock } from "@/hooks/useWakeLock";
 import ChordDisplay from "./ChordDisplay";
 import PresentationControls from "./PresentationControls";
 import { ArrowLeft, Sun, Moon, ZoomIn, ZoomOut, Maximize2 } from "lucide-react";
@@ -24,6 +25,8 @@ export default function Teleprompter({ song }: TeleprompterProps) {
 
   const { lines, syncState, processTranscript, registerLineRef, setStatus, reset } =
     useLyricSync(song.lyrics);
+
+  useWakeLock(); // mantém a tela acesa enquanto estiver na página de apresentação
 
   // Solicita e mantém o stream de microfone aberto durante toda a tela,
   // evitando o prompt de permissão a cada início/parada
