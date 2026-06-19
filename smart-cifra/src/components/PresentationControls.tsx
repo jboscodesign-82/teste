@@ -58,7 +58,7 @@ export default function PresentationControls({
             className="w-full flex items-center justify-center gap-3 py-4 rounded-3xl bg-brand hover:bg-brand-dark disabled:opacity-40 disabled:cursor-not-allowed text-ink font-bold text-lg shadow-lg shadow-brand/25 transition-all active:scale-[0.98]"
           >
             <Mic className="w-5 h-5" strokeWidth={1.5} />
-            Iniciar acompanhamento
+            Começar a cantar
           </button>
         </div>
       </div>
