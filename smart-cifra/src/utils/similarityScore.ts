@@ -111,7 +111,7 @@ export function findBestMatch(
   transcript: string,
   lines: LyricLine[],
   currentLineIndex: number,
-  windowSize = 20
+  maxForward = 20  // linhas à frente permitidas (pequeno = modo trilho, grande = reposição livre)
 ): MatchResult {
   if (!transcript.trim()) return { lineIndex: currentLineIndex, score: 0 };
 
@@ -121,8 +121,11 @@ export function findBestMatch(
   const currentLyricIdx = lyricsLines.findIndex((l) => l.index >= currentLineIndex);
   const safeIdx = currentLyricIdx === -1 ? 0 : currentLyricIdx;
 
-  const start = Math.max(0, safeIdx - Math.floor(windowSize / 2));
-  const end = Math.min(lyricsLines.length - 1, safeIdx + Math.ceil(windowSize / 2));
+  // No modo trilho (maxForward pequeno): busca só do índice atual pra frente.
+  // No modo livre (maxForward grande): busca em janela ampla em ambos os lados.
+  const backBuffer = maxForward <= 5 ? 0 : Math.floor(maxForward / 2);
+  const start = Math.max(0, safeIdx - backBuffer);
+  const end = Math.min(lyricsLines.length - 1, safeIdx + maxForward);
   const candidates = lyricsLines.slice(start, end + 1);
 
   let best: MatchResult = { lineIndex: currentLineIndex, score: 0 };

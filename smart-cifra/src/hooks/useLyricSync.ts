@@ -11,8 +11,8 @@ const SCROLL_BEHAVIOR = "smooth" as const;
 // Após este silêncio (ms), libera reposicionamento livre (voltar / pular longe)
 const SILENCE_REPOSITION_MS = 3500;
 
-// Máximo de linhas que pode avançar de uma vez durante fala ativa
-const MAX_FORWARD_JUMP = 5;
+// Máximo de linhas à frente permitidas durante fala ativa
+const MAX_FORWARD_JUMP = 3;
 
 export function useLyricSync(lyrics: string) {
   const [lines, setLines] = useState<LyricLine[]>([]);
@@ -93,7 +93,15 @@ export function useLyricSync(lyrics: string) {
       const words = transcript.trim().split(/\s+/);
       const recent = words.slice(-8).join(" ");
 
-      const result = findBestMatch(recent, lines, currentLineIndexRef.current);
+      // Restringe a janela de busca ao modo atual:
+      // - modo trilho: só olha as próximas MAX_FORWARD_JUMP linhas, sem voltar
+      // - modo livre (silêncio): janela ampla para reposicionar em qualquer linha
+      const result = findBestMatch(
+        recent,
+        lines,
+        currentLineIndexRef.current,
+        allowReposition ? 16 : MAX_FORWARD_JUMP
+      );
 
       if (result.score < CONFIDENCE_THRESHOLD) {
         setSyncState((prev) => ({
@@ -104,20 +112,6 @@ export function useLyricSync(lyrics: string) {
           interimTranscript: isFinal ? "" : transcript,
         }));
         return;
-      }
-
-      // --- Modo trilho: restrições durante fala ativa ---
-      if (!allowReposition) {
-        const lyricsLines = lines.filter((l) => !l.isChord && !l.isEmpty);
-        const currentPos = lyricsLines.findIndex((l) => l.index >= currentLineIndexRef.current);
-        const resultPos  = lyricsLines.findIndex((l) => l.index >= result.lineIndex);
-        const delta = resultPos - currentPos;
-
-        // Bloqueia movimento para trás
-        if (delta < 0) return;
-
-        // Bloqueia saltos muito grandes para frente
-        if (delta > MAX_FORWARD_JUMP) return;
       }
 
       currentLineIndexRef.current = result.lineIndex;
