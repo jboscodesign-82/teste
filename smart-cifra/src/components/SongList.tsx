@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Song } from "@/types";
 import { getAllSongs } from "@/services/songStorage";
-import { Music, Play, ChevronRight } from "lucide-react";
+import { Music, ChevronRight } from "lucide-react";
 
 export default function SongList() {
   const [songs, setSongs] = useState<Song[]>([]);
@@ -29,35 +29,24 @@ export default function SongList() {
   return (
     <div className="flex flex-col gap-3">
       {songs.map((song) => (
-        <div
+        <Link
           key={song.id}
+          href={`/musicas/${song.id}/apresentar`}
           className="group flex items-center gap-3 rounded-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-shadow"
         >
           <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center flex-shrink-0">
             <Music className="w-5 h-5 text-indigo-500" />
           </div>
 
-          <Link href={`/musicas/${song.id}`} className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0">
             <p className="font-semibold text-gray-900 dark:text-white truncate">{song.title}</p>
             {song.artist && (
               <p className="text-sm text-gray-500 dark:text-gray-400 truncate">{song.artist}</p>
             )}
-          </Link>
-
-          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <Link
-              href={`/musicas/${song.id}/apresentar`}
-              className="p-2 rounded-lg text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950 transition-colors"
-              title="Apresentar"
-            >
-              <Play className="w-4 h-4" />
-            </Link>
           </div>
 
-          <Link href={`/musicas/${song.id}`} className="text-gray-300 dark:text-gray-600 group-hover:text-gray-400">
-            <ChevronRight className="w-4 h-4" />
-          </Link>
-        </div>
+          <ChevronRight className="w-4 h-4 text-gray-300 dark:text-gray-600 group-hover:text-gray-400" />
+        </Link>
       ))}
     </div>
   );
