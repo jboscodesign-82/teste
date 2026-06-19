@@ -1,8 +1,9 @@
 import type { Song } from "@/types";
+import { DEFAULT_SONGS } from "@/data/defaultSongs";
 
 const STORAGE_KEY = "smart-cifra-songs";
 
-export function getAllSongs(): Song[] {
+function getUserSongs(): Song[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -10,6 +11,13 @@ export function getAllSongs(): Song[] {
   } catch {
     return [];
   }
+}
+
+export function getAllSongs(): Song[] {
+  const userSongs = getUserSongs();
+  const defaultIds = new Set(DEFAULT_SONGS.map((s) => s.id));
+  const filtered = userSongs.filter((s) => !defaultIds.has(s.id));
+  return [...DEFAULT_SONGS, ...filtered];
 }
 
 export function getSongById(id: string): Song | null {

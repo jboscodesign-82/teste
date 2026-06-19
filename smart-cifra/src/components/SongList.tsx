@@ -20,15 +20,8 @@ export default function SongList() {
           <Music className="w-8 h-8 text-indigo-500" />
         </div>
         <div>
-          <p className="text-lg font-medium text-gray-700 dark:text-gray-300">Nenhuma música ainda</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Adicione sua primeira cifra para começar</p>
+          <p className="text-lg font-medium text-gray-700 dark:text-gray-300">Nenhuma música disponível</p>
         </div>
-        <Link
-          href="/nova"
-          className="mt-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 px-6 py-3 text-white font-medium transition-colors"
-        >
-          Adicionar música
-        </Link>
       </div>
     );
   }
