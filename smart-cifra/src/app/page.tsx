@@ -1,4 +1,3 @@
-import Link from "next/link";
 import SongList from "@/components/SongList";
 import { Music2 } from "lucide-react";
 
