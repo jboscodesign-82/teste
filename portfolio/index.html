@@ -104,54 +104,54 @@
     .sec-head h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -.02em; margin: 0; }
     .sec-head .count { font-size: .82rem; letter-spacing: .08em; color: var(--muted); }
 
-    /* ---------- Work grid ---------- */
-    .work-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 56px 40px; }
-    @media (max-width: 760px) { .work-grid { grid-template-columns: 1fr; gap: 44px; } }
+    /* ---------- Work list (hover-reveal) ---------- */
+    .work-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+    .work-row { border-bottom: 1px solid var(--line); transition: opacity .4s var(--ease); }
+    /* dim the other rows while hovering the list */
+    @media (hover: hover) and (pointer: fine) {
+      .work-list:hover .work-row { opacity: .32; }
+      .work-list:hover .work-row:hover { opacity: 1; }
+    }
+    .work-row > a {
+      position: relative; display: flex; align-items: center; gap: 24px;
+      padding: clamp(20px, 3vw, 38px) 8px; color: var(--ink);
+    }
+    .wr-idx { font-size: .82rem; color: var(--muted); font-variant-numeric: tabular-nums; width: 2.5ch; flex: none; }
+    .wr-name {
+      position: relative; overflow: hidden; flex: 1 1 auto; line-height: 1.1;
+      font-family: var(--serif); font-weight: 400; font-size: clamp(2rem, 6vw, 4.4rem); letter-spacing: -.02em;
+    }
+    .wr-name .roll { display: block; transition: transform .55s var(--ease); }
+    .wr-name .roll > span { display: block; }
+    .wr-name .roll > span:last-child { position: absolute; top: 100%; left: 0; width: 100%; }
+    @media (hover: hover) and (pointer: fine) {
+      .work-row > a:hover .wr-name .roll { transform: translateY(-100%); }
+    }
+    .wr-sub { font-size: .9rem; color: var(--muted); white-space: nowrap; letter-spacing: .02em; flex: none; }
+    .wr-arrow {
+      flex: none; display: inline-flex; color: var(--muted);
+      transform: translateX(-10px); opacity: 0; transition: transform .5s var(--ease), opacity .5s var(--ease);
+    }
+    .work-row > a:hover .wr-arrow { transform: none; opacity: 1; color: var(--ink); }
 
-    .proj { display: block; }
-    .proj .media {
-      position: relative; overflow: hidden; border-radius: 6px; background: var(--bg-2);
-      aspect-ratio: 4 / 3;
+    /* floating preview that follows the cursor */
+    .work-preview {
+      position: fixed; top: 0; left: 0; z-index: 5; width: clamp(220px, 24vw, 360px); aspect-ratio: 4 / 3;
+      border-radius: 8px; overflow: hidden; pointer-events: none; will-change: transform;
+      opacity: 0; transform: translate3d(0,0,0) scale(.92); transition: opacity .35s var(--ease), transform .45s var(--ease);
+      box-shadow: 0 24px 60px rgba(20,19,15,.22);
     }
-    .proj .media > video, .proj .media > img {
-      width: 100%; height: 100%; object-fit: cover;
-      transition: transform 1.1s var(--ease), filter .6s var(--ease);
-    }
-    .proj:hover .media > video, .proj:hover .media > img { transform: scale(1.05); }
+    .work-preview.show { opacity: 1; transform: translate3d(0,0,0) scale(1); }
+    .work-preview > * { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    /* placeholder media */
-    .proj .ph {
-      position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 10px; color: var(--muted);
-      background:
-        repeating-linear-gradient(45deg, rgba(20,19,15,.025) 0 12px, transparent 12px 24px),
-        var(--bg-2);
-      transition: transform 1.1s var(--ease);
+    /* inline thumbnail used on touch / no-hover devices */
+    .wr-thumb { display: none; }
+    @media (hover: none), (max-width: 760px) {
+      .work-preview { display: none; }
+      .work-row > a { flex-wrap: wrap; }
+      .wr-thumb { display: block; width: 100%; aspect-ratio: 16 / 9; margin-top: 16px; border-radius: 6px; overflow: hidden; background: var(--bg-2); order: 5; }
+      .wr-thumb > * { width: 100%; height: 100%; object-fit: cover; display: block; }
     }
-    .proj:hover .ph { transform: scale(1.05); }
-    .proj .ph .pn { font-family: var(--serif); font-size: 2.4rem; line-height: 1; }
-    .proj .ph small { font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; }
-
-    .proj .tag {
-      position: absolute; top: 14px; left: 14px; z-index: 2;
-      font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
-      background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(6px);
-      padding: 6px 12px; border-radius: 100px; border: 1px solid var(--line);
-    }
-    .proj .view {
-      position: absolute; right: 14px; bottom: 14px; z-index: 2;
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--ink); color: var(--bg);
-      font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
-      padding: 10px 16px; border-radius: 100px;
-      opacity: 0; transform: translateY(8px); transition: opacity .45s var(--ease), transform .45s var(--ease);
-    }
-    .proj:hover .view { opacity: 1; transform: none; }
-
-    .proj .meta { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-top: 20px; }
-    .proj .meta h3 { font-family: var(--serif); font-weight: 400; font-size: 1.5rem; letter-spacing: -.01em; margin: 0; transition: opacity .3s var(--ease); }
-    .proj .meta .sub { font-size: .82rem; letter-spacing: .04em; color: var(--muted); white-space: nowrap; }
-    .proj .meta .idx { font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 
     /* ---------- Awards marquee ---------- */
     .awards { padding: 96px 0; border-top: 1px solid var(--line); overflow: hidden; }
@@ -229,77 +229,72 @@
           <span class="count">(07)</span>
         </div>
 
-        <div class="work-grid">
-          <!-- 01 -->
-          <a class="proj reveal" href="#" aria-label="Redesign 2026 — OLX">
-            <div class="media">
-              <span class="tag">OLX</span>
-              <img src="https://framerusercontent.com/images/shmb6tasJXREFSoJemWeMBFUotQ.png?scale-down-to=512&amp;width=806&amp;height=727" alt="Redesign 2026 — OLX" loading="lazy" />
-              <span class="view">View case <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-            </div>
-            <div class="meta"><h3>Redesign 2026</h3><span class="sub">OLX · 01</span></div>
-          </a>
-
-          <!-- 02 — VIDEO (project-2.mp4) -->
-          <a class="proj reveal" data-d="1" href="#" aria-label="Product vision — OLX">
-            <div class="media">
-              <span class="tag">OLX</span>
-              <video src="assets/project-2.mp4" autoplay muted loop playsinline preload="metadata"></video>
-              <span class="view">View case <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-            </div>
-            <div class="meta"><h3>Product vision</h3><span class="sub">OLX · 02</span></div>
-          </a>
-
-          <!-- 03 -->
-          <a class="proj reveal" href="#" aria-label="Quick wins and Growth — OLX">
-            <div class="media">
-              <span class="tag">OLX</span>
-              <img src="https://framerusercontent.com/images/Cylw5fCg11koSdh30BzfXB0us2k.png?scale-down-to=1024&amp;width=1286&amp;height=630" alt="Quick wins and Growth — OLX" loading="lazy" />
-              <span class="view">View case <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-            </div>
-            <div class="meta"><h3>Quick wins and Growth</h3><span class="sub">OLX · 03</span></div>
-          </a>
-
-          <!-- 04 — VIDEO (project-4.mp4) -->
-          <a class="proj reveal" data-d="1" href="#" aria-label="New visual language — Hurb">
-            <div class="media">
-              <span class="tag">Hurb</span>
-              <video src="assets/project-4.mp4" autoplay muted loop playsinline preload="metadata"></video>
-              <span class="view">View case <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-            </div>
-            <div class="meta"><h3>New visual language</h3><span class="sub">Hurb · 04</span></div>
-          </a>
-
-          <!-- 05 -->
-          <a class="proj reveal" href="#" aria-label="Checkout Redesign — Hurb">
-            <div class="media">
-              <span class="tag">Hurb</span>
-              <img src="https://framerusercontent.com/images/RwaF67sstZkWgAav7a04KBywvY8.png?scale-down-to=512&amp;width=1370&amp;height=1050" alt="Checkout Redesign — Hurb" loading="lazy" />
-              <span class="view">View case <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-            </div>
-            <div class="meta"><h3>Checkout Redesign</h3><span class="sub">Hurb · 05</span></div>
-          </a>
-
-          <!-- 06 -->
-          <a class="proj reveal" data-d="1" href="#" aria-label="Creator Academy — Pinterest">
-            <div class="media">
-              <span class="tag">Pinterest</span>
-              <img src="https://framerusercontent.com/images/ZOU7yM0XFSArlGXc1OZ0nNCpYw.png?scale-down-to=1024&amp;width=1920&amp;height=1440" alt="Creator Academy — Pinterest" loading="lazy" />
-              <span class="view">View case <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-            </div>
-            <div class="meta"><h3>Creator Academy</h3><span class="sub">Pinterest · 06</span></div>
-          </a>
-
-          <!-- 07 -->
-          <a class="proj reveal" href="#" aria-label="UX Guides — Personal">
-            <div class="media">
-              <span class="tag">Personal</span>
-              <img src="https://framerusercontent.com/images/E5fV45pLeR16AFoUJQH1EQsDL8s.png?width=1474&amp;height=1140" alt="UX Guides — Personal" loading="lazy" />
-              <span class="view">View case <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-            </div>
-            <div class="meta"><h3>UX Guides</h3><span class="sub">Personal · 07</span></div>
-          </a>
-        </div>
+        <ul class="work-list" id="workList">
+          <li class="work-row reveal" data-type="img" data-src="https://framerusercontent.com/images/shmb6tasJXREFSoJemWeMBFUotQ.png?scale-down-to=512&amp;width=806&amp;height=727">
+            <a href="#" aria-label="Redesign 2026 — OLX">
+              <span class="wr-idx">01</span>
+              <span class="wr-name"><span class="roll"><span>Redesign 2026</span><span>Redesign 2026</span></span></span>
+              <span class="wr-sub">OLX</span>
+              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+              <span class="wr-thumb"></span>
+            </a>
+          </li>
+          <li class="work-row reveal" data-type="video" data-src="assets/project-2.mp4">
+            <a href="#" aria-label="Product vision — OLX">
+              <span class="wr-idx">02</span>
+              <span class="wr-name"><span class="roll"><span>Product vision</span><span>Product vision</span></span></span>
+              <span class="wr-sub">OLX</span>
+              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+              <span class="wr-thumb"></span>
+            </a>
+          </li>
+          <li class="work-row reveal" data-type="img" data-src="https://framerusercontent.com/images/Cylw5fCg11koSdh30BzfXB0us2k.png?scale-down-to=1024&amp;width=1286&amp;height=630">
+            <a href="#" aria-label="Quick wins and Growth — OLX">
+              <span class="wr-idx">03</span>
+              <span class="wr-name"><span class="roll"><span>Quick wins and Growth</span><span>Quick wins and Growth</span></span></span>
+              <span class="wr-sub">OLX</span>
+              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+              <span class="wr-thumb"></span>
+            </a>
+          </li>
+          <li class="work-row reveal" data-type="video" data-src="assets/project-4.mp4">
+            <a href="#" aria-label="New visual language — Hurb">
+              <span class="wr-idx">04</span>
+              <span class="wr-name"><span class="roll"><span>New visual language</span><span>New visual language</span></span></span>
+              <span class="wr-sub">Hurb</span>
+              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+              <span class="wr-thumb"></span>
+            </a>
+          </li>
+          <li class="work-row reveal" data-type="img" data-src="https://framerusercontent.com/images/RwaF67sstZkWgAav7a04KBywvY8.png?scale-down-to=512&amp;width=1370&amp;height=1050">
+            <a href="#" aria-label="Checkout Redesign — Hurb">
+              <span class="wr-idx">05</span>
+              <span class="wr-name"><span class="roll"><span>Checkout Redesign</span><span>Checkout Redesign</span></span></span>
+              <span class="wr-sub">Hurb</span>
+              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+              <span class="wr-thumb"></span>
+            </a>
+          </li>
+          <li class="work-row reveal" data-type="img" data-src="https://framerusercontent.com/images/ZOU7yM0XFSArlGXc1OZ0nNCpYw.png?scale-down-to=1024&amp;width=1920&amp;height=1440">
+            <a href="#" aria-label="Creator Academy — Pinterest">
+              <span class="wr-idx">06</span>
+              <span class="wr-name"><span class="roll"><span>Creator Academy</span><span>Creator Academy</span></span></span>
+              <span class="wr-sub">Pinterest</span>
+              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+              <span class="wr-thumb"></span>
+            </a>
+          </li>
+          <li class="work-row reveal" data-type="img" data-src="https://framerusercontent.com/images/E5fV45pLeR16AFoUJQH1EQsDL8s.png?width=1474&amp;height=1140">
+            <a href="#" aria-label="UX Guides — Personal">
+              <span class="wr-idx">07</span>
+              <span class="wr-name"><span class="roll"><span>UX Guides</span><span>UX Guides</span></span></span>
+              <span class="wr-sub">Personal</span>
+              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+              <span class="wr-thumb"></span>
+            </a>
+          </li>
+        </ul>
+        <div class="work-preview" id="workPreview" aria-hidden="true"></div>
       </div>
     </section>
 
@@ -378,6 +373,72 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
     document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+
+    // ---------- Work list: cursor-following preview ----------
+    (function () {
+      var list = document.getElementById('workList');
+      var preview = document.getElementById('workPreview');
+      if (!list) return;
+
+      var rows = Array.prototype.slice.call(list.querySelectorAll('.work-row'));
+      var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+      function makeMedia(type, src) {
+        var el;
+        if (type === 'video') {
+          el = document.createElement('video');
+          el.src = src; el.muted = true; el.loop = true; el.autoplay = true;
+          el.setAttribute('playsinline', ''); el.setAttribute('preload', 'metadata');
+        } else {
+          el = document.createElement('img');
+          el.src = src; el.alt = '';
+        }
+        return el;
+      }
+
+      if (!canHover) {
+        // Touch / no-hover: render an inline thumbnail inside each row.
+        rows.forEach(function (row) {
+          var thumb = row.querySelector('.wr-thumb');
+          if (thumb) thumb.appendChild(makeMedia(row.dataset.type, row.dataset.src));
+        });
+        return;
+      }
+
+      // Desktop: floating preview that lerps toward the cursor.
+      var tx = 0, ty = 0, cx = 0, cy = 0, active = false, raf = null;
+
+      function offset() { return { w: preview.offsetWidth, h: preview.offsetHeight }; }
+
+      function loop() {
+        tx += (cx - tx) * 0.16;
+        ty += (cy - ty) * 0.16;
+        preview.style.transform = 'translate3d(' + tx + 'px,' + ty + 'px,0) scale(' + (active ? 1 : 0.92) + ')';
+        raf = requestAnimationFrame(loop);
+      }
+
+      document.addEventListener('mousemove', function (e) {
+        var o = offset();
+        cx = e.clientX - o.w / 2;
+        cy = e.clientY - o.h / 2;
+        if (!active) { tx = cx; ty = cy; } // avoid a jump on first show
+      }, { passive: true });
+
+      rows.forEach(function (row) {
+        var link = row.querySelector('a');
+        link.addEventListener('mouseenter', function () {
+          preview.innerHTML = '';
+          preview.appendChild(makeMedia(row.dataset.type, row.dataset.src));
+          active = true;
+          preview.classList.add('show');
+          if (!raf) loop();
+        });
+        link.addEventListener('mouseleave', function () {
+          active = false;
+          preview.classList.remove('show');
+        });
+      });
+    })();
   </script>
 </body>
 </html>
