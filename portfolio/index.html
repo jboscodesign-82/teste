@@ -379,7 +379,7 @@
       var rows = Array.prototype.slice.call(list.querySelectorAll('.work-row'));
       var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-      var current = -1, front = 1, hovering = false, inView = false;
+      var current = -1, front = 1, hovering = false;
 
       function makeMedia(type, src) {
         var el;
@@ -410,36 +410,34 @@
         front = next;
       }
 
-      function updateByScroll() {
-        if (!inView || hovering) return;
-        var cy = window.innerHeight / 2, best = -1, bestDist = Infinity;
+      // The stage is only visible while the viewport's center line is inside
+      // the Work section — so it never bleeds into the hero, footer, etc.
+      function update() {
+        var rect = section.getBoundingClientRect();
+        var cy = window.innerHeight / 2;
+        var within = rect.top < cy && rect.bottom > cy;
+        stage.classList.toggle('show', within);
+        if (!within || hovering) return;
+        var best = -1, bestDist = Infinity;
         rows.forEach(function (r, idx) {
-          var rect = r.getBoundingClientRect();
-          var d = Math.abs(rect.top + rect.height / 2 - cy);
+          var rr = r.getBoundingClientRect();
+          var d = Math.abs(rr.top + rr.height / 2 - cy);
           if (d < bestDist) { bestDist = d; best = idx; }
         });
         setActive(best);
       }
 
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          inView = e.isIntersecting;
-          stage.classList.toggle('show', inView);
-          if (inView) updateByScroll();
-        });
-      }, { threshold: 0 }).observe(section);
-
-      window.addEventListener('scroll', updateByScroll, { passive: true });
-      window.addEventListener('resize', updateByScroll);
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
 
       if (canHover) {
         rows.forEach(function (row, idx) {
           row.addEventListener('mouseenter', function () { hovering = true; setActive(idx); });
         });
-        list.addEventListener('mouseleave', function () { hovering = false; updateByScroll(); });
+        list.addEventListener('mouseleave', function () { hovering = false; update(); });
       }
 
-      requestAnimationFrame(updateByScroll);
+      requestAnimationFrame(update);
     })();
   </script>
 </body>
