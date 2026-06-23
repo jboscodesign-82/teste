@@ -106,10 +106,10 @@
 
     /* ---------- Work list (stacked names + fixed stage) ---------- */
     .work-list { list-style: none; margin: 0; padding: 0; position: relative; z-index: 2; }
-    .work-row { position: relative; }
+    .work-row { position: relative; margin: clamp(30px, 5.5vw, 92px) 0; }
     .work-row > a {
       position: relative; display: flex; align-items: center;
-      padding: clamp(14px, 2.2vw, 30px) 0 clamp(34px, 3.8vw, 60px);
+      padding: clamp(8px, 1vw, 14px) 0 clamp(34px, 3.4vw, 52px);
       color: #c2bdb2; transition: color .45s var(--ease);
     }
     .work-row.active > a { color: var(--ink); }
@@ -122,7 +122,7 @@
     .work-row.active .wr-arrow { width: clamp(30px, 3.4vw, 52px); margin-right: clamp(10px, 1.4vw, 20px); opacity: 1; transform: none; }
 
     .wr-name {
-      font-family: var(--serif); font-weight: 400; line-height: 1;
+      font-family: var(--serif); font-weight: 400; line-height: 1.02;
       font-size: clamp(2.5rem, 8.4vw, 6.2rem); letter-spacing: -.02em;
     }
     .wr-tagline {
@@ -256,28 +256,28 @@
           <li class="work-row reveal" data-rot="-4" data-type="img" data-src="https://framerusercontent.com/images/Cylw5fCg11koSdh30BzfXB0us2k.png?scale-down-to=1024&amp;width=1286&amp;height=630">
             <a href="#" aria-label="Quick wins and Growth — OLX">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
-              <span class="wr-name">Quick wins and Growth</span>
+              <span class="wr-name">Quick wins<br>and Growth</span>
               <span class="wr-tagline">Client: OLX</span>
             </a>
           </li>
           <li class="work-row reveal" data-rot="8" data-type="video" data-src="assets/project-4.mp4">
             <a href="#" aria-label="New visual language — Hurb">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
-              <span class="wr-name">New visual language</span>
+              <span class="wr-name">New visual<br>language</span>
               <span class="wr-tagline">Client: Hurb</span>
             </a>
           </li>
           <li class="work-row reveal" data-rot="-5" data-type="img" data-src="https://framerusercontent.com/images/RwaF67sstZkWgAav7a04KBywvY8.png?scale-down-to=512&amp;width=1370&amp;height=1050">
             <a href="#" aria-label="Checkout Redesign — Hurb">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
-              <span class="wr-name">Checkout Redesign</span>
+              <span class="wr-name">Checkout<br>Redesign</span>
               <span class="wr-tagline">Client: Hurb</span>
             </a>
           </li>
           <li class="work-row reveal" data-rot="6" data-type="img" data-src="https://framerusercontent.com/images/ZOU7yM0XFSArlGXc1OZ0nNCpYw.png?scale-down-to=1024&amp;width=1920&amp;height=1440">
             <a href="#" aria-label="Creator Academy — Pinterest">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
-              <span class="wr-name">Creator Academy</span>
+              <span class="wr-name">Creator<br>Academy</span>
               <span class="wr-tagline">Client: Pinterest</span>
             </a>
           </li>
