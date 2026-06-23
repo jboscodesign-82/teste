@@ -104,53 +104,55 @@
     .sec-head h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -.02em; margin: 0; }
     .sec-head .count { font-size: .82rem; letter-spacing: .08em; color: var(--muted); }
 
-    /* ---------- Work list (hover-reveal) ---------- */
-    .work-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-    .work-row { border-bottom: 1px solid var(--line); transition: opacity .4s var(--ease); }
-    /* dim the other rows while hovering the list */
-    @media (hover: hover) and (pointer: fine) {
-      .work-list:hover .work-row { opacity: .32; }
-      .work-list:hover .work-row:hover { opacity: 1; }
-    }
+    /* ---------- Work list (stacked names + fixed stage) ---------- */
+    .work-list { list-style: none; margin: 0; padding: 0; position: relative; z-index: 2; }
+    .work-row { position: relative; }
     .work-row > a {
-      position: relative; display: flex; align-items: center; gap: 24px;
-      padding: clamp(20px, 3vw, 38px) 8px; color: var(--ink);
+      position: relative; display: flex; align-items: center;
+      padding: clamp(14px, 2.2vw, 30px) 0 clamp(30px, 3.4vw, 52px);
+      color: var(--muted); transition: color .45s var(--ease);
     }
-    .wr-idx { font-size: .82rem; color: var(--muted); font-variant-numeric: tabular-nums; width: 2.5ch; flex: none; }
-    .wr-name {
-      position: relative; overflow: hidden; flex: 1 1 auto; line-height: 1.1;
-      font-family: var(--serif); font-weight: 400; font-size: clamp(2rem, 6vw, 4.4rem); letter-spacing: -.02em;
-    }
-    .wr-name .roll { display: block; transition: transform .55s var(--ease); }
-    .wr-name .roll > span { display: block; }
-    .wr-name .roll > span:last-child { position: absolute; top: 100%; left: 0; width: 100%; }
-    @media (hover: hover) and (pointer: fine) {
-      .work-row > a:hover .wr-name .roll { transform: translateY(-100%); }
-    }
-    .wr-sub { font-size: .9rem; color: var(--muted); white-space: nowrap; letter-spacing: .02em; flex: none; }
+    .work-row.active > a { color: var(--ink); }
+
     .wr-arrow {
-      flex: none; display: inline-flex; color: var(--muted);
-      transform: translateX(-10px); opacity: 0; transition: transform .5s var(--ease), opacity .5s var(--ease);
+      flex: none; display: inline-flex; align-items: center; overflow: hidden;
+      width: 0; margin-right: 0; opacity: 0; transform: translateX(-8px);
+      transition: width .5s var(--ease), margin .5s var(--ease), opacity .5s var(--ease), transform .5s var(--ease);
     }
-    .work-row > a:hover .wr-arrow { transform: none; opacity: 1; color: var(--ink); }
+    .work-row.active .wr-arrow { width: clamp(30px, 3.4vw, 52px); margin-right: clamp(10px, 1.4vw, 20px); opacity: 1; transform: none; }
 
-    /* floating preview that follows the cursor */
-    .work-preview {
-      position: fixed; top: 0; left: 0; z-index: 5; width: clamp(220px, 24vw, 360px); aspect-ratio: 4 / 3;
-      border-radius: 8px; overflow: hidden; pointer-events: none; will-change: transform;
-      opacity: 0; transform: translate3d(0,0,0) scale(.92); transition: opacity .35s var(--ease), transform .45s var(--ease);
-      box-shadow: 0 24px 60px rgba(20,19,15,.22);
+    .wr-name {
+      font-family: var(--serif); font-weight: 400; line-height: 1;
+      font-size: clamp(2rem, 6.6vw, 4.8rem); letter-spacing: -.02em;
     }
-    .work-preview.show { opacity: 1; transform: translate3d(0,0,0) scale(1); }
-    .work-preview > * { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .wr-tagline {
+      position: absolute; left: 0; bottom: clamp(10px, 1.3vw, 18px);
+      font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+      opacity: 0; transform: translateY(6px); transition: opacity .5s var(--ease), transform .5s var(--ease); pointer-events: none;
+    }
+    .work-row.active .wr-tagline { opacity: 1; transform: none; }
 
-    /* inline thumbnail used on touch / no-hover devices */
-    .wr-thumb { display: none; }
-    @media (hover: none), (max-width: 760px) {
-      .work-preview { display: none; }
-      .work-row > a { flex-wrap: wrap; }
-      .wr-thumb { display: block; width: 100%; aspect-ratio: 16 / 9; margin-top: 16px; border-radius: 6px; overflow: hidden; background: var(--bg-2); order: 5; }
-      .wr-thumb > * { width: 100%; height: 100%; object-fit: cover; display: block; }
+    /* fixed stage on the right, behind the text */
+    .work-stage {
+      position: fixed; top: 50%; right: clamp(6px, 4vw, 90px); transform: translateY(-50%);
+      width: clamp(280px, 42vw, 640px); aspect-ratio: 16 / 11; z-index: 1; pointer-events: none;
+      opacity: 0; transition: opacity .5s var(--ease);
+    }
+    .work-stage.show { opacity: 1; }
+    .stage-card { position: relative; width: 100%; height: 100%; transition: transform .8s var(--ease); will-change: transform; }
+    .stage-layer {
+      position: absolute; inset: 0; border-radius: 10px; overflow: hidden; opacity: 0;
+      transition: opacity .6s var(--ease); box-shadow: 0 30px 70px rgba(20,19,15,.22);
+    }
+    .stage-layer.on { opacity: 1; }
+    .stage-layer > * { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    @media (max-width: 760px) {
+      .work-stage { right: -6vw; width: 64vw; aspect-ratio: 4 / 5; }
+      .stage-layer { box-shadow: 0 18px 40px rgba(20,19,15,.2); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .stage-card { transition: none; }
     }
 
     /* ---------- Awards marquee ---------- */
@@ -229,72 +231,64 @@
           <span class="count">(07)</span>
         </div>
 
+        <div class="work-stage" id="workStage" aria-hidden="true">
+          <div class="stage-card" id="stageCard">
+            <div class="stage-layer" id="layerA"></div>
+            <div class="stage-layer" id="layerB"></div>
+          </div>
+        </div>
+
         <ul class="work-list" id="workList">
-          <li class="work-row reveal" data-type="img" data-src="https://framerusercontent.com/images/shmb6tasJXREFSoJemWeMBFUotQ.png?scale-down-to=512&amp;width=806&amp;height=727">
+          <li class="work-row reveal" data-rot="-7" data-type="img" data-src="https://framerusercontent.com/images/shmb6tasJXREFSoJemWeMBFUotQ.png?scale-down-to=512&amp;width=806&amp;height=727">
             <a href="#" aria-label="Redesign 2026 — OLX">
-              <span class="wr-idx">01</span>
-              <span class="wr-name"><span class="roll"><span>Redesign 2026</span><span>Redesign 2026</span></span></span>
-              <span class="wr-sub">OLX</span>
-              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-              <span class="wr-thumb"></span>
+              <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
+              <span class="wr-name">Redesign 2026</span>
+              <span class="wr-tagline">OLX</span>
             </a>
           </li>
-          <li class="work-row reveal" data-type="video" data-src="assets/project-2.mp4">
+          <li class="work-row reveal" data-rot="5" data-type="video" data-src="assets/project-2.mp4">
             <a href="#" aria-label="Product vision — OLX">
-              <span class="wr-idx">02</span>
-              <span class="wr-name"><span class="roll"><span>Product vision</span><span>Product vision</span></span></span>
-              <span class="wr-sub">OLX</span>
-              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-              <span class="wr-thumb"></span>
+              <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
+              <span class="wr-name">Product vision</span>
+              <span class="wr-tagline">OLX</span>
             </a>
           </li>
-          <li class="work-row reveal" data-type="img" data-src="https://framerusercontent.com/images/Cylw5fCg11koSdh30BzfXB0us2k.png?scale-down-to=1024&amp;width=1286&amp;height=630">
+          <li class="work-row reveal" data-rot="-4" data-type="img" data-src="https://framerusercontent.com/images/Cylw5fCg11koSdh30BzfXB0us2k.png?scale-down-to=1024&amp;width=1286&amp;height=630">
             <a href="#" aria-label="Quick wins and Growth — OLX">
-              <span class="wr-idx">03</span>
-              <span class="wr-name"><span class="roll"><span>Quick wins and Growth</span><span>Quick wins and Growth</span></span></span>
-              <span class="wr-sub">OLX</span>
-              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-              <span class="wr-thumb"></span>
+              <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
+              <span class="wr-name">Quick wins and Growth</span>
+              <span class="wr-tagline">OLX</span>
             </a>
           </li>
-          <li class="work-row reveal" data-type="video" data-src="assets/project-4.mp4">
+          <li class="work-row reveal" data-rot="8" data-type="video" data-src="assets/project-4.mp4">
             <a href="#" aria-label="New visual language — Hurb">
-              <span class="wr-idx">04</span>
-              <span class="wr-name"><span class="roll"><span>New visual language</span><span>New visual language</span></span></span>
-              <span class="wr-sub">Hurb</span>
-              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-              <span class="wr-thumb"></span>
+              <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
+              <span class="wr-name">New visual language</span>
+              <span class="wr-tagline">Hurb</span>
             </a>
           </li>
-          <li class="work-row reveal" data-type="img" data-src="https://framerusercontent.com/images/RwaF67sstZkWgAav7a04KBywvY8.png?scale-down-to=512&amp;width=1370&amp;height=1050">
+          <li class="work-row reveal" data-rot="-5" data-type="img" data-src="https://framerusercontent.com/images/RwaF67sstZkWgAav7a04KBywvY8.png?scale-down-to=512&amp;width=1370&amp;height=1050">
             <a href="#" aria-label="Checkout Redesign — Hurb">
-              <span class="wr-idx">05</span>
-              <span class="wr-name"><span class="roll"><span>Checkout Redesign</span><span>Checkout Redesign</span></span></span>
-              <span class="wr-sub">Hurb</span>
-              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-              <span class="wr-thumb"></span>
+              <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
+              <span class="wr-name">Checkout Redesign</span>
+              <span class="wr-tagline">Hurb</span>
             </a>
           </li>
-          <li class="work-row reveal" data-type="img" data-src="https://framerusercontent.com/images/ZOU7yM0XFSArlGXc1OZ0nNCpYw.png?scale-down-to=1024&amp;width=1920&amp;height=1440">
+          <li class="work-row reveal" data-rot="6" data-type="img" data-src="https://framerusercontent.com/images/ZOU7yM0XFSArlGXc1OZ0nNCpYw.png?scale-down-to=1024&amp;width=1920&amp;height=1440">
             <a href="#" aria-label="Creator Academy — Pinterest">
-              <span class="wr-idx">06</span>
-              <span class="wr-name"><span class="roll"><span>Creator Academy</span><span>Creator Academy</span></span></span>
-              <span class="wr-sub">Pinterest</span>
-              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-              <span class="wr-thumb"></span>
+              <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
+              <span class="wr-name">Creator Academy</span>
+              <span class="wr-tagline">Pinterest</span>
             </a>
           </li>
-          <li class="work-row reveal" data-type="img" data-src="https://framerusercontent.com/images/E5fV45pLeR16AFoUJQH1EQsDL8s.png?width=1474&amp;height=1140">
+          <li class="work-row reveal" data-rot="-3" data-type="img" data-src="https://framerusercontent.com/images/E5fV45pLeR16AFoUJQH1EQsDL8s.png?width=1474&amp;height=1140">
             <a href="#" aria-label="UX Guides — Personal">
-              <span class="wr-idx">07</span>
-              <span class="wr-name"><span class="roll"><span>UX Guides</span><span>UX Guides</span></span></span>
-              <span class="wr-sub">Personal</span>
-              <span class="wr-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-              <span class="wr-thumb"></span>
+              <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
+              <span class="wr-name">UX Guides</span>
+              <span class="wr-tagline">Personal</span>
             </a>
           </li>
         </ul>
-        <div class="work-preview" id="workPreview" aria-hidden="true"></div>
       </div>
     </section>
 
@@ -374,14 +368,18 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
     document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
 
-    // ---------- Work list: cursor-following preview ----------
+    // ---------- Work list: stacked names + fixed rotating stage ----------
     (function () {
       var list = document.getElementById('workList');
-      var preview = document.getElementById('workPreview');
       if (!list) return;
-
+      var section = document.getElementById('work');
+      var stage = document.getElementById('workStage');
+      var card = document.getElementById('stageCard');
+      var layers = [document.getElementById('layerA'), document.getElementById('layerB')];
       var rows = Array.prototype.slice.call(list.querySelectorAll('.work-row'));
       var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+      var current = -1, front = 1, hovering = false, inView = false;
 
       function makeMedia(type, src) {
         var el;
@@ -396,48 +394,52 @@
         return el;
       }
 
-      if (!canHover) {
-        // Touch / no-hover: render an inline thumbnail inside each row.
-        rows.forEach(function (row) {
-          var thumb = row.querySelector('.wr-thumb');
-          if (thumb) thumb.appendChild(makeMedia(row.dataset.type, row.dataset.src));
-        });
-        return;
+      function setActive(i) {
+        if (i === current || i < 0) return;
+        current = i;
+        rows.forEach(function (r, idx) { r.classList.toggle('active', idx === i); });
+
+        var row = rows[i];
+        card.style.transform = 'rotate(' + (parseFloat(row.dataset.rot) || 0) + 'deg)';
+
+        var next = front ^ 1;
+        layers[next].innerHTML = '';
+        layers[next].appendChild(makeMedia(row.dataset.type, row.dataset.src));
+        layers[next].classList.add('on');
+        layers[front].classList.remove('on');
+        front = next;
       }
 
-      // Desktop: floating preview that lerps toward the cursor.
-      var tx = 0, ty = 0, cx = 0, cy = 0, active = false, raf = null;
-
-      function offset() { return { w: preview.offsetWidth, h: preview.offsetHeight }; }
-
-      function loop() {
-        tx += (cx - tx) * 0.16;
-        ty += (cy - ty) * 0.16;
-        preview.style.transform = 'translate3d(' + tx + 'px,' + ty + 'px,0) scale(' + (active ? 1 : 0.92) + ')';
-        raf = requestAnimationFrame(loop);
+      function updateByScroll() {
+        if (!inView || hovering) return;
+        var cy = window.innerHeight / 2, best = -1, bestDist = Infinity;
+        rows.forEach(function (r, idx) {
+          var rect = r.getBoundingClientRect();
+          var d = Math.abs(rect.top + rect.height / 2 - cy);
+          if (d < bestDist) { bestDist = d; best = idx; }
+        });
+        setActive(best);
       }
 
-      document.addEventListener('mousemove', function (e) {
-        var o = offset();
-        cx = e.clientX - o.w / 2;
-        cy = e.clientY - o.h / 2;
-        if (!active) { tx = cx; ty = cy; } // avoid a jump on first show
-      }, { passive: true });
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          inView = e.isIntersecting;
+          stage.classList.toggle('show', inView);
+          if (inView) updateByScroll();
+        });
+      }, { threshold: 0 }).observe(section);
 
-      rows.forEach(function (row) {
-        var link = row.querySelector('a');
-        link.addEventListener('mouseenter', function () {
-          preview.innerHTML = '';
-          preview.appendChild(makeMedia(row.dataset.type, row.dataset.src));
-          active = true;
-          preview.classList.add('show');
-          if (!raf) loop();
+      window.addEventListener('scroll', updateByScroll, { passive: true });
+      window.addEventListener('resize', updateByScroll);
+
+      if (canHover) {
+        rows.forEach(function (row, idx) {
+          row.addEventListener('mouseenter', function () { hovering = true; setActive(idx); });
         });
-        link.addEventListener('mouseleave', function () {
-          active = false;
-          preview.classList.remove('show');
-        });
-      });
+        list.addEventListener('mouseleave', function () { hovering = false; updateByScroll(); });
+      }
+
+      requestAnimationFrame(updateByScroll);
     })();
   </script>
 </body>
