@@ -64,7 +64,7 @@
     }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 76px; }
     .brand { font-family: var(--serif); font-size: 1.35rem; font-weight: 500; letter-spacing: -.01em; }
-    .brand span { font-style: italic; }
+    .brand span { font-weight: 600; }
     .nav-links { display: flex; gap: 36px; }
     .nav-links a { font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); position: relative; }
     .nav-links a::after {
@@ -87,7 +87,7 @@
       font-size: clamp(2.6rem, 7.2vw, 6.4rem);
       line-height: 1.02; letter-spacing: -.025em; margin: 0; max-width: 16ch;
     }
-    .hero h1 .accent { font-style: italic; }
+    .hero h1 .accent { font-weight: 500; }
     .hero .line { display: block; overflow: hidden; }
     .hero .line > span { display: block; transform: translateY(110%); transition: transform 1s var(--ease); }
     .hero.loaded .line > span { transform: none; }
@@ -166,7 +166,7 @@
       font-family: var(--serif); font-weight: 400; font-size: clamp(1.6rem, 4vw, 3.2rem); letter-spacing: -.01em;
       white-space: nowrap;
     }
-    .marquee .item .place { font-style: italic; color: var(--muted); }
+    .marquee .item .place { color: var(--muted); }
     .marquee .item::after { content: "✦"; font-size: .5em; color: var(--muted); }
     @keyframes scrollx { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
@@ -182,7 +182,7 @@
       font-family: var(--serif); font-weight: 400; font-size: clamp(2.4rem, 9vw, 7rem); line-height: 1; letter-spacing: -.03em;
       display: inline-block;
     }
-    .contact .big .accent { font-style: italic; }
+    .contact .big .accent { font-weight: 500; }
     .contact-mail { display: inline-flex; align-items: center; gap: 14px; margin-top: 8px; }
     .contact-mail svg { transition: transform .4s var(--ease); }
     .contact .big:hover svg { transform: translate(6px,-6px); }
@@ -326,7 +326,7 @@
         <div class="sec-head reveal"><h2>About</h2><span class="count">(Profile)</span></div>
         <div class="cols">
           <p class="reveal">I design products and craft memorable visual experiences.</p>
-          <p class="side reveal" data-d="1">Product &amp; visual designer working across product vision, redesigns, growth and visual language for teams like OLX, Hurb and Pinterest. <em>(Texto completo do "sobre" pode entrar aqui.)</em></p>
+          <p class="side reveal" data-d="1">Product &amp; visual designer working across product vision, redesigns, growth and visual language for teams like OLX, Hurb and Pinterest. (Texto completo do "sobre" pode entrar aqui.)</p>
         </div>
       </div>
     </section>
