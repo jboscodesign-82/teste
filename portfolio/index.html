@@ -109,8 +109,8 @@
     .work-row { position: relative; }
     .work-row > a {
       position: relative; display: flex; align-items: center;
-      padding: clamp(14px, 2.2vw, 30px) 0 clamp(30px, 3.4vw, 52px);
-      color: var(--muted); transition: color .45s var(--ease);
+      padding: clamp(14px, 2.2vw, 30px) 0 clamp(34px, 3.8vw, 60px);
+      color: #c2bdb2; transition: color .45s var(--ease);
     }
     .work-row.active > a { color: var(--ink); }
 
@@ -123,11 +123,11 @@
 
     .wr-name {
       font-family: var(--serif); font-weight: 400; line-height: 1;
-      font-size: clamp(2rem, 6.6vw, 4.8rem); letter-spacing: -.02em;
+      font-size: clamp(2.5rem, 8.4vw, 6.2rem); letter-spacing: -.02em;
     }
     .wr-tagline {
-      position: absolute; left: 0; bottom: clamp(10px, 1.3vw, 18px);
-      font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+      position: absolute; left: calc(clamp(30px, 3.4vw, 52px) + clamp(10px, 1.4vw, 20px)); bottom: clamp(10px, 1.3vw, 20px);
+      font-size: clamp(1rem, 1.7vw, 1.5rem); letter-spacing: .01em; color: var(--muted);
       opacity: 0; transform: translateY(6px); transition: opacity .5s var(--ease), transform .5s var(--ease); pointer-events: none;
     }
     .work-row.active .wr-tagline { opacity: 1; transform: none; }
@@ -135,7 +135,7 @@
     /* fixed stage on the right, behind the text */
     .work-stage {
       position: fixed; top: 50%; right: clamp(6px, 4vw, 90px); transform: translateY(-50%);
-      width: clamp(280px, 42vw, 640px); aspect-ratio: 16 / 11; z-index: 1; pointer-events: none;
+      width: clamp(340px, 48vw, 760px); aspect-ratio: 16 / 11; z-index: 1; pointer-events: none;
       opacity: 0; transition: opacity .5s var(--ease);
     }
     .work-stage.show { opacity: 1; }
@@ -243,49 +243,49 @@
             <a href="#" aria-label="Redesign 2026 — OLX">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
               <span class="wr-name">Redesign 2026</span>
-              <span class="wr-tagline">OLX</span>
+              <span class="wr-tagline">Client: OLX</span>
             </a>
           </li>
           <li class="work-row reveal" data-rot="5" data-type="video" data-src="assets/project-2.mp4">
             <a href="#" aria-label="Product vision — OLX">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
               <span class="wr-name">Product vision</span>
-              <span class="wr-tagline">OLX</span>
+              <span class="wr-tagline">Client: OLX</span>
             </a>
           </li>
           <li class="work-row reveal" data-rot="-4" data-type="img" data-src="https://framerusercontent.com/images/Cylw5fCg11koSdh30BzfXB0us2k.png?scale-down-to=1024&amp;width=1286&amp;height=630">
             <a href="#" aria-label="Quick wins and Growth — OLX">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
               <span class="wr-name">Quick wins and Growth</span>
-              <span class="wr-tagline">OLX</span>
+              <span class="wr-tagline">Client: OLX</span>
             </a>
           </li>
           <li class="work-row reveal" data-rot="8" data-type="video" data-src="assets/project-4.mp4">
             <a href="#" aria-label="New visual language — Hurb">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
               <span class="wr-name">New visual language</span>
-              <span class="wr-tagline">Hurb</span>
+              <span class="wr-tagline">Client: Hurb</span>
             </a>
           </li>
           <li class="work-row reveal" data-rot="-5" data-type="img" data-src="https://framerusercontent.com/images/RwaF67sstZkWgAav7a04KBywvY8.png?scale-down-to=512&amp;width=1370&amp;height=1050">
             <a href="#" aria-label="Checkout Redesign — Hurb">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
               <span class="wr-name">Checkout Redesign</span>
-              <span class="wr-tagline">Hurb</span>
+              <span class="wr-tagline">Client: Hurb</span>
             </a>
           </li>
           <li class="work-row reveal" data-rot="6" data-type="img" data-src="https://framerusercontent.com/images/ZOU7yM0XFSArlGXc1OZ0nNCpYw.png?scale-down-to=1024&amp;width=1920&amp;height=1440">
             <a href="#" aria-label="Creator Academy — Pinterest">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
               <span class="wr-name">Creator Academy</span>
-              <span class="wr-tagline">Pinterest</span>
+              <span class="wr-tagline">Client: Pinterest</span>
             </a>
           </li>
           <li class="work-row reveal" data-rot="-3" data-type="img" data-src="https://framerusercontent.com/images/E5fV45pLeR16AFoUJQH1EQsDL8s.png?width=1474&amp;height=1140">
             <a href="#" aria-label="UX Guides — Personal">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
               <span class="wr-name">UX Guides</span>
-              <span class="wr-tagline">Personal</span>
+              <span class="wr-tagline">Client: Personal</span>
             </a>
           </li>
         </ul>
@@ -415,7 +415,8 @@
       function update() {
         var rect = section.getBoundingClientRect();
         var cy = window.innerHeight / 2;
-        var within = rect.top < cy && rect.bottom > cy;
+        var pad = window.innerHeight * 0.2; // fade the last project out before the next section
+        var within = rect.top < cy && rect.bottom > cy + pad;
         stage.classList.toggle('show', within);
         if (!within || hovering) return;
         var best = -1, bestDist = Infinity;
