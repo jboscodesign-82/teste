@@ -118,27 +118,22 @@
     .sec-head h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -.02em; margin: 0; }
     .sec-head .count { font-size: .82rem; letter-spacing: .08em; color: var(--muted); }
 
-    /* ---------- Work section (dark slab) ---------- */
-    #work { background: var(--ink); color: var(--bg); border-top: none; }
-    #work .sec-head h2 { color: var(--bg); }
-    #work .sec-head .count { color: rgba(244,242,236,.5); }
-
     /* ---------- Work list (stacked names + fixed stage) ---------- */
     .work-list { list-style: none; margin: 0; padding: 0; position: relative; z-index: 2; }
     .work-row { position: relative; margin: clamp(30px, 5.5vw, 92px) 0; }
     .work-row > a {
       position: relative; display: flex; align-items: center;
       padding: clamp(8px, 1vw, 14px) 0 clamp(34px, 3.4vw, 52px);
-      color: rgba(244,242,236,.32); transition: color .45s var(--ease);
+      color: #c2bdb2; transition: color .45s var(--ease);
     }
-    .work-row.active > a { color: var(--accent-bright); }
+    .work-row.active > a { color: var(--accent); }
 
     .wr-arrow {
       flex: none; display: inline-flex; align-items: center; overflow: hidden;
       width: 0; margin-right: 0; opacity: 0; transform: translateX(-8px);
       transition: width .5s var(--ease), margin .5s var(--ease), opacity .5s var(--ease), transform .5s var(--ease);
     }
-    .work-row.active .wr-arrow { width: clamp(30px, 3.4vw, 52px); margin-right: clamp(10px, 1.4vw, 20px); opacity: 1; transform: none; color: var(--accent-bright); }
+    .work-row.active .wr-arrow { width: clamp(30px, 3.4vw, 52px); margin-right: clamp(10px, 1.4vw, 20px); opacity: 1; transform: none; color: var(--accent); }
 
     .wr-name {
       font-family: var(--serif); font-weight: 400; line-height: 1.02;
@@ -146,7 +141,7 @@
     }
     .wr-tagline {
       position: absolute; left: calc(clamp(30px, 3.4vw, 52px) + clamp(10px, 1.4vw, 20px)); bottom: clamp(10px, 1.3vw, 20px);
-      font-size: clamp(1rem, 1.7vw, 1.5rem); letter-spacing: .01em; color: rgba(244,242,236,.55);
+      font-size: clamp(1rem, 1.7vw, 1.5rem); letter-spacing: .01em; color: var(--muted);
       opacity: 0; transform: translateY(6px); transition: opacity .5s var(--ease), transform .5s var(--ease); pointer-events: none;
     }
     .work-row.active .wr-tagline { opacity: 1; transform: none; }
@@ -161,14 +156,14 @@
     .stage-card { position: relative; width: 100%; height: 100%; transition: transform .8s var(--ease); will-change: transform; }
     .stage-layer {
       position: absolute; inset: 0; border-radius: 10px; overflow: hidden; opacity: 0;
-      transition: opacity .6s var(--ease); box-shadow: 0 30px 70px rgba(0,0,0,.5);
+      transition: opacity .6s var(--ease); box-shadow: 0 30px 70px rgba(20,19,15,.22);
     }
     .stage-layer.on { opacity: 1; }
     .stage-layer > * { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     @media (max-width: 760px) {
       .work-stage { right: -2vw; width: 46vw; aspect-ratio: 4 / 5; }
-      .stage-layer { box-shadow: 0 18px 40px rgba(0,0,0,.45); }
+      .stage-layer { box-shadow: 0 18px 40px rgba(20,19,15,.2); }
     }
     @media (prefers-reduced-motion: reduce) {
       .stage-card { transition: none; }
