@@ -17,6 +17,9 @@
       --ink: #14130f;
       --muted: #6f6b61;
       --line: rgba(20,19,15,.12);
+      --accent: #e5431f;
+      --accent-bright: #ff6038;
+      --accent-soft: rgba(229,67,31,.12);
       --max: 1280px;
       --serif: "Newsreader", Georgia, "Times New Roman", serif;
       --sans: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -35,7 +38,8 @@
     }
     a { color: inherit; text-decoration: none; }
     img, video { display: block; max-width: 100%; }
-    ::selection { background: var(--ink); color: var(--bg); }
+    ::selection { background: var(--accent); color: #fff; }
+    .accent { color: var(--accent); }
 
     .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 32px; }
     @media (max-width: 640px) { .wrap { padding: 0 20px; } }
@@ -68,9 +72,9 @@
     .nav-links a { font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); position: relative; }
     .nav-links a::after {
       content: ""; position: absolute; left: 0; bottom: -4px; width: 100%; height: 1px;
-      background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform .4s var(--ease);
+      background: var(--accent); transform: scaleX(0); transform-origin: right; transition: transform .4s var(--ease);
     }
-    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover { color: var(--accent); }
     .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
     @media (max-width: 720px) { .nav-links { display: none; } }
 
@@ -128,7 +132,7 @@
       width: 0; margin-right: 0; opacity: 0; transform: translateX(-8px);
       transition: width .5s var(--ease), margin .5s var(--ease), opacity .5s var(--ease), transform .5s var(--ease);
     }
-    .work-row.active .wr-arrow { width: clamp(30px, 3.4vw, 52px); margin-right: clamp(10px, 1.4vw, 20px); opacity: 1; transform: none; }
+    .work-row.active .wr-arrow { width: clamp(30px, 3.4vw, 52px); margin-right: clamp(10px, 1.4vw, 20px); opacity: 1; transform: none; color: var(--accent); }
 
     .wr-name {
       font-family: var(--serif); font-weight: 400; line-height: 1.02;
@@ -175,29 +179,34 @@
       font-family: var(--serif); font-weight: 400; font-size: clamp(1.6rem, 4vw, 3.2rem); letter-spacing: -.01em;
       white-space: nowrap;
     }
-    .marquee .item .place { color: var(--muted); }
-    .marquee .item::after { content: "✦"; font-size: .5em; color: var(--muted); }
+    .marquee .item .place { color: var(--accent); }
+    .marquee .item::after { content: "✦"; font-size: .5em; color: var(--accent); }
     @keyframes scrollx { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-    /* ---------- About ---------- */
+    /* ---------- About (dark slab) ---------- */
+    .about { background: var(--ink); color: var(--bg); border-top: none; }
+    .about .sec-head h2 { color: var(--bg); }
+    .about .sec-head .count { color: rgba(244,242,236,.5); }
     .about p { font-family: var(--serif); font-weight: 400; font-size: clamp(1.5rem, 3.2vw, 2.4rem); line-height: 1.3; letter-spacing: -.01em; max-width: 22ch; margin: 0; }
     .about .cols { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: end; }
     @media (max-width: 760px) { .about .cols { grid-template-columns: 1fr; gap: 28px; } }
-    .about .side { font-family: var(--sans); color: var(--muted); font-size: 1rem; max-width: 38ch; }
+    .about .side { font-family: var(--sans); color: rgba(244,242,236,.6); font-size: 1rem; max-width: 38ch; }
+    .about .accent { color: var(--accent-bright); }
 
     /* ---------- Contact / footer ---------- */
     .contact { padding: 120px 0 64px; border-top: 1px solid var(--line); }
     .contact .big {
       font-family: var(--serif); font-weight: 400; font-size: clamp(2.4rem, 9vw, 7rem); line-height: 1; letter-spacing: -.03em;
-      display: inline-block;
+      display: inline-block; transition: color .4s var(--ease);
     }
+    .contact .big:hover { color: var(--accent); }
     .contact-mail { display: inline-flex; align-items: center; gap: 14px; margin-top: 8px; }
     .contact-mail svg { transition: transform .4s var(--ease); }
     .contact .big:hover svg { transform: translate(6px,-6px); }
     .foot { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-top: 90px; padding-top: 28px; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
     .foot .socials { display: flex; gap: 24px; }
     .foot .socials a { position: relative; }
-    .foot .socials a:hover { color: var(--ink); }
+    .foot .socials a:hover { color: var(--accent); }
   </style>
 </head>
 <body>
@@ -320,7 +329,7 @@
       <div class="wrap">
         <div class="sec-head reveal"><h2>About</h2><span class="count">(Profile)</span></div>
         <div class="cols">
-          <p class="reveal">I design products and craft memorable visual experiences.</p>
+          <p class="reveal">I design products and craft <span class="accent">memorable</span> visual experiences.</p>
           <p class="side reveal" data-d="1">Product &amp; visual designer working across product vision, redesigns, growth and visual language for teams like OLX, Hurb and Pinterest. (Texto completo do "sobre" pode entrar aqui.)</p>
         </div>
       </div>
