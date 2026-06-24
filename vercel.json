@@ -1,0 +1,8 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "claude/happy-darwin-1jwsfj": false,
+      "claude/blissful-cray-f9wb9y": false
+    }
+  }
+}
