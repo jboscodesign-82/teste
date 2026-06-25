@@ -74,7 +74,7 @@
     .brand-wrap { display: flex; align-items: center; }
     .brand-avatar-slot { width: 0; height: 40px; flex: none; }
     .brand { font-family: var(--serif); font-size: 1.35rem; font-weight: 400; letter-spacing: -.01em; white-space: nowrap; }
-    .brand span { color: var(--accent); }
+    .brand span { color: var(--ink); }
 
     /* shared-element avatar: inline in hero, docks into header on scroll */
     .float-avatar {
@@ -411,7 +411,7 @@
       if (!avatar || !ghost || !slot || !navInner) return;
 
       var HEADER_SIZE = 40;  // docked diameter (px)
-      var GAP = 5;           // tight gap so photo + name read as one logo
+      var GAP = 14;          // gap between docked avatar and logo
 
       function easeInOut(t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
       function lerp(a, b, t) { return a + (b - a) * t; }
