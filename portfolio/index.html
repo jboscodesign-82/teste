@@ -529,7 +529,7 @@
       b.style.opacity = '0'; // hidden until a morph begins
       outer.appendChild(a); outer.appendChild(b);
 
-      // Measure a word's width using a hidden off-screen clone of `a`
+      // Measure a word's pixel width using a hidden off-screen clone of `a`
       function measureW(text) {
         var t = a.cloneNode(false); t.textContent = text;
         t.style.cssText = 'visibility:hidden;position:absolute;left:-9999px;top:0;white-space:nowrap';
@@ -537,14 +537,16 @@
         var w = t.offsetWidth; document.body.removeChild(t); return w;
       }
 
+      // Pre-set container to the longest word's width so line-breaks never change
+      var maxW = Math.max.apply(null, [BASE].concat(WORDS).map(measureW));
+      outer.style.minWidth = maxW + 'px';
+
       var morphing = false, timer = null, idx = -1, hovering = false, pendingBase = false;
 
       function morphTo(text, done) {
         if (morphing) { if (text === BASE) pendingBase = true; return; }
         morphing = true;
 
-        // Lock current width; turn on the contrast-blur filter on parent
-        outer.style.width   = outer.offsetWidth + 'px';
         outer.classList.add('active');
 
         // Prime layer B with target text, fully blurred + visible
@@ -553,17 +555,12 @@
         b.style.filter     = 'blur(10px)';
         b.style.opacity    = '1';
 
-        var newW = measureW(text);
-
         requestAnimationFrame(function () { requestAnimationFrame(function () {
           // Fire transitions: A blurs out, B blurs in
           a.style.transition = 'filter ' + (DUR/1000) + 's ease-in-out';
           b.style.transition = 'filter ' + (DUR/1000) + 's ease-in-out';
           a.style.filter     = 'blur(10px)';
           b.style.filter     = 'blur(0px)';
-
-          // Animate container width to new word midway through
-          setTimeout(function () { outer.style.width = newW + 'px'; }, DUR * 0.35);
 
           setTimeout(function () {
             // Settle: swap roles — A carries the new text, B hides
@@ -574,12 +571,8 @@
             b.style.filter   = 'blur(10px)';
             b.style.opacity  = '0'; // hide to prevent glow bleed without SVG filter
 
-            // Remove width lock after a beat
-            setTimeout(function () { outer.style.width = ''; }, 120);
-
             morphing = false;
             if (pendingBase) { pendingBase = false; morphTo(BASE); return; }
-            // remove contrast filter once text is settled and mouse is gone
             if (!hovering) setTimeout(function() { outer.classList.remove('active'); }, 120);
             if (done) done();
           }, DUR + 40);
