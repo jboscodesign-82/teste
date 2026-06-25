@@ -71,8 +71,25 @@
       border-bottom: 1px solid var(--line);
     }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 76px; }
-    .brand { font-family: var(--serif); font-size: 1.35rem; font-weight: 400; letter-spacing: -.01em; }
+    .brand-wrap { display: flex; align-items: center; }
+    .brand-avatar-slot { width: 0; height: 40px; flex: none; }
+    .brand { font-family: var(--serif); font-size: 1.35rem; font-weight: 400; letter-spacing: -.01em; white-space: nowrap; }
     .brand span { color: var(--accent); }
+
+    /* shared-element avatar: inline in hero, docks into header on scroll */
+    .float-avatar {
+      position: fixed; top: 0; left: 0; width: 0; height: 0;
+      border-radius: 50%; z-index: 60; pointer-events: none;
+      background-image: url("avatar.png"); background-size: cover; background-position: center;
+      box-shadow: 0 6px 22px rgba(20,19,15,.16);
+      opacity: 0; transition: opacity .6s var(--ease);
+      will-change: transform, width, height, top, left;
+    }
+    .float-avatar.ready { opacity: 1; }
+    .avatar-ghost {
+      display: inline-block; width: 1.2em; height: 1.2em; vertical-align: -.24em;
+      border-radius: 50%; visibility: hidden;
+    }
     .nav-links { display: flex; gap: 36px; }
     .nav-links a { font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); position: relative; }
     .nav-links a::after {
@@ -212,9 +229,14 @@
 </head>
 <body>
 
+  <div class="float-avatar" id="floatAvatar" aria-hidden="true"></div>
+
   <header class="nav" id="nav">
     <div class="wrap nav-inner">
-      <a href="#top" class="brand">João <span>Bosco</span></a>
+      <div class="brand-wrap">
+        <span class="brand-avatar-slot" id="brandSlot" aria-hidden="true"></span>
+        <a href="#top" class="brand">João <span>Bosco</span></a>
+      </div>
       <nav class="nav-links">
         <a href="#work">Work</a>
         <a href="#awards">Awards</a>
@@ -231,7 +253,7 @@
       <div class="wrap">
         <p class="eyebrow reveal">Available for work</p>
         <h1>
-          <span class="line"><span>Hi, I'm João Bosco.</span></span>
+          <span class="line"><span>Hi,&nbsp;<span class="avatar-ghost" id="heroAvatarGhost" aria-hidden="true"></span>I'm&nbsp;João.</span></span>
           <span class="line"><span>I design products and&nbsp;craft</span></span>
           <span class="line"><span><span class="accent emph">memorable</span> visual experiences.</span></span>
         </h1>
@@ -378,6 +400,62 @@
     var onScroll = function () { nav.classList.toggle('scrolled', window.scrollY > 40); };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
+
+    // ---------- Shared-element avatar: hero inline -> docks into header ----------
+    (function () {
+      var avatar = document.getElementById('floatAvatar');
+      var ghost = document.getElementById('heroAvatarGhost');
+      var slot = document.getElementById('brandSlot');
+      var navInner = document.querySelector('.nav-inner');
+      if (!avatar || !ghost || !slot || !navInner) return;
+
+      var HEADER_SIZE = 40;  // docked diameter (px)
+      var GAP = 14;          // space between avatar and logo when docked
+
+      function easeInOut(t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+      function lerp(a, b, t) { return a + (b - a) * t; }
+
+      var ticking = false;
+      function update() {
+        ticking = false;
+        var g = ghost.getBoundingClientRect();
+        var n = navInner.getBoundingClientRect();
+        var heroSize = g.width;
+        var headerCenterY = n.top + n.height / 2;
+        var ghostAbsTop = g.top + window.scrollY;
+        var dock = Math.max(120, (ghostAbsTop - headerCenterY) * 0.85);
+
+        var t = Math.min(Math.max(window.scrollY / dock, 0), 1);
+        var te = easeInOut(t);
+        var size = lerp(heroSize, HEADER_SIZE, te);
+
+        var heroCx = g.left + heroSize / 2;
+        var heroCy = g.top + heroSize / 2;
+        var dockCx = n.left + HEADER_SIZE / 2;
+        var dockCy = headerCenterY;
+
+        var cx = lerp(heroCx, dockCx, te);
+        var cy = lerp(heroCy, dockCy, te);
+
+        avatar.style.width = size + 'px';
+        avatar.style.height = size + 'px';
+        avatar.style.left = (cx - size / 2) + 'px';
+        avatar.style.top = (cy - size / 2) + 'px';
+
+        // push the logo to the right as the avatar docks
+        slot.style.width = (te * (HEADER_SIZE + GAP)) + 'px';
+      }
+      function requestUpdate() {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }
+
+      window.addEventListener('scroll', requestUpdate, { passive: true });
+      window.addEventListener('resize', requestUpdate);
+      update();
+      if (document.fonts && document.fonts.ready) { document.fonts.ready.then(update); }
+      // fade in once the hero intro has settled
+      setTimeout(function () { update(); avatar.classList.add('ready'); }, 320);
+    })();
 
     // reveal on scroll
     var io = new IntersectionObserver(function (entries) {
