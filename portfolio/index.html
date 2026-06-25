@@ -469,8 +469,13 @@
       window.addEventListener('resize', requestUpdate);
       update();
       if (document.fonts && document.fonts.ready) { document.fonts.ready.then(update); }
-      // fade in once the hero intro has settled
-      setTimeout(function () { update(); avatar.classList.add('ready'); }, 320);
+
+      // The hero headline slides up on load; if we measure the avatar mid-slide it
+      // lands too low. Position + fade it in only AFTER the intro has settled.
+      function settle() { update(); avatar.classList.add('ready'); }
+      var lastSpan = document.querySelector('#hero .line:last-child > span');
+      if (lastSpan) lastSpan.addEventListener('transitionend', settle, { once: true });
+      setTimeout(settle, 1400); // fallback in case transitionend never fires
     })();
 
     // reveal on scroll
