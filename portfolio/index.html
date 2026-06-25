@@ -500,12 +500,27 @@
       var textEl = outer.querySelector('.wt-text');
       var BASE  = 'memorable';
       var WORDS = ['meaningful', 'engaging', 'delightful', 'impactful'];
-      var ERASE = 50;    // ms per char while deleting
-      var TYPE  = 85;    // ms per char while typing
-      var HOLD  = 1500;  // ms a full word stays before erasing
-      var START = 450;   // initial pause after hover before erasing
+      var ERASE = 20;
+      var TYPE  = 50;
+      var HOLD  = 700;
+      var START = 150;
 
-      var gen = 0; // generation token: bumping it cancels any in-flight sequence
+      var gen = 0;
+
+      // set min-width to widest word so layout never shifts during erase
+      function measureW(word) {
+        var tmp = document.createElement('span');
+        tmp.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;pointer-events:none;';
+        tmp.textContent = word;
+        outer.appendChild(tmp);
+        var w = tmp.getBoundingClientRect().width;
+        outer.removeChild(tmp);
+        return w;
+      }
+      document.fonts.ready.then(function () {
+        var maxW = Math.max.apply(null, [BASE].concat(WORDS).map(measureW));
+        outer.style.minWidth = maxW + 'px';
+      });
 
       function wait(ms, token, cb) { setTimeout(function () { if (token === gen) cb(); }, ms); }
       function busy(on) { outer.classList.toggle('busy', on); } // solid caret while moving
