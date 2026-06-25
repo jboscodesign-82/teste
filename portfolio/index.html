@@ -79,16 +79,16 @@
     /* shared-element avatar: inline in hero, docks into header on scroll */
     .float-avatar {
       position: fixed; top: 0; left: 0; width: 0; height: 0;
-      border-radius: 50%; z-index: 60; pointer-events: none;
+      border-radius: 50%; z-index: 60; pointer-events: auto; cursor: pointer;
       background-image: url("avatar.png"); background-size: cover; background-position: center;
-      box-shadow: 0 6px 22px rgba(20,19,15,.16);
+      box-shadow: 0 5px 16px rgba(20,19,15,.14);
       opacity: 0; transition: opacity .6s var(--ease);
       will-change: transform, width, height, top, left;
     }
     .float-avatar.ready { opacity: 1; }
     .avatar-ghost {
       display: inline-block; width: 1.2em; height: 1.2em; vertical-align: -.24em;
-      border-radius: 50%; visibility: hidden;
+      margin: 0 .3em; border-radius: 50%; visibility: hidden;
     }
     .nav-links { display: flex; gap: 36px; }
     .nav-links a { font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); position: relative; }
@@ -119,7 +119,7 @@
     .hero h1 {
       font-family: var(--serif); font-weight: 400;
       font-size: clamp(2.6rem, 7.2vw, 6.4rem);
-      line-height: 1.02; letter-spacing: -.025em; margin: 0; max-width: 16ch;
+      line-height: 1.16; letter-spacing: -.025em; margin: 0; max-width: 16ch;
     }
     .emph { font-family: var(--serif); font-style: italic; font-weight: 500; letter-spacing: -.01em; }
     .hero .line { display: block; overflow: hidden; }
@@ -253,7 +253,7 @@
       <div class="wrap">
         <p class="eyebrow reveal">Available for work</p>
         <h1>
-          <span class="line"><span>Hi,&nbsp;<span class="avatar-ghost" id="heroAvatarGhost" aria-hidden="true"></span>I'm&nbsp;João.</span></span>
+          <span class="line"><span>Hi,<span class="avatar-ghost" id="heroAvatarGhost" aria-hidden="true"></span>I'm&nbsp;João.</span></span>
           <span class="line"><span>I design products and&nbsp;craft</span></span>
           <span class="line"><span><span class="accent emph">memorable</span> visual experiences.</span></span>
         </h1>
@@ -410,7 +410,8 @@
       if (!avatar || !ghost || !slot || !navInner) return;
 
       var HEADER_SIZE = 40;  // docked diameter (px)
-      var GAP = 14;          // space between avatar and logo when docked
+      var DOCK_LEFT = 8;     // extra inset from the grid edge (margin from screen)
+      var GAP = 9;           // space between avatar and logo when docked
 
       function easeInOut(t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
       function lerp(a, b, t) { return a + (b - a) * t; }
@@ -431,7 +432,7 @@
 
         var heroCx = g.left + heroSize / 2;
         var heroCy = g.top + heroSize / 2;
-        var dockCx = n.left + HEADER_SIZE / 2;
+        var dockCx = n.left + DOCK_LEFT + HEADER_SIZE / 2;
         var dockCy = headerCenterY;
 
         var cx = lerp(heroCx, dockCx, te);
@@ -443,8 +444,14 @@
         avatar.style.top = (cy - size / 2) + 'px';
 
         // push the logo to the right as the avatar docks
-        slot.style.width = (te * (HEADER_SIZE + GAP)) + 'px';
+        slot.style.width = (te * (DOCK_LEFT + HEADER_SIZE + GAP)) + 'px';
       }
+
+      // both the avatar and the logo scroll back to the top of the page
+      function toTop(e) { if (e) e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      avatar.addEventListener('click', toTop);
+      var brandLink = document.querySelector('.brand');
+      if (brandLink) brandLink.addEventListener('click', toTop);
       function requestUpdate() {
         if (!ticking) { ticking = true; requestAnimationFrame(update); }
       }
