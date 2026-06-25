@@ -123,12 +123,22 @@
     }
     .emph { font-family: var(--serif); font-style: italic; font-weight: 500; letter-spacing: -.01em; }
     /* hover-driven word swapper (desktop) */
-    .word-swap { display: inline-block; position: relative; white-space: nowrap; cursor: pointer; transition: width .45s var(--ease); }
-    .word-swap .ws-inner {
-      display: inline-block;
-      transition: opacity .3s var(--ease), filter .3s var(--ease), transform .3s var(--ease);
+    /* morph text: two layers share the same slot; parent blur+contrast creates the liquid merge */
+    .word-morph {
+      display: inline-block; position: relative;
+      cursor: default;
+      transition: width .55s var(--ease);
     }
-    .word-swap .ws-inner.out { opacity: 0; filter: blur(8px); transform: translateY(-.14em) scale(.96); }
+    /* SVG filter threshold handles containment; no CSS blur on parent */
+    .word-morph.active { filter: url(#textmorph); }
+    .ws-a, .ws-b {
+      white-space: nowrap; display: inline-block;
+      transition: filter .8s ease-in-out;
+    }
+    .ws-b {
+      position: absolute; left: 0; top: 0;
+      filter: blur(10px);
+    }
     .hero .line { display: block; overflow: hidden; }
     .hero .line > span { display: block; transform: translateY(110%); transition: transform 1s var(--ease); }
     .hero.loaded .line > span { transform: none; }
@@ -236,6 +246,21 @@
 </head>
 <body>
 
+  <!-- SVG filter for morph text: alpha-only threshold (RGB channels pass through unchanged) -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <filter id="textmorph" x="-10%" y="-40%" width="110%" height="180%"
+              color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b"/>
+        <feColorMatrix in="b" type="matrix"
+          values="1 0 0 0 0
+                  0 1 0 0 0
+                  0 0 1 0 0
+                  0 0 0 22 -9"/>
+      </filter>
+    </defs>
+  </svg>
+
   <div class="float-avatar" id="floatAvatar" aria-hidden="true"></div>
 
   <header class="nav" id="nav">
@@ -262,7 +287,7 @@
         <h1>
           <span class="line"><span>Hi,<span class="avatar-ghost" id="heroAvatarGhost" aria-hidden="true"></span>I'm&nbsp;João.</span></span>
           <span class="line"><span>I design products and&nbsp;craft</span></span>
-          <span class="line"><span><span class="accent emph word-swap" id="wordSwap"><span class="ws-inner">memorable</span></span> visual experiences.</span></span>
+          <span class="line"><span><span class="accent emph word-morph" id="wordMorph">memorable</span> visual experiences.</span></span>
         </h1>
         <a href="#work" class="scroll-hint">
           Scroll to explore
@@ -485,50 +510,100 @@
       setTimeout(settle, 1400); // fallback in case transitionend never fires
     })();
 
-    // ---------- Hover word-swapper on "memorable" (desktop only) ----------
+    // ---------- Morph text on hover (blur+contrast liquid technique) ----------
     (function () {
-      var swap = document.getElementById('wordSwap');
-      if (!swap) return;
-      var inner = swap.querySelector('.ws-inner');
+      var outer = document.getElementById('wordMorph');
+      if (!outer) return;
       var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-      if (!inner || !canHover) return;
+      if (!canHover) return;
 
-      var BASE = 'memorable';
+      var BASE  = 'memorable';
       var WORDS = ['meaningful', 'engaging', 'delightful', 'impactful'];
-      var OUT_MS = 300;     // matches the css out transition
-      var HOLD_MS = 1500;   // time each word stays readable
-      var timer = null, i = -1, hovering = false;
+      var HOLD  = 1600;   // ms each word stays visible
+      var DUR   = 750;    // ms morph transition
 
-      function swapTo(text) {
-        inner.classList.add('out');
-        setTimeout(function () {
-          if (text === BASE && !hovering) { /* settle back */ }
-          inner.textContent = text;
-          swap.style.width = inner.offsetWidth + 'px';   // animate following text smoothly
-          requestAnimationFrame(function () { inner.classList.remove('out'); });
-        }, OUT_MS);
+      // Build two-layer DOM
+      outer.innerHTML = '';
+      var a = document.createElement('span'); a.className = 'ws-a'; a.textContent = BASE;
+      var b = document.createElement('span'); b.className = 'ws-b'; b.setAttribute('aria-hidden','true');
+      b.style.opacity = '0'; // hidden until a morph begins
+      outer.appendChild(a); outer.appendChild(b);
+
+      // Measure a word's width using a hidden off-screen clone of `a`
+      function measureW(text) {
+        var t = a.cloneNode(false); t.textContent = text;
+        t.style.cssText = 'visibility:hidden;position:absolute;left:-9999px;top:0;white-space:nowrap';
+        document.body.appendChild(t);
+        var w = t.offsetWidth; document.body.removeChild(t); return w;
       }
 
-      function tick() {
-        i = (i + 1) % WORDS.length;
-        swapTo(WORDS[i]);
+      var morphing = false, timer = null, idx = -1, hovering = false, pendingBase = false;
+
+      function morphTo(text, done) {
+        if (morphing) { if (text === BASE) pendingBase = true; return; }
+        morphing = true;
+
+        // Lock current width; turn on the contrast-blur filter on parent
+        outer.style.width   = outer.offsetWidth + 'px';
+        outer.classList.add('active');
+
+        // Prime layer B with target text, fully blurred + visible
+        b.textContent = text;
+        b.style.transition = 'none';
+        b.style.filter     = 'blur(10px)';
+        b.style.opacity    = '1';
+
+        var newW = measureW(text);
+
+        requestAnimationFrame(function () { requestAnimationFrame(function () {
+          // Fire transitions: A blurs out, B blurs in
+          a.style.transition = 'filter ' + (DUR/1000) + 's ease-in-out';
+          b.style.transition = 'filter ' + (DUR/1000) + 's ease-in-out';
+          a.style.filter     = 'blur(10px)';
+          b.style.filter     = 'blur(0px)';
+
+          // Animate container width to new word midway through
+          setTimeout(function () { outer.style.width = newW + 'px'; }, DUR * 0.35);
+
+          setTimeout(function () {
+            // Settle: swap roles — A carries the new text, B hides
+            a.textContent    = text;
+            a.style.transition = 'none';
+            a.style.filter   = 'blur(0)';
+            b.style.transition = 'none';
+            b.style.filter   = 'blur(10px)';
+            b.style.opacity  = '0'; // hide to prevent glow bleed without SVG filter
+
+            // Remove width lock after a beat
+            setTimeout(function () { outer.style.width = ''; }, 120);
+
+            morphing = false;
+            if (pendingBase) { pendingBase = false; morphTo(BASE); return; }
+            // remove contrast filter once text is settled and mouse is gone
+            if (!hovering) setTimeout(function() { outer.classList.remove('active'); }, 120);
+            if (done) done();
+          }, DUR + 40);
+        }); });
       }
 
-      swap.addEventListener('mouseenter', function () {
-        if (timer) return;
+      function next() {
+        idx = (idx + 1) % WORDS.length;
+        morphTo(WORDS[idx], function () {
+          if (hovering) timer = setTimeout(next, HOLD);
+        });
+      }
+
+      outer.addEventListener('mouseenter', function () {
         hovering = true;
-        swap.style.width = swap.offsetWidth + 'px'; // lock current width before animating
-        i = -1;
-        tick();
-        timer = setInterval(tick, HOLD_MS);
+        idx = -1;
+        clearTimeout(timer);
+        timer = setTimeout(next, 180);
       });
-      swap.addEventListener('mouseleave', function () {
+
+      outer.addEventListener('mouseleave', function () {
         hovering = false;
-        clearInterval(timer); timer = null;
-        i = -1;
-        swapTo(BASE);
-        // restore responsive (auto) width after the swap-in finishes
-        setTimeout(function () { if (!hovering) swap.style.width = ''; }, OUT_MS + 500);
+        clearTimeout(timer); timer = null;
+        morphTo(BASE); // active class removal is handled at settle time
       });
     })();
 
