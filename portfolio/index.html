@@ -407,11 +407,11 @@
       var ghost = document.getElementById('heroAvatarGhost');
       var slot = document.getElementById('brandSlot');
       var navInner = document.querySelector('.nav-inner');
+      var heroWrap = document.querySelector('#hero .wrap');
       if (!avatar || !ghost || !slot || !navInner) return;
 
       var HEADER_SIZE = 40;  // docked diameter (px)
-      var DOCK_LEFT = 8;     // extra inset from the grid edge (margin from screen)
-      var GAP = 9;           // space between avatar and logo when docked
+      var GAP = 5;           // tight gap so photo + name read as one logo
 
       function easeInOut(t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
       function lerp(a, b, t) { return a + (b - a) * t; }
@@ -421,6 +421,9 @@
         ticking = false;
         var g = ghost.getBoundingClientRect();
         var n = navInner.getBoundingClientRect();
+        // align the docked photo to the page content grid (inside the wrap padding)
+        var padL = parseFloat(getComputedStyle(navInner).paddingLeft) || 0;
+        var contentLeft = n.left + padL;
         var heroSize = g.width;
         var headerCenterY = n.top + n.height / 2;
         var ghostAbsTop = g.top + window.scrollY;
@@ -432,7 +435,7 @@
 
         var heroCx = g.left + heroSize / 2;
         var heroCy = g.top + heroSize / 2;
-        var dockCx = n.left + DOCK_LEFT + HEADER_SIZE / 2;
+        var dockCx = contentLeft + HEADER_SIZE / 2;
         var dockCy = headerCenterY;
 
         var cx = lerp(heroCx, dockCx, te);
@@ -444,7 +447,13 @@
         avatar.style.top = (cy - size / 2) + 'px';
 
         // push the logo to the right as the avatar docks
-        slot.style.width = (te * (DOCK_LEFT + HEADER_SIZE + GAP)) + 'px';
+        slot.style.width = (te * (HEADER_SIZE + GAP)) + 'px';
+
+        // fade the hero text out gradually as the page scrolls
+        if (heroWrap) {
+          var fade = Math.min(window.scrollY / (window.innerHeight * 0.55), 1);
+          heroWrap.style.opacity = (1 - fade).toFixed(3);
+        }
       }
 
       // both the avatar and the logo scroll back to the top of the page
