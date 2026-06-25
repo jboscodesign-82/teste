@@ -494,20 +494,18 @@
       setTimeout(settle, 1400); // fallback in case transitionend never fires
     })();
 
-    // ---------- Typewriter word swapper on hover (desktop only) ----------
+    // ---------- Typewriter word swapper (runs automatically) ----------
     (function () {
       var outer = document.getElementById('wordType');
       if (!outer) return;
-      var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-      if (!canHover) return;
 
       var textEl = outer.querySelector('.wt-text');
       var BASE  = 'memorable';
-      var WORDS = ['meaningful', 'engaging', 'delightful', 'impactful'];
+      var WORDS = ['meaningful', 'engaging', 'delightful', 'impactful', 'memorable'];
       var ERASE = 20;
       var TYPE  = 50;
-      var HOLD  = 1300;
-      var START = 150;
+      var HOLD  = 1300;   // ms a full word stays before erasing
+      var DELAY = 4000;   // ms after intro settles before the loop kicks in
 
       var gen = 0;
 
@@ -555,21 +553,17 @@
         });
       }
 
-      outer.addEventListener('mouseenter', function () {
+      // Start the loop automatically, 4s after the hero intro has settled.
+      function start() {
         var token = ++gen;
         outer.classList.add('typing');
-        wait(START, token, function () { cycle(token, 0); });
-      });
-
-      outer.addEventListener('mouseleave', function () {
-        var token = ++gen;
-        // erase whatever is shown, retype "memorable", then stop the caret
-        erase(token, function () {
-          type(BASE, token, function () {
-            if (token === gen) outer.classList.remove('typing');
-          });
-        });
-      });
+        wait(DELAY, token, function () { cycle(token, 0); });
+      }
+      var lastSpan = document.querySelector('#hero .line:last-child > span');
+      var started = false;
+      function kickoff() { if (started) return; started = true; start(); }
+      if (lastSpan) lastSpan.addEventListener('transitionend', kickoff, { once: true });
+      setTimeout(kickoff, 1400); // fallback in case transitionend never fires
     })();
 
     // reveal on scroll
