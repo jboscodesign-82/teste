@@ -122,23 +122,18 @@
       line-height: 1.16; letter-spacing: -.025em; margin: 0; max-width: 16ch;
     }
     .emph { font-family: var(--serif); font-style: italic; font-weight: 500; letter-spacing: -.01em; }
-    /* hover-driven word swapper (desktop) */
-    /* morph text: two layers share the same slot; parent blur+contrast creates the liquid merge */
-    .word-morph {
-      display: inline-block; position: relative;
-      cursor: default;
-      transition: width .55s var(--ease);
+    /* typewriter word swapper (desktop hover) */
+    .word-type { display: inline-block; position: relative; white-space: nowrap; cursor: default; }
+    .word-type .wt-text { display: inline; }
+    .word-type .wt-caret {
+      display: inline-block; width: .06em; height: .92em;
+      background: var(--accent); margin-left: .04em;
+      vertical-align: -.12em; border-radius: 1px;
+      opacity: 0; /* hidden until hover starts the typing */
     }
-    /* SVG filter threshold handles containment; no CSS blur on parent */
-    .word-morph.active { filter: url(#textmorph); }
-    .ws-a, .ws-b {
-      white-space: nowrap; display: inline-block;
-      transition: filter .8s ease-in-out;
-    }
-    .ws-b {
-      position: absolute; left: 0; top: 0;
-      filter: blur(10px);
-    }
+    .word-type.typing .wt-caret { opacity: 1; animation: caretBlink 1s steps(1) infinite; }
+    .word-type.typing.busy .wt-caret { animation: none; opacity: 1; } /* solid while typing */
+    @keyframes caretBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
     .hero .line { display: block; overflow: hidden; }
     .hero .line > span { display: block; transform: translateY(110%); transition: transform 1s var(--ease); }
     .hero.loaded .line > span { transform: none; }
@@ -246,21 +241,6 @@
 </head>
 <body>
 
-  <!-- SVG filter for morph text: alpha-only threshold (RGB channels pass through unchanged) -->
-  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
-    <defs>
-      <filter id="textmorph" x="-10%" y="-40%" width="110%" height="180%"
-              color-interpolation-filters="sRGB">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b"/>
-        <feColorMatrix in="b" type="matrix"
-          values="1 0 0 0 0
-                  0 1 0 0 0
-                  0 0 1 0 0
-                  0 0 0 22 -9"/>
-      </filter>
-    </defs>
-  </svg>
-
   <div class="float-avatar" id="floatAvatar" aria-hidden="true"></div>
 
   <header class="nav" id="nav">
@@ -287,7 +267,7 @@
         <h1>
           <span class="line"><span>Hi,<span class="avatar-ghost" id="heroAvatarGhost" aria-hidden="true"></span>I'm&nbsp;João.</span></span>
           <span class="line"><span>I design products and&nbsp;craft</span></span>
-          <span class="line"><span><span class="accent emph word-morph" id="wordMorph">memorable</span> visual experiences.</span></span>
+          <span class="line"><span><span class="accent emph word-type" id="wordType"><span class="wt-text">memorable</span><span class="wt-caret" aria-hidden="true"></span></span> visual experiences.</span></span>
         </h1>
         <a href="#work" class="scroll-hint">
           Scroll to explore
@@ -510,93 +490,71 @@
       setTimeout(settle, 1400); // fallback in case transitionend never fires
     })();
 
-    // ---------- Morph text on hover (blur+contrast liquid technique) ----------
+    // ---------- Typewriter word swapper on hover (desktop only) ----------
     (function () {
-      var outer = document.getElementById('wordMorph');
+      var outer = document.getElementById('wordType');
       if (!outer) return;
       var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
       if (!canHover) return;
 
+      var textEl = outer.querySelector('.wt-text');
       var BASE  = 'memorable';
       var WORDS = ['meaningful', 'engaging', 'delightful', 'impactful'];
-      var HOLD  = 1600;   // ms each word stays visible
-      var DUR   = 750;    // ms morph transition
+      var ERASE = 50;    // ms per char while deleting
+      var TYPE  = 85;    // ms per char while typing
+      var HOLD  = 1500;  // ms a full word stays before erasing
+      var START = 450;   // initial pause after hover before erasing
 
-      // Build two-layer DOM
-      outer.innerHTML = '';
-      var a = document.createElement('span'); a.className = 'ws-a'; a.textContent = BASE;
-      var b = document.createElement('span'); b.className = 'ws-b'; b.setAttribute('aria-hidden','true');
-      b.style.opacity = '0'; // hidden until a morph begins
-      outer.appendChild(a); outer.appendChild(b);
+      var gen = 0; // generation token: bumping it cancels any in-flight sequence
 
-      // Measure a word's pixel width using a hidden off-screen clone of `a`
-      function measureW(text) {
-        var t = a.cloneNode(false); t.textContent = text;
-        t.style.cssText = 'visibility:hidden;position:absolute;left:-9999px;top:0;white-space:nowrap';
-        document.body.appendChild(t);
-        var w = t.offsetWidth; document.body.removeChild(t); return w;
+      function wait(ms, token, cb) { setTimeout(function () { if (token === gen) cb(); }, ms); }
+      function busy(on) { outer.classList.toggle('busy', on); } // solid caret while moving
+
+      function erase(token, cb) {
+        busy(true);
+        (function step() {
+          if (token !== gen) return;
+          var t = textEl.textContent;
+          if (!t.length) { busy(false); cb(); return; }
+          textEl.textContent = t.slice(0, -1);
+          wait(ERASE, token, step);
+        })();
       }
 
-      // Pre-set container to the longest word's width so line-breaks never change
-      var maxW = Math.max.apply(null, [BASE].concat(WORDS).map(measureW));
-      outer.style.minWidth = maxW + 'px';
-
-      var morphing = false, timer = null, idx = -1, hovering = false, pendingBase = false;
-
-      function morphTo(text, done) {
-        if (morphing) { if (text === BASE) pendingBase = true; return; }
-        morphing = true;
-
-        outer.classList.add('active');
-
-        // Prime layer B with target text, fully blurred + visible
-        b.textContent = text;
-        b.style.transition = 'none';
-        b.style.filter     = 'blur(10px)';
-        b.style.opacity    = '1';
-
-        requestAnimationFrame(function () { requestAnimationFrame(function () {
-          // Fire transitions: A blurs out, B blurs in
-          a.style.transition = 'filter ' + (DUR/1000) + 's ease-in-out';
-          b.style.transition = 'filter ' + (DUR/1000) + 's ease-in-out';
-          a.style.filter     = 'blur(10px)';
-          b.style.filter     = 'blur(0px)';
-
-          setTimeout(function () {
-            // Settle: swap roles — A carries the new text, B hides
-            a.textContent    = text;
-            a.style.transition = 'none';
-            a.style.filter   = 'blur(0)';
-            b.style.transition = 'none';
-            b.style.filter   = 'blur(10px)';
-            b.style.opacity  = '0'; // hide to prevent glow bleed without SVG filter
-
-            morphing = false;
-            if (pendingBase) { pendingBase = false; morphTo(BASE); return; }
-            if (!hovering) setTimeout(function() { outer.classList.remove('active'); }, 120);
-            if (done) done();
-          }, DUR + 40);
-        }); });
+      function type(word, token, cb) {
+        busy(true);
+        var i = 0;
+        (function step() {
+          if (token !== gen) return;
+          if (i >= word.length) { busy(false); cb(); return; }
+          textEl.textContent = word.slice(0, ++i);
+          wait(TYPE, token, step);
+        })();
       }
 
-      function next() {
-        idx = (idx + 1) % WORDS.length;
-        morphTo(WORDS[idx], function () {
-          if (hovering) timer = setTimeout(next, HOLD);
+      function cycle(token, wi) {
+        if (token !== gen) return;
+        erase(token, function () {
+          type(WORDS[wi % WORDS.length], token, function () {
+            wait(HOLD, token, function () { cycle(token, wi + 1); });
+          });
         });
       }
 
       outer.addEventListener('mouseenter', function () {
-        hovering = true;
-        idx = -1;
-        clearTimeout(timer);
-        timer = setTimeout(next, 180);
+        var token = ++gen;
+        outer.classList.add('typing');
+        wait(START, token, function () { cycle(token, 0); });
       });
 
       outer.addEventListener('mouseleave', function () {
-        hovering = false;
-        clearTimeout(timer); timer = null;
-        morphTo(BASE); // active class removal is handled at settle time
+        var token = ++gen;
+        // erase whatever is shown, retype "memorable", then stop the caret
+        erase(token, function () {
+          type(BASE, token, function () {
+            if (token === gen) outer.classList.remove('typing');
+          });
+        });
       });
     })();
 
