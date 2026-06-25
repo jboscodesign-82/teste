@@ -122,6 +122,13 @@
       line-height: 1.16; letter-spacing: -.025em; margin: 0; max-width: 16ch;
     }
     .emph { font-family: var(--serif); font-style: italic; font-weight: 500; letter-spacing: -.01em; }
+    /* hover-driven word swapper (desktop) */
+    .word-swap { display: inline-block; position: relative; white-space: nowrap; cursor: pointer; transition: width .45s var(--ease); }
+    .word-swap .ws-inner {
+      display: inline-block;
+      transition: opacity .3s var(--ease), filter .3s var(--ease), transform .3s var(--ease);
+    }
+    .word-swap .ws-inner.out { opacity: 0; filter: blur(8px); transform: translateY(-.14em) scale(.96); }
     .hero .line { display: block; overflow: hidden; }
     .hero .line > span { display: block; transform: translateY(110%); transition: transform 1s var(--ease); }
     .hero.loaded .line > span { transform: none; }
@@ -255,7 +262,7 @@
         <h1>
           <span class="line"><span>Hi,<span class="avatar-ghost" id="heroAvatarGhost" aria-hidden="true"></span>I'm&nbsp;João.</span></span>
           <span class="line"><span>I design products and&nbsp;craft</span></span>
-          <span class="line"><span><span class="accent emph">memorable</span> visual experiences.</span></span>
+          <span class="line"><span><span class="accent emph word-swap" id="wordSwap"><span class="ws-inner">memorable</span></span> visual experiences.</span></span>
         </h1>
         <a href="#work" class="scroll-hint">
           Scroll to explore
@@ -476,6 +483,53 @@
       var lastSpan = document.querySelector('#hero .line:last-child > span');
       if (lastSpan) lastSpan.addEventListener('transitionend', settle, { once: true });
       setTimeout(settle, 1400); // fallback in case transitionend never fires
+    })();
+
+    // ---------- Hover word-swapper on "memorable" (desktop only) ----------
+    (function () {
+      var swap = document.getElementById('wordSwap');
+      if (!swap) return;
+      var inner = swap.querySelector('.ws-inner');
+      var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (!inner || !canHover) return;
+
+      var BASE = 'memorable';
+      var WORDS = ['meaningful', 'engaging', 'delightful', 'impactful'];
+      var OUT_MS = 300;     // matches the css out transition
+      var HOLD_MS = 1500;   // time each word stays readable
+      var timer = null, i = -1, hovering = false;
+
+      function swapTo(text) {
+        inner.classList.add('out');
+        setTimeout(function () {
+          if (text === BASE && !hovering) { /* settle back */ }
+          inner.textContent = text;
+          swap.style.width = inner.offsetWidth + 'px';   // animate following text smoothly
+          requestAnimationFrame(function () { inner.classList.remove('out'); });
+        }, OUT_MS);
+      }
+
+      function tick() {
+        i = (i + 1) % WORDS.length;
+        swapTo(WORDS[i]);
+      }
+
+      swap.addEventListener('mouseenter', function () {
+        if (timer) return;
+        hovering = true;
+        swap.style.width = swap.offsetWidth + 'px'; // lock current width before animating
+        i = -1;
+        tick();
+        timer = setInterval(tick, HOLD_MS);
+      });
+      swap.addEventListener('mouseleave', function () {
+        hovering = false;
+        clearInterval(timer); timer = null;
+        i = -1;
+        swapTo(BASE);
+        // restore responsive (auto) width after the swap-in finishes
+        setTimeout(function () { if (!hovering) swap.style.width = ''; }, OUT_MS + 500);
+      });
     })();
 
     // reveal on scroll
