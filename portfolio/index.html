@@ -127,9 +127,13 @@
     .word-type .wt-text { display: inline; }
     .word-type .wt-caret {
       display: inline-block; width: .06em; height: .92em;
-      background: var(--accent); margin-left: .04em;
+      background: var(--ink); margin-left: .04em;
       vertical-align: -.12em; border-radius: 1px;
-      opacity: 0; /* hidden until hover starts the typing */
+      opacity: 0;
+    }
+    .word-type .wt-suffix {
+      font-style: normal; font-weight: 400;
+      color: var(--ink); letter-spacing: -.025em;
     }
     .word-type.typing .wt-caret { opacity: 1; animation: caretBlink 1s steps(1) infinite; }
     .word-type.typing.busy .wt-caret { animation: none; opacity: 1; } /* solid while typing */
@@ -267,7 +271,7 @@
         <h1>
           <span class="line"><span>Hi,<span class="avatar-ghost" id="heroAvatarGhost" aria-hidden="true"></span>I'm&nbsp;João.</span></span>
           <span class="line"><span>I design products and&nbsp;craft</span></span>
-          <span class="line"><span><span class="accent emph word-type" id="wordType"><span class="wt-text">memorable</span><span class="wt-caret" aria-hidden="true"></span></span> visual experiences.</span></span>
+          <span class="line"><span><span class="accent emph word-type" id="wordType"><span class="wt-text">memorable</span><span class="wt-caret" aria-hidden="true"></span><span class="wt-suffix"> visual</span></span> experiences.</span></span>
         </h1>
         <a href="#work" class="scroll-hint">
           Scroll to explore
@@ -502,24 +506,19 @@
       var WORDS = ['meaningful', 'engaging', 'delightful', 'impactful'];
       var ERASE = 20;
       var TYPE  = 50;
-      var HOLD  = 700;
+      var HOLD  = 1300;
       var START = 150;
 
       var gen = 0;
 
-      // set min-width to widest word so layout never shifts during erase
-      function measureW(word) {
-        var tmp = document.createElement('span');
-        tmp.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;pointer-events:none;';
-        tmp.textContent = word;
-        outer.appendChild(tmp);
-        var w = tmp.getBoundingClientRect().width;
-        outer.removeChild(tmp);
-        return w;
-      }
+      // set min-width = container width at its widest word so "experiences." never jumps lines
       document.fonts.ready.then(function () {
-        var maxW = Math.max.apply(null, [BASE].concat(WORDS).map(measureW));
-        outer.style.minWidth = maxW + 'px';
+        var orig = textEl.textContent;
+        var longest = [BASE].concat(WORDS).reduce(function (a, b) { return b.length > a.length ? b : a; }, '');
+        textEl.textContent = longest;
+        var w = outer.getBoundingClientRect().width;
+        textEl.textContent = orig;
+        outer.style.minWidth = w + 'px';
       });
 
       function wait(ms, token, cb) { setTimeout(function () { if (token === gen) cb(); }, ms); }
