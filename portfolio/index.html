@@ -195,9 +195,10 @@
     .stage-layer {
       position: absolute; inset: 0; border-radius: 10px; overflow: hidden; opacity: 0;
       transition: opacity .6s var(--ease); box-shadow: 0 30px 70px rgba(20,19,15,.22);
+      background: var(--bg-2);
     }
     .stage-layer.on { opacity: 1; }
-    .stage-layer > * { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .stage-layer > * { width: 100%; height: 100%; object-fit: scale-down; display: block; }
 
     @media (max-width: 760px) {
       .work-stage { right: -2vw; width: 46vw; aspect-ratio: 4 / 5; }
@@ -296,7 +297,7 @@
         </div>
 
         <ul class="work-list" id="workList">
-          <li class="work-row reveal" data-rot="-7" data-type="img" data-src="https://framerusercontent.com/images/shmb6tasJXREFSoJemWeMBFUotQ.png?scale-down-to=512&amp;width=806&amp;height=727">
+          <li class="work-row reveal" data-rot="-7" data-type="img" data-src="assets/project-1.png">
             <a href="#" aria-label="Redesign 2026 — OLX">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
               <span class="wr-name">Redesign 2026</span>
@@ -310,7 +311,7 @@
               <span class="wr-tagline">Client: OLX</span>
             </a>
           </li>
-          <li class="work-row reveal" data-rot="-4" data-type="img" data-src="https://framerusercontent.com/images/Cylw5fCg11koSdh30BzfXB0us2k.png?scale-down-to=1024&amp;width=1286&amp;height=630">
+          <li class="work-row reveal" data-rot="-4" data-type="img" data-src="assets/project-3.png">
             <a href="#" aria-label="Quick wins and Growth — OLX">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
               <span class="wr-name">Quick wins<br>and Growth</span>
@@ -324,21 +325,21 @@
               <span class="wr-tagline">Client: Hurb</span>
             </a>
           </li>
-          <li class="work-row reveal" data-rot="-5" data-type="img" data-src="https://framerusercontent.com/images/RwaF67sstZkWgAav7a04KBywvY8.png?scale-down-to=512&amp;width=1370&amp;height=1050">
+          <li class="work-row reveal" data-rot="-5" data-type="img" data-src="assets/project-5.png">
             <a href="#" aria-label="Checkout Redesign — Hurb">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
               <span class="wr-name">Checkout<br>Redesign</span>
               <span class="wr-tagline">Client: Hurb</span>
             </a>
           </li>
-          <li class="work-row reveal" data-rot="6" data-type="img" data-src="https://framerusercontent.com/images/ZOU7yM0XFSArlGXc1OZ0nNCpYw.png?scale-down-to=1024&amp;width=1920&amp;height=1440">
+          <li class="work-row reveal" data-rot="6" data-type="img" data-src="assets/project-6.png">
             <a href="#" aria-label="Creator Academy — Pinterest">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
               <span class="wr-name">Creator<br>Academy</span>
               <span class="wr-tagline">Client: Pinterest</span>
             </a>
           </li>
-          <li class="work-row reveal" data-rot="-3" data-type="img" data-src="https://framerusercontent.com/images/E5fV45pLeR16AFoUJQH1EQsDL8s.png?width=1474&amp;height=1140">
+          <li class="work-row reveal" data-rot="-3" data-type="img" data-src="assets/project-7.png">
             <a href="#" aria-label="UX Guides — Personal">
               <span class="wr-arrow"><svg width="34" height="22" viewBox="0 0 40 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12h34M27 4l9 8-9 8"/></svg></span>
               <span class="wr-name">UX Guides</span>
