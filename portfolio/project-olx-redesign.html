@@ -3,328 +3,196 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Redesign 2026 — João Bosco</title>
-  <meta name="description" content="Redesigning the OLX marketplace experience for a new generation of users." />
-
+  <title>Redesign 2026 — OLX · João Bosco</title>
+  <meta name="description" content="Full Look & Feel redesign of the OLX marketplace to reinforce trust, safety, and brand recognition at scale." />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
 
   <style>
+    /* ---- tokens ---- */
     :root {
-      --bg: #f4f2ec; --bg-2: #ece9e1;
-      --ink: #14130f; --muted: #6f6b61;
-      --line: rgba(20,19,15,.12);
-      --accent: #e5431f;
-      --max: 1280px;
-      --serif: "Newsreader", Georgia, "Times New Roman", serif;
-      --sans: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif;
-      --ease: cubic-bezier(.22,.61,.36,1);
+      --bg:#f4f2ec; --bg-2:#ece9e1;
+      --ink:#14130f; --muted:#6f6b61;
+      --line:rgba(20,19,15,.12);
+      --accent:#e5431f;
+      --max:1280px;
+      --serif:"Newsreader",Georgia,"Times New Roman",serif;
+      --sans:"Roboto",-apple-system,BlinkMacSystemFont,sans-serif;
+      --ease:cubic-bezier(.22,.61,.36,1);
+      --r:16px;
+    }
+    *{box-sizing:border-box;}
+    html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+    body{
+      margin:0;
+      background-color:var(--bg);
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.10'/%3E%3C/svg%3E");
+      color:var(--ink); font-family:var(--sans); line-height:1.5; overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none;}
+    img,video{display:block;max-width:100%;}
+    ::selection{background:var(--accent);color:#fff;}
+    .accent{color:var(--accent);}
+    .emph{font-family:var(--serif);font-style:italic;font-weight:500;}
+    .wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 32px;}
+    @media(max-width:640px){.wrap{padding:0 20px;}}
+
+    /* ---- reveal ---- */
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease);}
+    .reveal.in{opacity:1;transform:none;}
+    .reveal[data-d="1"]{transition-delay:.1s;}
+    .reveal[data-d="2"]{transition-delay:.2s;}
+    .reveal[data-d="3"]{transition-delay:.3s;}
+    .reveal[data-d="4"]{transition-delay:.4s;}
+    @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;}}
+
+    /* ---- header ---- */
+    header.nav{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .4s var(--ease),border-color .4s var(--ease),backdrop-filter .4s var(--ease);border-bottom:1px solid transparent;}
+    header.nav.scrolled{background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:saturate(160%) blur(12px);border-bottom:1px solid var(--line);}
+    .nav-inner{display:flex;align-items:center;height:76px;gap:20px;}
+    .back-btn{display:flex;align-items:center;gap:7px;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);flex:none;transition:color .3s var(--ease);}
+    .back-btn:hover{color:var(--ink);}
+    .back-btn svg{transition:transform .3s var(--ease);}
+    .back-btn:hover svg{transform:translateX(-3px);}
+    .nav-divider{width:1px;height:18px;background:var(--line);flex:none;}
+    .brand-link{display:flex;align-items:center;gap:10px;flex:none;}
+    .brand-link img{width:36px;height:36px;border-radius:50%;object-fit:cover;}
+    .brand-link span{font-family:var(--serif);font-size:1.2rem;font-weight:400;letter-spacing:-.01em;white-space:nowrap;}
+    .nav-spacer{flex:1;}
+    .nav-links{display:flex;gap:36px;}
+    .nav-links a{font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);position:relative;}
+    .nav-links a::after{content:"";position:absolute;left:0;bottom:-4px;width:100%;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease);}
+    .nav-links a:hover{color:var(--accent);}
+    .nav-links a:hover::after{transform:scaleX(1);transform-origin:left;}
+    @media(max-width:720px){.nav-links{display:none;}}
+
+    /* ---- project hero ---- */
+    .proj-hero{padding:clamp(130px,16vw,200px) 0 clamp(60px,8vw,100px);border-bottom:1px solid var(--line);}
+    .proj-eyebrow{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 28px;display:flex;align-items:center;gap:10px;}
+    .proj-eyebrow::before{content:"";display:block;width:24px;height:1px;background:var(--accent);}
+    .proj-title{font-family:var(--serif);font-weight:400;letter-spacing:-.03em;margin:0 0 36px;font-size:clamp(3.2rem,9vw,8rem);line-height:1.02;}
+    .proj-title em{font-style:italic;color:var(--accent);}
+    .proj-meta{display:flex;flex-wrap:wrap;gap:40px;padding-top:32px;border-top:1px solid var(--line);}
+    .proj-meta-item{display:flex;flex-direction:column;gap:4px;}
+    .proj-meta-label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+    .proj-meta-value{font-family:var(--serif);font-size:1.05rem;}
+
+    /* ---- section wrapper ---- */
+    .sec{padding:clamp(64px,8vw,110px) 0;border-bottom:1px solid var(--line);}
+    .sec-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:20px;}
+    .sec-heading{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,3.4vw,2.8rem);letter-spacing:-.025em;line-height:1.1;margin:0 0 24px;}
+    .sec-heading em{font-style:italic;}
+    .body-text{font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.8;color:var(--muted);margin:0;}
+    .body-text+.body-text{margin-top:1em;}
+
+    /* ---- intro pull ---- */
+    .intro-pull{font-family:var(--serif);font-size:clamp(1.4rem,2.8vw,2.1rem);line-height:1.5;letter-spacing:-.01em;max-width:46ch;margin:0;}
+
+    /* ---- two-col layout ---- */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,96px);align-items:start;}
+    .two-col.center{align-items:center;}
+    .two-col.reverse .col-text{order:2;}
+    .two-col.reverse .col-media{order:1;}
+    @media(max-width:768px){
+      .two-col{grid-template-columns:1fr;gap:36px;}
+      .two-col.reverse .col-text,.two-col.reverse .col-media{order:0;}
     }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-    body {
-      margin: 0;
-      background-color: var(--bg);
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.10'/%3E%3C/svg%3E");
-      color: var(--ink);
-      font-family: var(--sans);
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
-    a { color: inherit; text-decoration: none; }
-    img, video { display: block; max-width: 100%; }
-    ::selection { background: var(--accent); color: #fff; }
-    .accent { color: var(--accent); }
-    .emph { font-family: var(--serif); font-style: italic; font-weight: 500; }
+    /* ---- bullet list ---- */
+    .bullet-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;}
+    .bullet-list li{display:flex;gap:12px;font-size:clamp(.9rem,1.3vw,1rem);line-height:1.7;color:var(--muted);}
+    .bullet-list li::before{content:"";display:block;width:6px;height:6px;background:var(--accent);border-radius:50%;flex:none;margin-top:.55em;}
 
-    .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 32px; }
-    @media (max-width: 640px) { .wrap { padding: 0 20px; } }
+    /* ---- dimension cards (Success Metrics) ---- */
+    .dim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    @media(max-width:768px){.dim-grid{grid-template-columns:1fr;}}
+    .dim-card{background:var(--bg-2);border-radius:var(--r);padding:32px 28px;}
+    .dim-card-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:14px;}
+    .dim-card-title{font-family:var(--serif);font-size:1.25rem;font-weight:400;margin:0 0 12px;}
+    .dim-card-body{font-size:.9rem;line-height:1.75;color:var(--muted);margin:0;}
 
-    /* --- Reveal --- */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .85s var(--ease), transform .85s var(--ease); }
-    .reveal.in { opacity: 1; transform: none; }
-    .reveal[data-d="1"] { transition-delay: .1s; }
-    .reveal[data-d="2"] { transition-delay: .2s; }
-    .reveal[data-d="3"] { transition-delay: .3s; }
-    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1 !important; transform: none !important; } }
+    /* ---- pullquote ---- */
+    .pullquote{font-family:var(--serif);font-style:italic;font-size:clamp(1.5rem,3vw,2.4rem);line-height:1.35;letter-spacing:-.02em;max-width:22ch;margin:0;color:var(--ink);}
+    .pullquote-tag{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-top:20px;}
 
-    /* --- Header --- */
-    header.nav {
-      position: fixed; inset: 0 0 auto 0; z-index: 50;
-      transition: background .4s var(--ease), border-color .4s var(--ease), backdrop-filter .4s var(--ease);
-      border-bottom: 1px solid transparent;
-    }
-    header.nav.scrolled {
-      background: color-mix(in srgb, var(--bg) 80%, transparent);
-      backdrop-filter: saturate(160%) blur(12px);
-      border-bottom: 1px solid var(--line);
-    }
-    .nav-inner { display: flex; align-items: center; height: 76px; gap: 20px; }
+    /* ---- full-width media ---- */
+    .full-media img,.full-media video{width:100%;border-radius:var(--r);box-shadow:0 20px 50px rgba(20,19,15,.12);}
+    .media-caption{font-size:.8rem;letter-spacing:.04em;color:var(--muted);margin-top:12px;text-align:center;}
 
-    .back-btn {
-      display: flex; align-items: center; gap: 7px;
-      font-size: .82rem; letter-spacing: .06em; text-transform: uppercase;
-      color: var(--muted); flex: none;
-      transition: color .3s var(--ease);
-    }
-    .back-btn:hover { color: var(--ink); }
-    .back-btn svg { transition: transform .3s var(--ease); }
-    .back-btn:hover svg { transform: translateX(-3px); }
+    /* ---- col-media ---- */
+    .col-media img,.col-media video{width:100%;border-radius:var(--r);box-shadow:0 16px 40px rgba(20,19,15,.12);}
 
-    .nav-divider { width: 1px; height: 18px; background: var(--line); flex: none; }
+    /* ---- gallery ---- */
+    .gallery-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+    .gallery-outer{overflow:hidden;border-radius:var(--r);}
+    .gallery-track{display:flex;transition:transform .65s var(--ease);}
+    .gallery-track img{flex:none;width:100%;object-fit:contain;background:var(--bg-2);aspect-ratio:16/9;}
+    .gallery-arrows{display:flex;gap:10px;}
+    .gallery-arrow{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .25s,border-color .25s,color .25s;color:var(--ink);}
+    .gallery-arrow:hover{background:var(--ink);border-color:var(--ink);color:var(--bg);}
+    .gallery-dots{display:flex;justify-content:center;gap:8px;margin-top:16px;}
+    .gallery-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;transition:background .3s,transform .3s;border:none;padding:0;}
+    .gallery-dot.active{background:var(--ink);transform:scale(1.4);}
 
-    .brand-link { display: flex; align-items: center; gap: 10px; flex: none; }
-    .brand-link img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
-    .brand-link span { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; letter-spacing: -.01em; white-space: nowrap; }
+    /* ---- key insight ---- */
+    .insight-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:32px;}
+    .insight-pills{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+    .insight-pill{background:var(--bg-2);border-radius:100px;padding:12px 24px;font-family:var(--serif);font-size:1rem;}
+    .insight-pill strong{color:var(--accent);}
+    .insight-decision{font-family:var(--serif);font-size:clamp(1.1rem,2vw,1.5rem);font-style:italic;max-width:48ch;color:var(--muted);}
 
-    .nav-spacer { flex: 1; }
+    /* ---- foundations grid ---- */
+    .found-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    @media(max-width:768px){.found-grid{grid-template-columns:1fr 1fr;}}
+    @media(max-width:480px){.found-grid{grid-template-columns:1fr;}}
+    .found-card{background:var(--bg-2);border-radius:var(--r);padding:28px 24px;}
+    .found-icon{font-size:1.6rem;margin-bottom:14px;line-height:1;}
+    .found-title{font-family:var(--serif);font-weight:400;font-size:1.15rem;margin:0 0 8px;}
+    .found-body{font-size:.88rem;line-height:1.7;color:var(--muted);margin:0;}
 
-    .nav-links { display: flex; gap: 36px; }
-    .nav-links a { font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); position: relative; }
-    .nav-links a::after { content: ""; position: absolute; left: 0; bottom: -4px; width: 100%; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: right; transition: transform .4s var(--ease); }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
-    @media (max-width: 720px) { .nav-links { display: none; } }
+    /* ---- before / after ---- */
+    .ba-container{position:relative;overflow:hidden;border-radius:var(--r);user-select:none;box-shadow:0 20px 50px rgba(20,19,15,.13);cursor:ew-resize;}
+    .ba-before{display:block;width:100%;}
+    .ba-after{position:absolute;inset:0;clip-path:inset(0 50% 0 0);}
+    .ba-after img{width:100%;height:100%;object-fit:cover;}
+    .ba-handle{position:absolute;top:0;bottom:0;left:50%;width:3px;background:#fff;transform:translateX(-50%);pointer-events:none;}
+    .ba-handle::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.25);}
+    .ba-handle::after{content:"◀  ▶";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:7px;color:var(--ink);letter-spacing:2px;pointer-events:none;}
+    .ba-hint{margin-top:12px;font-size:.8rem;color:var(--muted);text-align:center;letter-spacing:.04em;}
 
-    /* --- Project Hero --- */
-    .proj-hero {
-      padding: clamp(130px, 16vw, 200px) 0 clamp(60px, 8vw, 100px);
-      border-bottom: 1px solid var(--line);
-    }
-    .proj-eyebrow {
-      font-size: .8rem; letter-spacing: .14em; text-transform: uppercase;
-      color: var(--muted); margin: 0 0 28px; display: flex; align-items: center; gap: 10px;
-    }
-    .proj-eyebrow::before { content: ""; display: block; width: 24px; height: 1px; background: var(--accent); }
-    .proj-title {
-      font-family: var(--serif); font-weight: 400; letter-spacing: -.03em; margin: 0 0 32px;
-      font-size: clamp(3.2rem, 9vw, 8rem); line-height: 1.02;
-    }
-    .proj-title em { font-style: italic; color: var(--accent); }
-    .proj-meta {
-      display: flex; flex-wrap: wrap; gap: 40px;
-      padding-top: 32px; border-top: 1px solid var(--line);
-    }
-    .proj-meta-item { display: flex; flex-direction: column; gap: 4px; }
-    .proj-meta-label { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-    .proj-meta-value { font-family: var(--serif); font-size: 1.05rem; }
+    /* ---- metrics ---- */
+    .metrics-intro{margin-bottom:48px;}
+    .ab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+    @media(max-width:640px){.ab-grid{grid-template-columns:1fr 1fr;}}
+    .ab-card{background:var(--bg-2);border-radius:var(--r);padding:32px 24px 28px;}
+    .ab-value{font-family:var(--serif);font-weight:500;font-size:clamp(2rem,4vw,3rem);letter-spacing:-.03em;line-height:1;margin:0 0 10px;color:var(--ink);}
+    .ab-value .ab-pfx,.ab-value .ab-sfx{color:var(--accent);}
+    .ab-desc{font-size:.85rem;color:var(--muted);line-height:1.6;margin:0;}
 
-    /* --- Intro paragraph --- */
-    .proj-intro {
-      padding: clamp(60px, 8vw, 100px) 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .proj-intro p {
-      font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.35rem, 2.6vw, 2rem);
-      line-height: 1.5; letter-spacing: -.01em;
-      max-width: 44ch; margin: 0;
-      color: var(--ink);
-    }
+    /* ---- outcome ---- */
+    .outcome-text{font-family:var(--serif);font-size:clamp(1.15rem,2.2vw,1.7rem);line-height:1.55;letter-spacing:-.01em;max-width:48ch;margin:0;}
 
-    /* --- Alternating blocks --- */
-    .alt-block {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: clamp(40px, 6vw, 96px);
-      align-items: center;
-      padding: clamp(60px, 8vw, 110px) 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .alt-block.reverse .alt-text { order: 2; }
-    .alt-block.reverse .alt-media { order: 1; }
-
-    .alt-label {
-      font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
-      color: var(--accent); margin: 0 0 18px; display: block;
-    }
-    .alt-heading {
-      font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.8rem, 3.4vw, 2.8rem);
-      letter-spacing: -.025em; line-height: 1.1; margin: 0 0 20px;
-    }
-    .alt-heading em { font-style: italic; }
-    .alt-body {
-      font-size: clamp(.95rem, 1.4vw, 1.05rem);
-      line-height: 1.75; color: var(--muted); margin: 0;
-    }
-
-    .alt-media img, .alt-media video {
-      width: 100%; border-radius: 14px;
-      box-shadow: 0 20px 50px rgba(20,19,15,.13);
-    }
-
-    @media (max-width: 768px) {
-      .alt-block { grid-template-columns: 1fr; gap: 36px; }
-      .alt-block.reverse .alt-text { order: 0; }
-      .alt-block.reverse .alt-media { order: 0; }
-    }
-
-    /* --- Full-width video --- */
-    .video-block {
-      padding: clamp(60px, 8vw, 100px) 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .video-block-label {
-      font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
-      color: var(--muted); margin: 0 0 24px;
-    }
-    .video-wrap {
-      border-radius: 16px; overflow: hidden;
-      box-shadow: 0 24px 60px rgba(20,19,15,.14);
-    }
-    .video-wrap video { width: 100%; display: block; }
-
-    /* --- Gallery --- */
-    .gallery-block {
-      padding: clamp(60px, 8vw, 100px) 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .gallery-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
-    .gallery-header-label { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-    .gallery-arrows { display: flex; gap: 10px; }
-    .gallery-arrow {
-      width: 44px; height: 44px; border-radius: 50%;
-      border: 1.5px solid var(--line); background: transparent;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: background .25s, border-color .25s, color .25s;
-      color: var(--ink);
-    }
-    .gallery-arrow:hover { background: var(--ink); border-color: var(--ink); color: var(--bg); }
-    .gallery-outer { overflow: hidden; border-radius: 16px; }
-    .gallery-track {
-      display: flex; transition: transform .65s var(--ease);
-    }
-    .gallery-track img {
-      flex: none; width: 100%; object-fit: cover;
-      aspect-ratio: 16/9;
-    }
-    .gallery-dots { display: flex; justify-content: center; gap: 8px; margin-top: 18px; }
-    .gallery-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--line); cursor: pointer;
-      transition: background .3s, transform .3s;
-    }
-    .gallery-dot.active { background: var(--ink); transform: scale(1.35); }
-
-    /* --- Before / After --- */
-    .ba-block {
-      padding: clamp(60px, 8vw, 100px) 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .ba-label { font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 0 0 24px; display: block; }
-    .ba-container {
-      position: relative; overflow: hidden;
-      border-radius: 16px; user-select: none;
-      box-shadow: 0 20px 50px rgba(20,19,15,.13);
-      cursor: ew-resize;
-    }
-    .ba-before { display: block; width: 100%; }
-    .ba-after {
-      position: absolute; inset: 0;
-      clip-path: inset(0 50% 0 0);
-    }
-    .ba-after img { width: 100%; height: 100%; object-fit: cover; }
-    .ba-handle {
-      position: absolute; top: 0; bottom: 0; left: 50%;
-      width: 3px; background: #fff;
-      transform: translateX(-50%);
-      pointer-events: none;
-    }
-    .ba-handle::before {
-      content: "";
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 40px; height: 40px; border-radius: 50%;
-      background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,.25);
-    }
-    .ba-handle::after {
-      content: "◀ ▶";
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 8px; color: var(--ink); letter-spacing: 2px;
-      pointer-events: none;
-    }
-    .ba-hint { margin-top: 14px; font-size: .8rem; color: var(--muted); text-align: center; letter-spacing: .04em; }
-
-    /* --- Metrics --- */
-    .metrics-block {
-      padding: clamp(60px, 8vw, 100px) 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .metrics-header { margin-bottom: 48px; }
-    .metrics-heading {
-      font-family: var(--serif); font-weight: 400;
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      letter-spacing: -.025em; margin: 0 0 12px;
-    }
-    .metrics-sub { font-size: .95rem; color: var(--muted); margin: 0; max-width: 56ch; }
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-    }
-    .metric-card {
-      background: var(--bg-2); border-radius: 16px;
-      padding: 40px 28px 32px;
-    }
-    .metric-value {
-      font-family: var(--serif); font-weight: 500;
-      font-size: clamp(2.4rem, 4.5vw, 3.6rem);
-      letter-spacing: -.03em; line-height: 1;
-      color: var(--ink); margin: 0 0 10px;
-    }
-    .metric-value .metric-prefix,
-    .metric-value .metric-suffix { color: var(--accent); }
-    .metric-desc { font-size: .88rem; color: var(--muted); line-height: 1.5; margin: 0; }
-
-    /* --- Explore nav --- */
-    .explore-block {
-      padding: clamp(80px, 10vw, 130px) 0;
-    }
-    .explore-label {
-      font-family: var(--serif); font-style: italic;
-      font-size: clamp(1.1rem, 2vw, 1.4rem);
-      color: var(--muted); margin: 0 0 40px; display: block;
-    }
-    .explore-btns { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
-    .explore-btn {
-      display: inline-flex; align-items: center; gap: 12px;
-      font-family: var(--serif); font-size: clamp(1rem, 1.8vw, 1.3rem);
-      padding: 18px 32px; border-radius: 100px;
-      border: 1.5px solid var(--line);
-      transition: background .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease);
-    }
-    .explore-btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-    .explore-btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-    .explore-btn.primary:hover { background: var(--accent); border-color: var(--accent); }
-    .explore-btn svg { transition: transform .3s var(--ease); }
-    .explore-btn:hover svg { transform: translateX(3px); }
-
-    /* --- Placeholder image (for demo) --- */
-    .img-placeholder {
-      width: 100%; aspect-ratio: 4/3;
-      background: var(--bg-2); border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
-    }
+    /* ---- explore nav ---- */
+    .explore-label{font-family:var(--serif);font-style:italic;font-size:clamp(1.1rem,2vw,1.4rem);color:var(--muted);margin:0 0 40px;display:block;}
+    .explore-btns{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}
+    .explore-btn{display:inline-flex;align-items:center;gap:12px;font-family:var(--serif);font-size:clamp(1rem,1.8vw,1.25rem);padding:18px 32px;border-radius:100px;border:1.5px solid var(--line);transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease);}
+    .explore-btn:hover{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+    .explore-btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+    .explore-btn.primary:hover{background:var(--accent);border-color:var(--accent);}
+    .explore-btn svg{transition:transform .3s var(--ease);}
+    .explore-btn:hover svg{transform:translateX(3px);}
   </style>
 </head>
-
 <body>
 
-  <!-- ===== HEADER ===== -->
+  <!-- HEADER -->
   <header class="nav" id="nav">
     <div class="wrap nav-inner">
       <a href="index.html" class="back-btn" aria-label="Voltar">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-          <path d="M19 12H5M10 6l-6 6 6 6"/>
-        </svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 12H5M10 6l-6 6 6 6"/></svg>
         Back
       </a>
       <span class="nav-divider"></span>
@@ -343,10 +211,10 @@
 
   <main>
 
-    <!-- ===== PROJECT HERO ===== -->
+    <!-- HERO -->
     <section class="proj-hero">
       <div class="wrap">
-        <p class="proj-eyebrow reveal">OLX · Product Design</p>
+        <p class="proj-eyebrow reveal">OLX Brasil · Product Design</p>
         <h1 class="proj-title reveal">Redesign<br><em>2026</em></h1>
         <div class="proj-meta reveal" data-d="1">
           <div class="proj-meta-item">
@@ -363,173 +231,307 @@
           </div>
           <div class="proj-meta-item">
             <span class="proj-meta-label">Scope</span>
-            <span class="proj-meta-value">UX Research, UI Design, Prototyping</span>
+            <span class="proj-meta-value">UX Research · Visual Design · Design System</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== INTRO ===== -->
-    <section class="proj-intro">
+    <!-- COVER -->
+    <section class="sec" style="padding-top:clamp(40px,5vw,72px);padding-bottom:clamp(40px,5vw,72px);">
       <div class="wrap">
-        <p class="reveal">
-          A full redesign of the OLX marketplace — rethinking navigation, discovery and
-          trust signals to serve <em>millions of users</em> across Brazil with a faster,
-          more intuitive experience.
-        </p>
-      </div>
-    </section>
-
-    <!-- ===== COVER IMAGE ===== -->
-    <section style="padding: clamp(40px,6vw,80px) 0; border-bottom: 1px solid var(--line);">
-      <div class="wrap">
-        <div class="reveal">
-          <img src="assets/project-1.png" alt="OLX Redesign 2026 cover" style="width:100%; border-radius:16px; box-shadow:0 24px 60px rgba(20,19,15,.14);" />
+        <div class="full-media reveal">
+          <img src="assets/project-1.png" alt="OLX Redesign 2026" />
         </div>
       </div>
     </section>
 
-    <!-- ===== BLOCK 1: Challenge (text left · image right) ===== -->
-    <section>
+    <!-- CONTEXT & OBJECTIVES -->
+    <section class="sec">
       <div class="wrap">
-        <div class="alt-block">
-          <div class="alt-text reveal">
-            <span class="alt-label">01 — Challenge</span>
-            <h2 class="alt-heading">An experience built for<br><em>another era</em></h2>
-            <p class="alt-body">
-              OLX's product had grown organically over a decade, accumulating layers of
-              navigation patterns and visual inconsistencies. Users struggled to find
-              what they were looking for, and trust metrics were declining across key
-              transactional flows.
-            </p>
+        <div class="two-col center">
+          <div class="col-text reveal">
+            <span class="sec-label">Context &amp; Objective</span>
+            <h2 class="sec-heading">Evolving <em>trust</em> through design</h2>
+            <p class="body-text">OLX needed to evolve its Look &amp; Feel to reinforce trust, safety, and brand recognition — without losing its historical attributes of approachability, dynamism, and diversity. The challenge was to align interface, communication, and the visual system into a single, consistent narrative, scalable across multiple verticals: Autos, Real Estate, and Goods.</p>
           </div>
-          <div class="alt-media reveal" data-d="1">
-            <div class="img-placeholder">Image — Before state</div>
+          <div class="col-text reveal" data-d="1">
+            <span class="sec-label" style="color:var(--muted)">Objectives</span>
+            <ul class="bullet-list" style="margin-top:4px;">
+              <li>Visually reposition OLX as a modern, trustworthy, and well-organized platform.</li>
+              <li>Balance sobriety and credibility with brand charisma and personality.</li>
+              <li>Translate emotional perceptions into clear UI foundations and actionable design guidelines.</li>
+            </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== BLOCK 2: Research (image left · text right) ===== -->
-    <section>
+    <!-- SUCCESS METRICS -->
+    <section class="sec">
       <div class="wrap">
-        <div class="alt-block reverse">
-          <div class="alt-text reveal">
-            <span class="alt-label">02 — Research</span>
-            <h2 class="alt-heading"><em>Listening</em> before designing</h2>
-            <p class="alt-body">
-              We ran 42 user interviews across 6 Brazilian cities, combined with
-              heatmap analysis and funnel diagnostics. The core insight: users trusted
-              the platform but felt the interface was working against them — not with them.
-            </p>
+        <div class="reveal" style="margin-bottom:36px;">
+          <span class="sec-label">Success Metrics</span>
+          <h2 class="sec-heading">Measuring across <em>three dimensions</em></h2>
+        </div>
+        <div class="dim-grid">
+          <div class="dim-card reveal">
+            <span class="dim-card-label">Brand</span>
+            <h3 class="dim-card-title">Safety Index &amp; Brand Health</h3>
+            <p class="dim-card-body">Qualitative and quantitative tracking of attractiveness, safety, inclusiveness, familiarity, and efficiency via BHT tracking by category cadence.</p>
           </div>
-          <div class="alt-media reveal" data-d="1">
-            <div class="img-placeholder">Image — Research findings</div>
+          <div class="dim-card reveal" data-d="1">
+            <span class="dim-card-label">Communication</span>
+            <h3 class="dim-card-title">Banner Click-Through Rates</h3>
+            <p class="dim-card-body">Increase in banner CTR across the platform as a direct signal of visual effectiveness and content relevance.</p>
+          </div>
+          <div class="dim-card reveal" data-d="2">
+            <span class="dim-card-label">Product</span>
+            <h3 class="dim-card-title">Smile Metrics &amp; App Satisfaction</h3>
+            <p class="dim-card-body">Improvement in safety, ease of use, aesthetics, and efficiency scores — while protecting Mobile Vitals, conversion, and engagement across key flows.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== BLOCK 3: Solution (text left · image right) ===== -->
-    <section>
+    <!-- RESEARCH -->
+    <section class="sec">
       <div class="wrap">
-        <div class="alt-block">
-          <div class="alt-text reveal">
-            <span class="alt-label">03 — Solution</span>
-            <h2 class="alt-heading">A system built for <em>clarity</em></h2>
-            <p class="alt-body">
-              We rebuilt the design language from the ground up — a new component
-              library, a clearer information hierarchy, and trust-signal patterns
-              that guide users confidently through discovery to transaction.
-            </p>
+        <div class="two-col center">
+          <div class="col-text reveal">
+            <span class="sec-label">Research</span>
+            <p class="pullquote">"How can we convey trust, safety, and brand identity through the OLX product?"</p>
+            <span class="pullquote-tag">Key question</span>
+            <div style="margin-top:36px;">
+              <p class="body-text" style="margin-bottom:16px;"><strong style="color:var(--ink);font-weight:500;">Discovery — Trust &amp; Safety deep dive</strong></p>
+              <ul class="bullet-list">
+                <li>Analysis of app store reviews to identify recurring trust-related complaints.</li>
+                <li>End-to-end user journey mapping to uncover trust breakdown moments.</li>
+                <li>Investigation of uninstall reasons to understand how fraud perception impacts retention.</li>
+              </ul>
+              <p class="body-text" style="margin-top:20px;">A clear pattern emerged: recurring complaints about fraud, scams, and insecure transactions — reframing trust not only as a visual challenge, but as a <em>systemic perception issue</em> directly impacting retention and brand equity.</p>
+            </div>
           </div>
-          <div class="alt-media reveal" data-d="1">
-            <img src="assets/project-1.png" alt="OLX redesign solution" />
+          <div class="col-media reveal" data-d="1">
+            <img src="assets/olx-6.png" alt="User research session" />
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== VIDEO ===== -->
-    <section class="video-block">
+    <!-- BENCHMARK -->
+    <section class="sec">
       <div class="wrap">
-        <p class="video-block-label reveal">Prototype walkthrough</p>
-        <div class="video-wrap reveal" data-d="1">
-          <video src="assets/project-2.mp4" autoplay muted loop playsinline></video>
+        <div class="reveal" style="margin-bottom:28px;">
+          <span class="sec-label">Benchmark &amp; References</span>
+          <p class="body-text" style="max-width:60ch;">Assessment of the competitive landscape to calibrate visual quality, maturity, and aesthetic direction — mapping the spectrum from low to high perceived value across marketplace platforms.</p>
+        </div>
+        <div class="full-media reveal" data-d="1">
+          <img src="assets/olx-2.png" alt="Value perception benchmark — low to high" />
+          <p class="media-caption">Visual positioning from low value perception (fragmented, noisy) to high value perception (clean, trustworthy)</p>
         </div>
       </div>
     </section>
 
-    <!-- ===== GALLERY ===== -->
-    <section class="gallery-block">
+    <!-- IDEATION -->
+    <section class="sec">
       <div class="wrap">
+        <div class="two-col">
+          <div class="col-text reveal">
+            <span class="sec-label">Ideation</span>
+            <h2 class="sec-heading">Co-creating the <em>visual direction</em></h2>
+            <p class="body-text">We facilitated co-creation sessions with Product Design, Branding, and Communication teams to redefine how trust and brand identity should be expressed across the experience.</p>
+            <p class="body-text" style="margin-top:1em;">Design principles and usability heuristics were applied to establish new visual foundations — ensuring consistency, clarity, and stronger trust signals throughout the user journey.</p>
+          </div>
+          <div class="col-text reveal" data-d="1" style="padding-top:clamp(0px,3vw,48px);">
+            <p class="body-text"><strong style="color:var(--ink);font-weight:500;">Visual diagnosis</strong></p>
+            <p class="body-text" style="margin-top:.5em;">Assessment of the current interface to identify visual patterns, inconsistencies, and gaps that weaken perceived trust and clarity.</p>
+            <p class="body-text" style="margin-top:1.2em;"><strong style="color:var(--ink);font-weight:500;">Design principles applied</strong></p>
+            <ul class="bullet-list" style="margin-top:.6em;">
+              <li>Visual hierarchy and information scannability</li>
+              <li>Trustworthiness through whitespace and structure</li>
+              <li>Brand consistency across all verticals</li>
+              <li>Accessible contrast and type legibility</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALIDATION -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="reveal" style="margin-bottom:28px;">
+          <span class="sec-label">Validation</span>
+          <h2 class="sec-heading">Comparing two <em>visual directions</em></h2>
+          <p class="body-text" style="max-width:60ch;margin-top:16px;">Mixed-method research combining qualitative and quantitative methods to compare <strong style="color:var(--ink);">Modern Tech × Modern Cool</strong> among Popular and Premium users across Autos, Real Estate, and Goods categories.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:24px;">
+            <span style="background:var(--bg-2);border-radius:100px;padding:8px 18px;font-size:.82rem;letter-spacing:.04em;">5-Second Test</span>
+            <span style="background:var(--bg-2);border-radius:100px;padding:8px 18px;font-size:.82rem;letter-spacing:.04em;">Desirability Cards</span>
+            <span style="background:var(--bg-2);border-radius:100px;padding:8px 18px;font-size:.82rem;letter-spacing:.04em;">Hi-Fi Mockup Comparison</span>
+            <span style="background:var(--bg-2);border-radius:100px;padding:8px 18px;font-size:.82rem;letter-spacing:.04em;">A/B Testing — Android &amp; iOS</span>
+          </div>
+        </div>
+        <!-- gallery -->
         <div class="gallery-header reveal">
-          <span class="gallery-header-label">Screens</span>
+          <span class="sec-label" style="margin-bottom:0;">Validation screens</span>
           <div class="gallery-arrows">
-            <button class="gallery-arrow" id="galleryPrev" aria-label="Previous">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 18l-6-6 6-6"/></svg>
-            </button>
-            <button class="gallery-arrow" id="galleryNext" aria-label="Next">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18l6-6-6-6"/></svg>
-            </button>
+            <button class="gallery-arrow" id="gPrev" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button class="gallery-arrow" id="gNext" aria-label="Next"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18l6-6-6-6"/></svg></button>
           </div>
         </div>
         <div class="gallery-outer reveal" data-d="1">
-          <div class="gallery-track" id="galleryTrack">
-            <img src="assets/project-1.png" alt="Screen 1" />
-            <img src="assets/project-1.png" alt="Screen 2" />
-            <img src="assets/project-1.png" alt="Screen 3" />
+          <div class="gallery-track" id="gTrack">
+            <img src="assets/olx-3.png" alt="COOL vs TECH comparison" />
+            <img src="assets/olx-4.png" alt="Moderno Tech × Moderno Cool" />
+            <img src="assets/olx-5.png" alt="TECH direction detail" />
           </div>
         </div>
-        <div class="gallery-dots" id="galleryDots"></div>
+        <div class="gallery-dots" id="gDots"></div>
       </div>
     </section>
 
-    <!-- ===== BEFORE / AFTER ===== -->
-    <section class="ba-block">
+    <!-- KEY INSIGHT -->
+    <section class="sec">
       <div class="wrap">
-        <span class="ba-label reveal">Before &amp; After</span>
+        <div class="insight-wrap">
+          <span class="sec-label reveal">Key Insight</span>
+          <div class="insight-pills reveal" data-d="1">
+            <div class="insight-pill"><strong>Tech</strong> → stronger credibility &amp; structure</div>
+            <div class="insight-pill"><strong>Cool</strong> → higher brand recognition &amp; emotional engagement</div>
+          </div>
+          <div class="full-media reveal" data-d="2" style="width:100%;max-width:860px;">
+            <img src="assets/olx-4.png" alt="Modern Tech × Modern Cool — key insight" />
+          </div>
+          <p class="insight-decision reveal" data-d="3">
+            👉 A <em>hybrid visual direction</em> — the clarity and organization of Modern Tech combined with the personality, color, and approachability of Modern Cool.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISUAL FOUNDATIONS -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="reveal" style="margin-bottom:40px;">
+          <span class="sec-label">Visual Foundations</span>
+          <h2 class="sec-heading">Design principles <em>made tangible</em></h2>
+        </div>
+        <div class="found-grid">
+          <div class="found-card reveal">
+            <div class="found-icon">Tt</div>
+            <h3 class="found-title">Typography</h3>
+            <p class="found-body">Roboto adopted for stronger hierarchy, readability, and a more professional tone. Consistent rules for scale and application across verticals.</p>
+          </div>
+          <div class="found-card reveal" data-d="1">
+            <div class="found-icon">⬜</div>
+            <h3 class="found-title">Spacing</h3>
+            <p class="found-body">Increased whitespace to reduce cognitive load and improve scannability. Defined spacing scales and familiarity criteria.</p>
+          </div>
+          <div class="found-card reveal" data-d="2">
+            <div class="found-icon">●</div>
+            <h3 class="found-title">Colors</h3>
+            <p class="found-body">Purple as primary to reinforce brand identity and convey a sober, trustworthy tone. Greater use of neutrals to support hierarchy and readability.</p>
+          </div>
+          <div class="found-card reveal" data-d="3">
+            <div class="found-icon">▢</div>
+            <h3 class="found-title">Border</h3>
+            <p class="found-body">Adaptive border radius to convey a modern and flexible visual language — consistent across components and contexts.</p>
+          </div>
+          <div class="found-card reveal" data-d="4">
+            <div class="found-icon">✦</div>
+            <h3 class="found-title">3D &amp; Motion</h3>
+            <p class="found-body">Replaced illustrations with scalable 3D icons generated via a custom Gemini bot. Subtle realism and clear feedback for user actions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- UI BEFORE / AFTER -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="reveal" style="margin-bottom:28px;">
+          <span class="sec-label">UI — Before &amp; After</span>
+          <h2 class="sec-heading">Side by side <em>comparison</em></h2>
+        </div>
         <div class="ba-container reveal" data-d="1" id="baContainer">
           <img class="ba-before" src="assets/project-1.png" alt="Before" />
-          <div class="ba-after" id="baAfter">
-            <img src="assets/project-1.png" alt="After" />
-          </div>
+          <div class="ba-after" id="baAfter"><img src="assets/project-1.png" alt="After" /></div>
           <div class="ba-handle" id="baHandle"></div>
         </div>
-        <p class="ba-hint reveal" data-d="2">Drag left or right to compare</p>
+        <p class="ba-hint reveal" data-d="2">Drag left or right to compare Before / After</p>
       </div>
     </section>
 
-    <!-- ===== METRICS ===== -->
-    <section class="metrics-block">
+    <!-- ROLLOUT -->
+    <section class="sec">
       <div class="wrap">
-        <div class="metrics-header reveal">
-          <h2 class="metrics-heading">Results that <em class="emph accent">matter</em></h2>
-          <p class="metrics-sub">Measured across a 90-day post-launch window with over 3 million active users.</p>
-        </div>
-        <div class="metrics-grid">
-          <div class="metric-card reveal">
-            <p class="metric-value"><span class="metric-prefix">+</span><span class="metric-num" data-target="32">0</span><span class="metric-suffix">%</span></p>
-            <p class="metric-desc">Task completion rate across core flows</p>
+        <div class="two-col">
+          <div class="col-text reveal">
+            <span class="sec-label">Rollout &amp; Implementation</span>
+            <h2 class="sec-heading">Scaling through the <em>design system</em></h2>
+            <p class="body-text">We structured the rollout through the Design System, ensuring scalable application of visual updates via tokens and components. Implementation was coordinated through cross-functional handoffs, with clear success criteria and guardrails to protect core metrics.</p>
           </div>
-          <div class="metric-card reveal" data-d="1">
-            <p class="metric-value"><span class="metric-prefix">−</span><span class="metric-num" data-target="41">0</span><span class="metric-suffix">%</span></p>
-            <p class="metric-desc">Drop-off in the listing creation flow</p>
-          </div>
-          <div class="metric-card reveal" data-d="2">
-            <p class="metric-value"><span class="metric-num" data-target="3" data-suffix="M+">0</span></p>
-            <p class="metric-desc">Users impacted on day one of launch</p>
-          </div>
-          <div class="metric-card reveal" data-d="3">
-            <p class="metric-value"><span class="metric-prefix">+</span><span class="metric-num" data-target="28">0</span><span class="metric-suffix"> pts</span></p>
-            <p class="metric-desc">NPS improvement post redesign</p>
+          <div class="col-text reveal" data-d="1" style="padding-top:clamp(0px,3vw,48px);">
+            <ul class="bullet-list" style="margin-top:8px;">
+              <li>Tokens and components updated in the Design System for scalable rollout</li>
+              <li>Cross-functional handoffs with engineering and product teams</li>
+              <li>Communication plan to align stakeholders and clarify scope</li>
+              <li>Guardrails defined to protect Mobile Vitals, conversion, and engagement</li>
+              <li>Consistent application across all product touchpoints</li>
+            </ul>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== KEEP EXPLORING ===== -->
-    <section class="explore-block">
+    <!-- A/B TEST METRICS -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="metrics-intro reveal">
+          <span class="sec-label">Experiment &amp; Success Metrics</span>
+          <h2 class="sec-heading">Results that <em class="accent">matter</em></h2>
+          <p class="body-text" style="max-width:52ch;margin-top:12px;">A/B test results validated in live environments across Android &amp; iOS, measuring real behavioral impact from the new visual system.</p>
+        </div>
+        <div class="ab-grid">
+          <div class="ab-card reveal">
+            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="2.4">0</span><span class="ab-sfx">%</span></p>
+            <p class="ab-desc">Home gallery clickers</p>
+          </div>
+          <div class="ab-card reveal" data-d="1">
+            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="6.4">0</span><span class="ab-sfx">%</span></p>
+            <p class="ab-desc">Show Phone Repliers</p>
+          </div>
+          <div class="ab-card reveal" data-d="2">
+            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="2.8">0</span><span class="ab-sfx">%</span></p>
+            <p class="ab-desc">Home Impressions</p>
+          </div>
+          <div class="ab-card reveal" data-d="3">
+            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="6.2">0</span><span class="ab-sfx">%</span></p>
+            <p class="ab-desc">Goods Chat Replier</p>
+          </div>
+          <div class="ab-card reveal" data-d="4">
+            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="3.7">0</span><span class="ab-sfx">%</span></p>
+            <p class="ab-desc">Insertion of seller ads</p>
+          </div>
+          <div class="ab-card reveal">
+            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="1.7">0</span><span class="ab-sfx">%</span></p>
+            <p class="ab-desc">Autos Repliers</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OUTCOME -->
+    <section class="sec">
+      <div class="wrap">
+        <span class="sec-label reveal">Outcome</span>
+        <p class="outcome-text reveal" data-d="1">The new Look &amp; Feel not only improved perceived trust and visual clarity, but also delivered measurable gains for both buyers and sellers — increasing engagement, ad exposure, and contact intent, with stronger impact in the <em class="emph">Autos and Goods verticals</em>. These results validate visual design decisions as real product levers, capable of driving business outcomes beyond aesthetics.</p>
+      </div>
+    </section>
+
+    <!-- KEEP EXPLORING -->
+    <section class="sec" style="border-bottom:none;padding-bottom:clamp(80px,10vw,130px);">
       <div class="wrap">
         <span class="explore-label reveal">Let's keep exploring.</span>
         <div class="explore-btns reveal" data-d="1">
@@ -548,120 +550,83 @@
   </main>
 
   <script>
-    // nav scroll
+    // nav
     var nav = document.getElementById('nav');
-    window.addEventListener('scroll', function () {
-      nav.classList.toggle('scrolled', window.scrollY > 40);
-    }, { passive: true });
+    window.addEventListener('scroll', function(){ nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
     nav.classList.toggle('scrolled', window.scrollY > 40);
 
-    // reveal on scroll
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-      });
-    }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
-    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    // reveal
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 
-    // ---- Gallery ----
-    (function () {
-      var track = document.getElementById('galleryTrack');
-      var dotsEl = document.getElementById('galleryDots');
-      if (!track) return;
+    // gallery
+    (function(){
+      var track = document.getElementById('gTrack');
+      var dotsEl = document.getElementById('gDots');
+      if(!track) return;
       var imgs = track.querySelectorAll('img');
       var total = imgs.length;
-      var current = 0;
-      var timer;
-
-      // build dots
-      for (var i = 0; i < total; i++) {
+      var cur = 0, timer;
+      for(var i=0;i<total;i++){
         var d = document.createElement('button');
-        d.className = 'gallery-dot' + (i === 0 ? ' active' : '');
-        d.setAttribute('aria-label', 'Slide ' + (i + 1));
-        d.dataset.i = i;
-        dotsEl.appendChild(d);
+        d.className = 'gallery-dot'+(i===0?' active':'');
+        d.dataset.i = i; dotsEl.appendChild(d);
       }
-
-      function goTo(n) {
-        current = (n + total) % total;
-        track.style.transform = 'translateX(-' + (current * 100) + '%)';
-        dotsEl.querySelectorAll('.gallery-dot').forEach(function (d, idx) {
-          d.classList.toggle('active', idx === current);
-        });
-        resetTimer();
+      function goTo(n){
+        cur = (n+total)%total;
+        track.style.transform = 'translateX(-'+(cur*100)+'%)';
+        dotsEl.querySelectorAll('.gallery-dot').forEach(function(d,idx){ d.classList.toggle('active',idx===cur); });
+        clearInterval(timer); timer = setInterval(function(){ goTo(cur+1); }, 4500);
       }
-
-      function resetTimer() {
-        clearInterval(timer);
-        timer = setInterval(function () { goTo(current + 1); }, 4000);
-      }
-
-      document.getElementById('galleryPrev').addEventListener('click', function () { goTo(current - 1); });
-      document.getElementById('galleryNext').addEventListener('click', function () { goTo(current + 1); });
-      dotsEl.addEventListener('click', function (e) {
-        var dot = e.target.closest('.gallery-dot');
-        if (dot) goTo(parseInt(dot.dataset.i));
-      });
-
-      resetTimer();
+      document.getElementById('gPrev').addEventListener('click', function(){ goTo(cur-1); });
+      document.getElementById('gNext').addEventListener('click', function(){ goTo(cur+1); });
+      dotsEl.addEventListener('click', function(e){ var d=e.target.closest('.gallery-dot'); if(d) goTo(parseInt(d.dataset.i)); });
+      timer = setInterval(function(){ goTo(cur+1); }, 4500);
     })();
 
-    // ---- Before / After ----
-    (function () {
+    // before/after
+    (function(){
       var container = document.getElementById('baContainer');
       var after = document.getElementById('baAfter');
       var handle = document.getElementById('baHandle');
-      if (!container) return;
-
-      function setPos(x) {
+      if(!container) return;
+      function setPos(x){
         var rect = container.getBoundingClientRect();
-        var pct = Math.max(0, Math.min(100, ((x - rect.left) / rect.width) * 100));
-        after.style.clipPath = 'inset(0 ' + (100 - pct) + '% 0 0)';
-        handle.style.left = pct + '%';
+        var pct = Math.max(0,Math.min(100,((x-rect.left)/rect.width)*100));
+        after.style.clipPath = 'inset(0 '+(100-pct)+'% 0 0)';
+        handle.style.left = pct+'%';
       }
-
-      var dragging = false;
-      container.addEventListener('mousedown', function (e) { dragging = true; setPos(e.clientX); });
-      window.addEventListener('mousemove', function (e) { if (dragging) setPos(e.clientX); });
-      window.addEventListener('mouseup', function () { dragging = false; });
-
-      container.addEventListener('touchstart', function (e) { dragging = true; setPos(e.touches[0].clientX); }, { passive: true });
-      window.addEventListener('touchmove', function (e) { if (dragging) setPos(e.touches[0].clientX); }, { passive: true });
-      window.addEventListener('touchend', function () { dragging = false; });
+      var drag = false;
+      container.addEventListener('mousedown', function(e){ drag=true; setPos(e.clientX); });
+      window.addEventListener('mousemove', function(e){ if(drag) setPos(e.clientX); });
+      window.addEventListener('mouseup', function(){ drag=false; });
+      container.addEventListener('touchstart', function(e){ drag=true; setPos(e.touches[0].clientX); }, {passive:true});
+      window.addEventListener('touchmove', function(e){ if(drag) setPos(e.touches[0].clientX); }, {passive:true});
+      window.addEventListener('touchend', function(){ drag=false; });
     })();
 
-    // ---- Counter animation ----
-    (function () {
-      var nums = document.querySelectorAll('.metric-num');
-      if (!nums.length) return;
-
-      function animateCounter(el) {
-        var target = parseInt(el.dataset.target, 10);
-        var suffix = el.dataset.suffix || '';
-        var start = performance.now();
-        var dur = 1800;
-
-        function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
-
-        function frame(now) {
-          var t = Math.min((now - start) / dur, 1);
-          var val = Math.round(easeOut(t) * target);
-          el.textContent = val + suffix;
-          if (t < 1) requestAnimationFrame(frame);
-        }
-        requestAnimationFrame(frame);
+    // counter animation (supports decimals)
+    (function(){
+      var nums = document.querySelectorAll('.ab-num');
+      if(!nums.length) return;
+      function animate(el){
+        var target = parseFloat(el.dataset.target);
+        var isFloat = target !== Math.floor(target);
+        var dur = 1600, start = performance.now();
+        function ease(t){ return 1-Math.pow(1-t,3); }
+        (function frame(now){
+          var t = Math.min((now-start)/dur,1);
+          var v = ease(t)*target;
+          el.textContent = isFloat ? v.toFixed(1) : Math.round(v);
+          if(t<1) requestAnimationFrame(frame);
+        })(performance.now());
       }
-
-      var metricObs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            animateCounter(e.target);
-            metricObs.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.5 });
-
-      nums.forEach(function (el) { metricObs.observe(el); });
+      var obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){ if(e.isIntersecting){ animate(e.target); obs.unobserve(e.target); } });
+      }, {threshold:0.5});
+      nums.forEach(function(el){ obs.observe(el); });
     })();
   </script>
 </body>
