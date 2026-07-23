@@ -197,6 +197,12 @@
     /* hint */
     .ba-hint{margin-top:20px;font-size:.8rem;color:var(--muted);text-align:center;letter-spacing:.04em;display:flex;align-items:center;justify-content:center;gap:7px;}
     .ba-hint svg{opacity:.5;}
+    /* mini grid (3 sliders) */
+    .ba-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;}
+    @media(max-width:860px){.ba-mini-grid{grid-template-columns:1fr;max-width:340px;margin-left:auto;margin-right:auto;}}
+    .ba-mini-col{display:flex;flex-direction:column;align-items:center;gap:14px;}
+    .ba-mini-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center;}
+    .ba-mini-col .ba-container{max-width:100%;}
 
     /* ---- metrics ---- */
     .metrics-intro{margin-bottom:48px;}
@@ -509,7 +515,57 @@
             <div class="ba-pill ba-pill-after"  id="baPillAfter">Depois</div>
           </div>
         </div>
-        <p class="ba-hint reveal" data-d="2">
+        <!-- 3 mini sliders -->
+        <div class="ba-mini-grid">
+
+          <!-- Listing -->
+          <div class="ba-mini-col reveal" data-d="1">
+            <span class="ba-mini-label">Listing</span>
+            <div class="ba-container">
+              <img class="ba-before" src="assets/olx-listing-before.png" alt="Listing — antes" />
+              <div class="ba-after"><img src="assets/olx-listing-after.png" alt="Listing — depois" /></div>
+              <div class="ba-handle"><div class="ba-handle-icon">
+                <svg width="11" height="11" viewBox="0 0 10 10" fill="#14130f"><path d="M3.5 1L0 5l3.5 4V1z"/></svg>
+                <svg width="11" height="11" viewBox="0 0 10 10" fill="#14130f"><path d="M6.5 1L10 5 6.5 9V1z"/></svg>
+              </div></div>
+              <div class="ba-pill ba-pill-before">Antes</div>
+              <div class="ba-pill ba-pill-after">Depois</div>
+            </div>
+          </div>
+
+          <!-- Produto -->
+          <div class="ba-mini-col reveal" data-d="2">
+            <span class="ba-mini-label">Página de Produto</span>
+            <div class="ba-container">
+              <img class="ba-before" src="assets/olx-product-before.png" alt="Produto — antes" />
+              <div class="ba-after"><img src="assets/olx-product-after.png" alt="Produto — depois" /></div>
+              <div class="ba-handle"><div class="ba-handle-icon">
+                <svg width="11" height="11" viewBox="0 0 10 10" fill="#14130f"><path d="M3.5 1L0 5l3.5 4V1z"/></svg>
+                <svg width="11" height="11" viewBox="0 0 10 10" fill="#14130f"><path d="M6.5 1L10 5 6.5 9V1z"/></svg>
+              </div></div>
+              <div class="ba-pill ba-pill-before">Antes</div>
+              <div class="ba-pill ba-pill-after">Depois</div>
+            </div>
+          </div>
+
+          <!-- Inserção -->
+          <div class="ba-mini-col reveal" data-d="3">
+            <span class="ba-mini-label">Inserção de Anúncio</span>
+            <div class="ba-container">
+              <img class="ba-before" src="assets/olx-insert-before.png" alt="Inserção — antes" />
+              <div class="ba-after"><img src="assets/olx-insert-after.png" alt="Inserção — depois" /></div>
+              <div class="ba-handle"><div class="ba-handle-icon">
+                <svg width="11" height="11" viewBox="0 0 10 10" fill="#14130f"><path d="M3.5 1L0 5l3.5 4V1z"/></svg>
+                <svg width="11" height="11" viewBox="0 0 10 10" fill="#14130f"><path d="M6.5 1L10 5 6.5 9V1z"/></svg>
+              </div></div>
+              <div class="ba-pill ba-pill-before">Antes</div>
+              <div class="ba-pill ba-pill-after">Depois</div>
+            </div>
+          </div>
+
+        </div><!-- /ba-mini-grid -->
+
+        <p class="ba-hint reveal" data-d="4">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 12h8M5 8l-3 4 3 4M19 8l3 4-3 4"/></svg>
           Arraste para comparar antes e depois
         </p>
@@ -639,53 +695,49 @@
       timer = setInterval(function(){ goTo(cur+1); }, 4500);
     })();
 
-    // before/after
+    // before/after — genérico para todos os .ba-container
     (function(){
-      var container = document.getElementById('baContainer');
-      var after     = document.getElementById('baAfter');
-      var handle    = document.getElementById('baHandle');
-      var pillBefore= document.getElementById('baPillBefore');
-      var pillAfter = document.getElementById('baPillAfter');
-      if(!container) return;
-      var pct = 50;
-      function setPos(x){
-        var rect = container.getBoundingClientRect();
-        pct = Math.max(2, Math.min(98, ((x - rect.left) / rect.width) * 100));
-        after.style.clipPath  = 'inset(0 0 0 '+pct+'%)';
-        handle.style.left     = pct+'%';
-        // fade pills as handle approaches them
-        if(pillBefore) pillBefore.style.opacity = Math.min(1, pct / 30);
-        if(pillAfter)  pillAfter.style.opacity  = Math.min(1, (100 - pct) / 30);
-      }
-      // intro animation on first view
-      var animated = false;
-      var obsBA = new IntersectionObserver(function(entries){
-        if(entries[0].isIntersecting && !animated){
-          animated = true;
-          var start = null, dur = 900;
-          function step(ts){
-            if(!start) start = ts;
-            var t = Math.min((ts-start)/dur, 1);
-            var ease = t<.5 ? 2*t*t : -1+(4-2*t)*t;
-            // swing from 80% to 50%
-            var v = 20 + (50-20)*ease;
-            after.style.clipPath = 'inset(0 0 0 '+v+'%)';
-            handle.style.left    = v+'%';
-            if(t<1) requestAnimationFrame(step);
-            else { pct = 50; }
+      var activeBA = null;
+      function initBA(container){
+        var after      = container.querySelector('.ba-after');
+        var handle     = container.querySelector('.ba-handle');
+        var pillBefore = container.querySelector('.ba-pill-before');
+        var pillAfter  = container.querySelector('.ba-pill-after');
+        if(!after || !handle) return;
+        var pct = 50;
+        container._baSet = function(x){
+          var rect = container.getBoundingClientRect();
+          pct = Math.max(2, Math.min(98, ((x-rect.left)/rect.width)*100));
+          after.style.clipPath = 'inset(0 0 0 '+pct+'%)';
+          handle.style.left    = pct+'%';
+          if(pillBefore) pillBefore.style.opacity = Math.min(1, pct/30);
+          if(pillAfter)  pillAfter.style.opacity  = Math.min(1, (100-pct)/30);
+        };
+        // intro animation ao entrar na viewport
+        var done = false;
+        new IntersectionObserver(function(entries, obs){
+          if(entries[0].isIntersecting && !done){
+            done = true; obs.disconnect();
+            var start = null, dur = 900;
+            (function step(ts){
+              if(!start) start = ts;
+              var t = Math.min((ts-start)/dur, 1);
+              var e = t<.5 ? 2*t*t : -1+(4-2*t)*t;
+              var v = 20 + 30*e;
+              after.style.clipPath = 'inset(0 0 0 '+v+'%)';
+              handle.style.left    = v+'%';
+              if(t<1) requestAnimationFrame(step); else pct=50;
+            })(performance.now());
           }
-          requestAnimationFrame(step);
-          obsBA.unobserve(container);
-        }
-      },{threshold:0.4});
-      obsBA.observe(container);
-      var drag = false;
-      container.addEventListener('mousedown',  function(e){ drag=true; setPos(e.clientX); e.preventDefault(); });
-      window.addEventListener('mousemove',     function(e){ if(drag) setPos(e.clientX); });
-      window.addEventListener('mouseup',       function(){ drag=false; });
-      container.addEventListener('touchstart', function(e){ drag=true; setPos(e.touches[0].clientX); },{passive:true});
-      window.addEventListener('touchmove',     function(e){ if(drag) setPos(e.touches[0].clientX); },{passive:true});
-      window.addEventListener('touchend',      function(){ drag=false; });
+        },{threshold:0.4}).observe(container);
+        container.addEventListener('mousedown',  function(e){ activeBA=container; container._baSet(e.clientX); e.preventDefault(); });
+        container.addEventListener('touchstart', function(e){ activeBA=container; container._baSet(e.touches[0].clientX); },{passive:true});
+      }
+      document.querySelectorAll('.ba-container').forEach(initBA);
+      window.addEventListener('mousemove',  function(e){ if(activeBA) activeBA._baSet(e.clientX); });
+      window.addEventListener('mouseup',    function(){ activeBA=null; });
+      window.addEventListener('touchmove',  function(e){ if(activeBA) activeBA._baSet(e.touches[0].clientX); },{passive:true});
+      window.addEventListener('touchend',   function(){ activeBA=null; });
     })();
 
     // counter animation (supports decimals)
