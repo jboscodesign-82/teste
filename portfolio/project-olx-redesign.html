@@ -500,8 +500,8 @@
             <!-- drag handle -->
             <div class="ba-handle" id="baHandle">
               <div class="ba-handle-icon">
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="white"><path d="M3.5 1L0 5l3.5 4V1z"/></svg>
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="white"><path d="M6.5 1L10 5 6.5 9V1z"/></svg>
+                <svg width="11" height="11" viewBox="0 0 10 10" fill="#14130f"><path d="M3.5 1L0 5l3.5 4V1z"/></svg>
+                <svg width="11" height="11" viewBox="0 0 10 10" fill="#14130f"><path d="M6.5 1L10 5 6.5 9V1z"/></svg>
               </div>
             </div>
             <!-- labels -->
@@ -651,7 +651,7 @@
       function setPos(x){
         var rect = container.getBoundingClientRect();
         pct = Math.max(2, Math.min(98, ((x - rect.left) / rect.width) * 100));
-        after.style.clipPath  = 'inset(0 '+(100-pct)+'% 0 0)';
+        after.style.clipPath  = 'inset(0 0 0 '+pct+'%)';
         handle.style.left     = pct+'%';
         // fade pills as handle approaches them
         if(pillBefore) pillBefore.style.opacity = Math.min(1, pct / 30);
@@ -668,8 +668,8 @@
             var t = Math.min((ts-start)/dur, 1);
             var ease = t<.5 ? 2*t*t : -1+(4-2*t)*t;
             // swing from 80% to 50%
-            var v = 80 + (50-80)*ease;
-            after.style.clipPath = 'inset(0 '+(100-v)+'% 0 0)';
+            var v = 20 + (50-20)*ease;
+            after.style.clipPath = 'inset(0 0 0 '+v+'%)';
             handle.style.left    = v+'%';
             if(t<1) requestAnimationFrame(step);
             else { pct = 50; }
