@@ -197,12 +197,11 @@
     /* hint */
     .ba-hint{margin-top:20px;font-size:.8rem;color:var(--muted);text-align:center;letter-spacing:.04em;display:flex;align-items:center;justify-content:center;gap:7px;}
     .ba-hint svg{opacity:.5;}
-    /* mini grid (3 sliders) */
-    .ba-mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;}
-    @media(max-width:860px){.ba-mini-grid{grid-template-columns:1fr;max-width:340px;margin-left:auto;margin-right:auto;}}
-    .ba-mini-col{display:flex;flex-direction:column;align-items:center;gap:14px;}
+    /* sliders em coluna única */
+    .ba-stack{display:flex;flex-direction:column;align-items:center;gap:56px;}
+    .ba-mini-col{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;}
     .ba-mini-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:center;}
-    .ba-mini-col .ba-container{max-width:100%;}
+    .ba-mini-col .ba-container{max-width:340px;width:100%;}
 
     /* ---- metrics ---- */
     .metrics-intro{margin-bottom:48px;}
@@ -495,28 +494,22 @@
           <span class="sec-label">UI — Before &amp; After</span>
           <h2 class="sec-heading">Side by side <em>comparison</em></h2>
         </div>
-        <div class="ba-phone-outer reveal" data-d="1">
-          <div class="ba-container" id="baContainer">
-            <!-- before -->
-            <img class="ba-before" src="assets/olx-before.png" alt="OLX — antes do redesign" />
-            <!-- after (masked) -->
-            <div class="ba-after" id="baAfter">
-              <img src="assets/olx-after.png" alt="OLX — depois do redesign" />
-            </div>
-            <!-- drag handle -->
-            <div class="ba-handle" id="baHandle">
-              <div class="ba-handle-icon">
+        <div class="ba-stack">
+
+          <!-- Homepage -->
+          <div class="ba-mini-col reveal" data-d="1">
+            <span class="ba-mini-label">Homepage</span>
+            <div class="ba-container">
+              <img class="ba-before" src="assets/olx-before.png" alt="Homepage — antes" />
+              <div class="ba-after"><img src="assets/olx-after.png" alt="Homepage — depois" /></div>
+              <div class="ba-handle"><div class="ba-handle-icon">
                 <svg width="11" height="11" viewBox="0 0 10 10" fill="#14130f"><path d="M3.5 1L0 5l3.5 4V1z"/></svg>
                 <svg width="11" height="11" viewBox="0 0 10 10" fill="#14130f"><path d="M6.5 1L10 5 6.5 9V1z"/></svg>
-              </div>
+              </div></div>
+              <div class="ba-pill ba-pill-before">Antes</div>
+              <div class="ba-pill ba-pill-after">Depois</div>
             </div>
-            <!-- labels -->
-            <div class="ba-pill ba-pill-before" id="baPillBefore">Antes</div>
-            <div class="ba-pill ba-pill-after"  id="baPillAfter">Depois</div>
           </div>
-        </div>
-        <!-- 3 mini sliders -->
-        <div class="ba-mini-grid">
 
           <!-- Listing -->
           <div class="ba-mini-col reveal" data-d="1">
@@ -534,7 +527,7 @@
           </div>
 
           <!-- Produto -->
-          <div class="ba-mini-col reveal" data-d="2">
+          <div class="ba-mini-col reveal" data-d="1">
             <span class="ba-mini-label">Página de Produto</span>
             <div class="ba-container">
               <img class="ba-before" src="assets/olx-product-before.png" alt="Produto — antes" />
@@ -549,7 +542,7 @@
           </div>
 
           <!-- Inserção -->
-          <div class="ba-mini-col reveal" data-d="3">
+          <div class="ba-mini-col reveal" data-d="1">
             <span class="ba-mini-label">Inserção de Anúncio</span>
             <div class="ba-container">
               <img class="ba-before" src="assets/olx-insert-before.png" alt="Inserção — antes" />
@@ -563,7 +556,7 @@
             </div>
           </div>
 
-        </div><!-- /ba-mini-grid -->
+        </div><!-- /ba-stack -->
 
         <p class="ba-hint reveal" data-d="4">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 12h8M5 8l-3 4 3 4M19 8l3 4-3 4"/></svg>
