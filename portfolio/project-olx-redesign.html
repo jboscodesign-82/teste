@@ -154,14 +154,52 @@
     .found-body{font-size:.88rem;line-height:1.7;color:var(--muted);margin:0;}
 
     /* ---- before / after ---- */
-    .ba-container{position:relative;overflow:hidden;border-radius:var(--r);user-select:none;box-shadow:0 20px 50px rgba(20,19,15,.13);cursor:ew-resize;}
-    .ba-before{display:block;width:100%;}
+    .ba-phone-outer{display:flex;justify-content:center;}
+    .ba-container{
+      position:relative;overflow:hidden;user-select:none;cursor:ew-resize;
+      width:100%;max-width:340px;
+      border-radius:48px;
+      box-shadow:
+        0 0 0 10px #111,
+        0 0 0 12px #2c2c2c,
+        0 0 0 13px rgba(255,255,255,.06),
+        0 40px 90px rgba(20,19,15,.35);
+    }
+    .ba-before{display:block;width:100%;height:100%;object-fit:cover;}
     .ba-after{position:absolute;inset:0;clip-path:inset(0 50% 0 0);}
-    .ba-after img{width:100%;height:100%;object-fit:cover;}
-    .ba-handle{position:absolute;top:0;bottom:0;left:50%;width:3px;background:#fff;transform:translateX(-50%);pointer-events:none;}
-    .ba-handle::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.25);}
-    .ba-handle::after{content:"◀  ▶";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:7px;color:var(--ink);letter-spacing:2px;pointer-events:none;}
-    .ba-hint{margin-top:12px;font-size:.8rem;color:var(--muted);text-align:center;letter-spacing:.04em;}
+    .ba-after img{width:100%;height:100%;object-fit:cover;display:block;}
+    /* handle */
+    .ba-handle{
+      position:absolute;top:0;bottom:0;left:50%;
+      width:2px;background:rgba(255,255,255,.9);
+      transform:translateX(-50%);pointer-events:none;
+    }
+    .ba-handle::before{
+      content:"";position:absolute;top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      width:44px;height:44px;border-radius:50%;
+      background:#fff;
+      box-shadow:0 2px 16px rgba(0,0,0,.35);
+    }
+    .ba-handle-icon{
+      position:absolute;top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      pointer-events:none;
+      display:flex;align-items:center;gap:5px;
+    }
+    .ba-handle-icon svg{display:block;}
+    /* pill labels */
+    .ba-pill{
+      position:absolute;bottom:72px;
+      padding:5px 13px;border-radius:100px;
+      font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+      pointer-events:none;transition:opacity .25s;
+    }
+    .ba-pill-before{left:16px;background:rgba(20,19,15,.65);color:#fff;backdrop-filter:blur(6px);}
+    .ba-pill-after{right:16px;background:var(--accent);color:#fff;}
+    /* hint */
+    .ba-hint{margin-top:20px;font-size:.8rem;color:var(--muted);text-align:center;letter-spacing:.04em;display:flex;align-items:center;justify-content:center;gap:7px;}
+    .ba-hint svg{opacity:.5;}
 
     /* ---- metrics ---- */
     .metrics-intro{margin-bottom:48px;}
@@ -450,16 +488,34 @@
     <!-- UI BEFORE / AFTER -->
     <section class="sec">
       <div class="wrap">
-        <div class="reveal" style="margin-bottom:28px;">
+        <div class="reveal" style="margin-bottom:36px;">
           <span class="sec-label">UI — Before &amp; After</span>
           <h2 class="sec-heading">Side by side <em>comparison</em></h2>
         </div>
-        <div class="ba-container reveal" data-d="1" id="baContainer">
-          <img class="ba-before" src="assets/project-1.png" alt="Before" />
-          <div class="ba-after" id="baAfter"><img src="assets/project-1.png" alt="After" /></div>
-          <div class="ba-handle" id="baHandle"></div>
+        <div class="ba-phone-outer reveal" data-d="1">
+          <div class="ba-container" id="baContainer">
+            <!-- before -->
+            <img class="ba-before" src="assets/olx-before.png" alt="OLX — antes do redesign" />
+            <!-- after (masked) -->
+            <div class="ba-after" id="baAfter">
+              <img src="assets/olx-after.png" alt="OLX — depois do redesign" />
+            </div>
+            <!-- drag handle -->
+            <div class="ba-handle" id="baHandle">
+              <div class="ba-handle-icon">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="white"><path d="M3.5 1L0 5l3.5 4V1z"/></svg>
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="white"><path d="M6.5 1L10 5 6.5 9V1z"/></svg>
+              </div>
+            </div>
+            <!-- labels -->
+            <div class="ba-pill ba-pill-before" id="baPillBefore">Antes</div>
+            <div class="ba-pill ba-pill-after"  id="baPillAfter">Depois</div>
+          </div>
         </div>
-        <p class="ba-hint reveal" data-d="2">Drag left or right to compare Before / After</p>
+        <p class="ba-hint reveal" data-d="2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 12h8M5 8l-3 4 3 4M19 8l3 4-3 4"/></svg>
+          Arraste para comparar antes e depois
+        </p>
       </div>
     </section>
 
@@ -589,22 +645,50 @@
     // before/after
     (function(){
       var container = document.getElementById('baContainer');
-      var after = document.getElementById('baAfter');
-      var handle = document.getElementById('baHandle');
+      var after     = document.getElementById('baAfter');
+      var handle    = document.getElementById('baHandle');
+      var pillBefore= document.getElementById('baPillBefore');
+      var pillAfter = document.getElementById('baPillAfter');
       if(!container) return;
+      var pct = 50;
       function setPos(x){
         var rect = container.getBoundingClientRect();
-        var pct = Math.max(0,Math.min(100,((x-rect.left)/rect.width)*100));
-        after.style.clipPath = 'inset(0 '+(100-pct)+'% 0 0)';
-        handle.style.left = pct+'%';
+        pct = Math.max(2, Math.min(98, ((x - rect.left) / rect.width) * 100));
+        after.style.clipPath  = 'inset(0 '+(100-pct)+'% 0 0)';
+        handle.style.left     = pct+'%';
+        // fade pills as handle approaches them
+        if(pillBefore) pillBefore.style.opacity = Math.min(1, pct / 30);
+        if(pillAfter)  pillAfter.style.opacity  = Math.min(1, (100 - pct) / 30);
       }
+      // intro animation on first view
+      var animated = false;
+      var obsBA = new IntersectionObserver(function(entries){
+        if(entries[0].isIntersecting && !animated){
+          animated = true;
+          var start = null, dur = 900;
+          function step(ts){
+            if(!start) start = ts;
+            var t = Math.min((ts-start)/dur, 1);
+            var ease = t<.5 ? 2*t*t : -1+(4-2*t)*t;
+            // swing from 80% to 50%
+            var v = 80 + (50-80)*ease;
+            after.style.clipPath = 'inset(0 '+(100-v)+'% 0 0)';
+            handle.style.left    = v+'%';
+            if(t<1) requestAnimationFrame(step);
+            else { pct = 50; }
+          }
+          requestAnimationFrame(step);
+          obsBA.unobserve(container);
+        }
+      },{threshold:0.4});
+      obsBA.observe(container);
       var drag = false;
-      container.addEventListener('mousedown', function(e){ drag=true; setPos(e.clientX); });
-      window.addEventListener('mousemove', function(e){ if(drag) setPos(e.clientX); });
-      window.addEventListener('mouseup', function(){ drag=false; });
-      container.addEventListener('touchstart', function(e){ drag=true; setPos(e.touches[0].clientX); }, {passive:true});
-      window.addEventListener('touchmove', function(e){ if(drag) setPos(e.touches[0].clientX); }, {passive:true});
-      window.addEventListener('touchend', function(){ drag=false; });
+      container.addEventListener('mousedown',  function(e){ drag=true; setPos(e.clientX); e.preventDefault(); });
+      window.addEventListener('mousemove',     function(e){ if(drag) setPos(e.clientX); });
+      window.addEventListener('mouseup',       function(){ drag=false; });
+      container.addEventListener('touchstart', function(e){ drag=true; setPos(e.touches[0].clientX); },{passive:true});
+      window.addEventListener('touchmove',     function(e){ if(drag) setPos(e.touches[0].clientX); },{passive:true});
+      window.addEventListener('touchend',      function(){ drag=false; });
     })();
 
     // counter animation (supports decimals)
