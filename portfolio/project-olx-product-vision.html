@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,7 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
 
   <style>
-    /* ---- tokens ---- */
     :root {
       --bg:#f4f2ec; --bg-2:#ece9e1;
       --ink:#14130f; --muted:#6f6b61;
@@ -26,30 +25,22 @@
     }
     *{box-sizing:border-box;}
     html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
-    body{
-      margin:0;
-      background-color:var(--bg);
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.10'/%3E%3C/svg%3E");
-      color:var(--ink); font-family:var(--sans); line-height:1.5; overflow-x:hidden;
-    }
+    body{margin:0;background-color:var(--bg);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.10'/%3E%3C/svg%3E");color:var(--ink);font-family:var(--sans);line-height:1.5;overflow-x:hidden;}
     a{color:inherit;text-decoration:none;}
     img,video{display:block;max-width:100%;}
     ::selection{background:var(--accent);color:#fff;}
-    .accent{color:var(--accent);}
-    .emph{font-family:var(--serif);font-style:italic;font-weight:500;}
     .wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 32px;}
     @media(max-width:640px){.wrap{padding:0 20px;}}
 
-    /* ---- reveal ---- */
+    /* reveal */
     .reveal{opacity:0;transform:translateY(24px);transition:opacity .85s var(--ease),transform .85s var(--ease);}
     .reveal.in{opacity:1;transform:none;}
     .reveal[data-d="1"]{transition-delay:.1s;}
     .reveal[data-d="2"]{transition-delay:.2s;}
     .reveal[data-d="3"]{transition-delay:.3s;}
-    .reveal[data-d="4"]{transition-delay:.4s;}
     @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;}}
 
-    /* ---- header ---- */
+    /* header */
     header.nav{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .4s var(--ease),border-color .4s var(--ease),backdrop-filter .4s var(--ease);border-bottom:1px solid transparent;}
     header.nav.scrolled{background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:saturate(160%) blur(12px);border-bottom:1px solid var(--line);}
     .nav-inner{display:flex;align-items:center;height:76px;gap:20px;}
@@ -69,7 +60,7 @@
     .nav-links a:hover::after{transform:scaleX(1);transform-origin:left;}
     @media(max-width:720px){.nav-links{display:none;}}
 
-    /* ---- project hero ---- */
+    /* hero */
     .proj-hero{padding:clamp(130px,16vw,200px) 0 clamp(60px,8vw,100px);border-bottom:1px solid var(--line);}
     .proj-eyebrow{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 28px;display:flex;align-items:center;gap:10px;}
     .proj-eyebrow::before{content:"";display:block;width:24px;height:1px;background:var(--accent);}
@@ -80,73 +71,62 @@
     .proj-meta-label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
     .proj-meta-value{font-family:var(--serif);font-size:1.05rem;}
 
-    /* ---- section wrapper ---- */
+    /* sections */
     .sec{padding:clamp(64px,8vw,110px) 0;border-bottom:1px solid var(--line);}
     .sec-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:20px;}
     .sec-heading{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,3.4vw,2.8rem);letter-spacing:-.025em;line-height:1.1;margin:0 0 24px;}
     .sec-heading em{font-style:italic;}
+    .sub-heading{font-family:var(--serif);font-weight:400;font-size:clamp(1.2rem,2vw,1.7rem);letter-spacing:-.02em;line-height:1.2;margin:0 0 14px;color:var(--ink);}
     .body-text{font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.8;color:var(--muted);margin:0;}
     .body-text+.body-text{margin-top:1em;}
 
-    /* ---- two-col layout ---- */
+    /* two-col */
     .two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,96px);align-items:start;}
     .two-col.center{align-items:center;}
-    .two-col.reverse .col-text{order:2;}
-    .two-col.reverse .col-media{order:1;}
+    .two-col.flip .col-text{order:2;}
+    .two-col.flip .col-media{order:1;}
     @media(max-width:768px){
       .two-col{grid-template-columns:1fr;gap:36px;}
-      .two-col.reverse .col-text,.two-col.reverse .col-media{order:0;}
+      .two-col.flip .col-text,.two-col.flip .col-media{order:0;}
     }
 
-    /* ---- bullet list ---- */
-    .bullet-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;}
-    .bullet-list li{display:flex;gap:12px;font-size:clamp(.9rem,1.3vw,1rem);line-height:1.7;color:var(--muted);}
-    .bullet-list li::before{content:"";display:block;width:6px;height:6px;background:var(--accent);border-radius:50%;flex:none;margin-top:.55em;}
+    /* three-col */
+    .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+    @media(max-width:768px){.three-col{grid-template-columns:1fr;gap:20px;}}
 
-    /* ---- dimension cards ---- */
-    .dim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-    @media(max-width:768px){.dim-grid{grid-template-columns:1fr;}}
-    .dim-card{background:var(--bg-2);border-radius:var(--r);padding:32px 28px;}
-    .dim-card-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:14px;}
-    .dim-card-title{font-family:var(--serif);font-size:1.25rem;font-weight:400;margin:0 0 12px;}
-    .dim-card-body{font-size:.9rem;line-height:1.75;color:var(--muted);margin:0;}
-
-    /* ---- pullquote ---- */
-    .pullquote{font-family:var(--serif);font-style:italic;font-size:clamp(1.5rem,3vw,2.4rem);line-height:1.35;letter-spacing:-.02em;max-width:22ch;margin:0;color:var(--ink);}
-    .pullquote-tag{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-top:20px;}
-
-    /* ---- full-width media ---- */
+    /* media */
     .full-media img,.full-media video{width:100%;border-radius:var(--r);box-shadow:0 20px 50px rgba(20,19,15,.12);}
-    .media-caption{font-size:.8rem;letter-spacing:.04em;color:var(--muted);margin-top:12px;text-align:center;}
-
-    /* ---- col-media ---- */
     .col-media img,.col-media video{width:100%;border-radius:var(--r);box-shadow:0 16px 40px rgba(20,19,15,.12);}
+    .media-caption{font-size:.8rem;letter-spacing:.04em;color:var(--muted);margin-top:12px;}
 
-    /* ---- gallery ---- */
-    .gallery-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
-    .gallery-outer{overflow:hidden;border-radius:var(--r);}
-    .gallery-track{display:flex;transition:transform .65s var(--ease);}
-    .gallery-track img{flex:none;width:100%;object-fit:contain;background:var(--bg-2);aspect-ratio:16/9;}
-    .gallery-arrows{display:flex;gap:10px;}
-    .gallery-arrow{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .25s,border-color .25s,color .25s;color:var(--ink);}
-    .gallery-arrow:hover{background:var(--ink);border-color:var(--ink);color:var(--bg);}
-    .gallery-dots{display:flex;justify-content:center;gap:8px;margin-top:16px;}
-    .gallery-dot{width:6px;height:6px;border-radius:50%;background:var(--line);cursor:pointer;transition:background .3s,transform .3s;border:none;padding:0;}
-    .gallery-dot.active{background:var(--ink);transform:scale(1.4);}
+    /* phone video */
+    .phone-media{display:flex;justify-content:center;}
+    .phone-media video,.phone-media img{width:100%;max-width:340px;border-radius:36px;box-shadow:0 32px 80px rgba(20,19,15,.28);}
 
-    /* ---- metrics ---- */
-    .metrics-intro{margin-bottom:48px;}
+    /* feature cards */
+    .feature-card{background:var(--bg-2);border-radius:var(--r);padding:32px 28px;}
+    .feature-card-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:14px;}
+
+    /* HMW circles */
+    .hmw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+    @media(max-width:640px){.hmw-grid{grid-template-columns:1fr;}}
+    .hmw-circle{border-radius:50%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;padding:32px;text-align:center;}
+    .hmw-circle p{font-family:var(--serif);font-style:italic;font-size:clamp(.9rem,1.3vw,1.1rem);line-height:1.5;margin:0;}
+
+    /* sub-section divider */
+    .sub-sec{padding:clamp(48px,6vw,80px) 0;border-top:1px solid var(--line);}
+    .sub-sec:first-child{border-top:none;padding-top:0;}
+
+    /* metrics */
     .ab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
     @media(max-width:640px){.ab-grid{grid-template-columns:1fr 1fr;}}
     .ab-card{background:var(--bg-2);border-radius:var(--r);padding:32px 24px 28px;}
     .ab-value{font-family:var(--serif);font-weight:500;font-size:clamp(2rem,4vw,3rem);letter-spacing:-.03em;line-height:1;margin:0 0 10px;color:var(--ink);}
     .ab-value .ab-pfx,.ab-value .ab-num,.ab-value .ab-sfx{color:var(--accent);}
     .ab-desc{font-size:.85rem;color:var(--muted);line-height:1.6;margin:0;}
+    .metrics-intro{margin-bottom:48px;}
 
-    /* ---- outcome ---- */
-    .outcome-text{font-family:var(--serif);font-size:clamp(1.15rem,2.2vw,1.7rem);line-height:1.55;letter-spacing:-.01em;max-width:48ch;margin:0;}
-
-    /* ---- explore nav ---- */
+    /* explore nav */
     .explore-label{font-family:var(--serif);font-style:italic;font-size:clamp(1.1rem,2vw,1.4rem);color:var(--muted);margin:0 0 40px;display:block;}
     .explore-btns{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}
     .explore-btn{display:inline-flex;align-items:center;gap:12px;font-family:var(--serif);font-size:clamp(1rem,1.8vw,1.25rem);padding:18px 32px;border-radius:100px;border:1.5px solid var(--line);transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease);}
@@ -159,10 +139,9 @@
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="nav" id="nav">
     <div class="wrap nav-inner">
-      <a href="index.html" class="back-btn" aria-label="Voltar">
+      <a href="index.html" class="back-btn" aria-label="Back">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 12H5M10 6l-6 6 6 6"/></svg>
         Back
       </a>
@@ -194,7 +173,7 @@
           </div>
           <div class="proj-meta-item">
             <span class="proj-meta-label">Year</span>
-            <span class="proj-meta-value">2024 – 2025</span>
+            <span class="proj-meta-value">2023 – 2024</span>
           </div>
           <div class="proj-meta-item">
             <span class="proj-meta-label">Role</span>
@@ -202,7 +181,7 @@
           </div>
           <div class="proj-meta-item">
             <span class="proj-meta-label">Scope</span>
-            <span class="proj-meta-value">Strategy · Vision Design · Prototyping</span>
+            <span class="proj-meta-value">Research · Strategy · Vision Design · Prototyping</span>
           </div>
         </div>
       </div>
@@ -213,112 +192,256 @@
       <div class="wrap">
         <div class="two-col center">
           <div class="col-text reveal">
-            <span class="sec-label">Context &amp; Objective</span>
-            <h2 class="sec-heading"><!-- heading --></h2>
-            <p class="body-text"><!-- paragraph --></p>
+            <span class="sec-label">Context</span>
+            <h2 class="sec-heading">Adapting to a new <em>transactional model</em></h2>
+            <p class="body-text">In a scenario of adaptation of the company to the transactional model of the marketplace, there was a need to understand the new market, prioritize strategic user pain points and propose a new experience for the platform.</p>
           </div>
-          <div class="col-text reveal" data-d="1">
-            <span class="sec-label" style="color:var(--muted)">Objectives</span>
-            <ul class="bullet-list" style="margin-top:4px;">
-              <li><!-- item --></li>
-              <li><!-- item --></li>
-              <li><!-- item --></li>
-            </ul>
+          <div class="col-media reveal" data-d="1">
+            <img src="assets/pv-market.png" alt="Market perception analysis" />
           </div>
         </div>
       </div>
     </section>
 
-    <!-- COVER IMAGE -->
-    <!-- <section class="sec" style="padding-top:clamp(40px,5vw,72px);padding-bottom:clamp(40px,5vw,72px);">
-      <div class="wrap">
-        <div class="full-media reveal">
-          <img src="assets/pv-cover.png" alt="Product Vision" />
-        </div>
-      </div>
-    </section> -->
-
-    <!-- SECTION FLEXÍVEL (duplicar conforme necessário) -->
+    <!-- RESEARCH -->
     <section class="sec">
       <div class="wrap">
-        <div class="reveal" style="margin-bottom:28px;">
-          <span class="sec-label"><!-- label --></span>
-          <h2 class="sec-heading"><!-- heading --></h2>
-          <p class="body-text" style="max-width:60ch;"><!-- paragraph --></p>
+        <span class="sec-label reveal">Research</span>
+
+        <!-- Market perception -->
+        <div class="sub-sec">
+          <div class="two-col center">
+            <div class="col-text reveal">
+              <h2 class="sec-heading">Market<br><em>perception</em></h2>
+              <p class="body-text">Strategic analysis of product perception by users, compared to other similar players. Functional, emotional and social factors were considered in the study.</p>
+            </div>
+            <div class="col-media reveal" data-d="1">
+              <img src="assets/pv-perception.png" alt="Market perception chart" />
+            </div>
+          </div>
         </div>
-        <div class="full-media reveal" data-d="1">
-          <img src="assets/pv-1.png" alt="" />
+
+        <!-- Visual appeal -->
+        <div class="sub-sec">
+          <div class="two-col center flip">
+            <div class="col-media reveal">
+              <img src="assets/pv-oldux.png" alt="Old OLX interface" />
+            </div>
+            <div class="col-text reveal" data-d="1">
+              <h2 class="sec-heading">Lack of visual appeal and <em>usability problems</em></h2>
+              <p class="body-text">Old fashioned interface, not following market trends and increasing the feeling of insecurity.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pains and needs -->
+        <div class="sub-sec">
+          <div class="reveal" style="margin-bottom:40px;">
+            <h2 class="sec-heading">Pains and <em>needs</em></h2>
+            <p class="body-text" style="max-width:56ch;">Prioritization of pain points in buyer and seller journeys, in private and professional profiles.</p>
+          </div>
+          <div class="full-media reveal" data-d="1">
+            <img src="assets/pv-pains.png" alt="Pain points mapping" />
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- GALLERY -->
+    <!-- HOW MIGHT WE -->
     <section class="sec">
       <div class="wrap">
-        <div class="gallery-header reveal">
-          <span class="sec-label" style="margin-bottom:0;"><!-- label --></span>
-          <div class="gallery-arrows">
-            <button class="gallery-arrow" id="gPrev" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 18l-6-6 6-6"/></svg></button>
-            <button class="gallery-arrow" id="gNext" aria-label="Next"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18l6-6-6-6"/></svg></button>
+        <span class="sec-label reveal">How might we…</span>
+        <div class="hmw-grid" style="margin-top:40px;">
+          <div class="hmw-circle reveal" style="background:#f5ede0;">
+            <p style="color:#b5631a;">make us transactional while keeping it simple of use and flexibility?</p>
+          </div>
+          <div class="hmw-circle reveal" data-d="1" style="background:#eaf1e8;">
+            <p style="color:#4a7a3d;">increase perception security and credibility?</p>
+          </div>
+          <div class="hmw-circle reveal" data-d="2" style="background:#eceaf6;">
+            <p style="color:#5a4fa0;">Make the shopping experience more specialized and attractive?</p>
           </div>
         </div>
-        <div class="gallery-outer reveal" data-d="1">
-          <div class="gallery-track" id="gTrack">
-            <img src="assets/pv-2.png" alt="" />
-            <img src="assets/pv-3.png" alt="" />
-            <img src="assets/pv-4.png" alt="" />
-          </div>
-        </div>
-        <div class="gallery-dots" id="gDots"></div>
       </div>
     </section>
 
-    <!-- TWO-COL COM IMAGEM -->
+    <!-- IDEATION -->
+    <section class="sec">
+      <div class="wrap">
+        <span class="sec-label reveal">Ideation</span>
+        <div class="two-col center" style="margin-top:8px;">
+          <div class="col-text reveal">
+            <h2 class="sec-heading">Co-creation <em>workshop</em></h2>
+            <p class="body-text">Co-creation workshop involving stakeholders and technology teams. Participants were divided into groups and generated low-fidelity prototypes at the end of the dynamic.</p>
+          </div>
+          <div class="col-media reveal" data-d="1">
+            <img src="assets/pv-ideation.png" alt="Concept poster from ideation workshop" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VALIDATION -->
     <section class="sec">
       <div class="wrap">
         <div class="two-col center">
           <div class="col-text reveal">
-            <span class="sec-label"><!-- label --></span>
-            <h2 class="sec-heading"><!-- heading --></h2>
-            <p class="body-text"><!-- paragraph --></p>
+            <span class="sec-label">Validation</span>
+            <h2 class="sec-heading">Testing with <em>real users</em></h2>
           </div>
-          <div class="col-media reveal" data-d="1">
-            <img src="assets/pv-5.png" alt="" />
+          <div class="col-text reveal" data-d="1">
+            <p class="body-text">The prototypes generated in the dynamics had a quick and remote conceptual validation with real users and segmented by category and region. After analyzing the tests, adjustments and visual refinements were made to the interface and the teams from each vertical were responsible for the adoption and monitoring of the new proposals.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- METRICS -->
+    <!-- UI PRESENTATION -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="reveal" style="margin-bottom:48px;">
+          <span class="sec-label">UI Presentation</span>
+          <h2 class="sec-heading">A new <em>experience</em></h2>
+        </div>
+        <div class="full-media reveal" data-d="1">
+          <img src="assets/pv-ui-phones.png" alt="New OLX UI on multiple screens" />
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="sec">
+      <div class="wrap">
+        <span class="sec-label reveal">Features</span>
+
+        <!-- Simple navigation -->
+        <div class="sub-sec">
+          <div class="two-col center">
+            <div class="col-text reveal">
+              <h2 class="sec-heading">Simple <em>navigation</em></h2>
+              <p class="body-text">Simpler, more objective and accessible way of navigating. The goal is to highlight the features on all platforms, ending with inconsistencies.</p>
+            </div>
+            <div class="col-media reveal" data-d="1">
+              <img src="assets/pv-navigation.png" alt="Simple navigation" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Communication with quality -->
+        <div class="sub-sec">
+          <div class="two-col center flip">
+            <div class="phone-media reveal">
+              <video autoplay loop muted playsinline>
+                <source src="assets/pv-communication.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="col-text reveal" data-d="1">
+              <h2 class="sec-heading">Communication <em>with quality</em></h2>
+              <p class="body-text">Chat, notifications and support in a single, easy-to-access location for better contact management. Communication by audio and video call, simplifying negotiation between buyers and sellers.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transaction Flexibility -->
+        <div class="sub-sec">
+          <div class="two-col center">
+            <div class="col-text reveal">
+              <h2 class="sec-heading">Transaction <em>flexibility</em></h2>
+              <p class="body-text">Delivery mode choice feature, giving both buyer and seller flexibility and security.</p>
+            </div>
+            <div class="phone-media reveal" data-d="1">
+              <video autoplay loop muted playsinline>
+                <source src="assets/pv-transaction.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customization for user profiles -->
+        <div class="sub-sec">
+          <div class="two-col center flip">
+            <div class="phone-media reveal">
+              <video autoplay loop muted playsinline>
+                <source src="assets/pv-customization.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="col-text reveal" data-d="1">
+              <h2 class="sec-heading">Customization for <em>user profiles</em></h2>
+              <p class="body-text">Personalized account page that provides access to the most relevant parts of OLX, considering both private and professional profiles.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reliability + Diverse inventory -->
+        <div class="sub-sec">
+          <div class="two-col center">
+            <div class="col-text reveal">
+              <div style="margin-bottom:40px;">
+                <h2 class="sec-heading">Reliability and <em>security</em></h2>
+                <p class="body-text">Reliable and safe environment for everyone, seeking to eliminate fraudulent users without harming the experience on the platform.</p>
+              </div>
+              <div>
+                <h2 class="sec-heading">Diverse inventory and more <em>user control</em></h2>
+                <p class="body-text">Quick and specialized filters and ad cards with different formats to make it easier to choose the right one.</p>
+              </div>
+            </div>
+            <div class="phone-media reveal" data-d="1">
+              <video autoplay loop muted playsinline>
+                <source src="assets/pv-inventory.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ease of use for the seller -->
+        <div class="sub-sec">
+          <div class="reveal" style="margin-bottom:40px;">
+            <h2 class="sec-heading">Ease of use <em>for the seller</em></h2>
+            <p class="body-text" style="max-width:56ch;">Ad insertion specialized by vertical and in steps, optimizing the seller's journey.</p>
+          </div>
+          <div class="full-media reveal" data-d="1">
+            <video autoplay loop muted playsinline>
+              <source src="assets/pv-intro.mp4" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- RESULTS -->
     <section class="sec">
       <div class="wrap">
         <div class="metrics-intro reveal">
           <span class="sec-label">Results</span>
-          <h2 class="sec-heading">Results that <em class="accent">matter</em></h2>
-          <p class="body-text" style="max-width:52ch;margin-top:12px;"><!-- description --></p>
+          <h2 class="sec-heading">Results that <em style="color:var(--accent)">matter</em></h2>
         </div>
         <div class="ab-grid">
           <div class="ab-card reveal">
-            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="0">0</span><span class="ab-sfx">%</span></p>
-            <p class="ab-desc"><!-- metric label --></p>
+            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="11">0</span><span class="ab-sfx">%</span></p>
+            <p class="ab-desc">Overall conversion</p>
           </div>
           <div class="ab-card reveal" data-d="1">
-            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="0">0</span><span class="ab-sfx">%</span></p>
-            <p class="ab-desc"><!-- metric label --></p>
+            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="2">0</span><span class="ab-sfx">M</span></p>
+            <p class="ab-desc">User sessions</p>
           </div>
           <div class="ab-card reveal" data-d="2">
-            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="0">0</span><span class="ab-sfx">%</span></p>
-            <p class="ab-desc"><!-- metric label --></p>
+            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="5">0</span><span class="ab-sfx">%</span></p>
+            <p class="ab-desc">Total Buyers</p>
+          </div>
+          <div class="ab-card reveal">
+            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="6.5">0</span><span class="ab-sfx">%</span></p>
+            <p class="ab-desc">User satisfaction</p>
+          </div>
+          <div class="ab-card reveal" data-d="1">
+            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="320">0</span><span class="ab-sfx">K</span></p>
+            <p class="ab-desc">Total Replies</p>
+          </div>
+          <div class="ab-card reveal" data-d="2">
+            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="12">0</span><span class="ab-sfx">%</span></p>
+            <p class="ab-desc">Checkout opens</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- OUTCOME -->
-    <section class="sec">
-      <div class="wrap">
-        <span class="sec-label reveal">Outcome</span>
-        <p class="outcome-text reveal" data-d="1"><!-- outcome text --></p>
       </div>
     </section>
 
@@ -342,43 +465,15 @@
   </main>
 
   <script>
-    // nav
     var nav = document.getElementById('nav');
     window.addEventListener('scroll', function(){ nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
     nav.classList.toggle('scrolled', window.scrollY > 40);
 
-    // reveal
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
     }, { threshold: 0.08, rootMargin: '0px 0px -5% 0px' });
     document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
 
-    // gallery
-    (function(){
-      var track = document.getElementById('gTrack');
-      var dotsEl = document.getElementById('gDots');
-      if(!track) return;
-      var imgs = track.querySelectorAll('img');
-      var total = imgs.length;
-      var cur = 0, timer;
-      for(var i=0;i<total;i++){
-        var d = document.createElement('button');
-        d.className = 'gallery-dot'+(i===0?' active':'');
-        d.dataset.i = i; dotsEl.appendChild(d);
-      }
-      function goTo(n){
-        cur = (n+total)%total;
-        track.style.transform = 'translateX(-'+(cur*100)+'%)';
-        dotsEl.querySelectorAll('.gallery-dot').forEach(function(d,idx){ d.classList.toggle('active',idx===cur); });
-        clearInterval(timer); timer = setInterval(function(){ goTo(cur+1); }, 4500);
-      }
-      document.getElementById('gPrev').addEventListener('click', function(){ goTo(cur-1); });
-      document.getElementById('gNext').addEventListener('click', function(){ goTo(cur+1); });
-      dotsEl.addEventListener('click', function(e){ var d=e.target.closest('.gallery-dot'); if(d) goTo(parseInt(d.dataset.i)); });
-      timer = setInterval(function(){ goTo(cur+1); }, 4500);
-    })();
-
-    // counter animation
     (function(){
       var nums = document.querySelectorAll('.ab-num');
       if(!nums.length) return;
