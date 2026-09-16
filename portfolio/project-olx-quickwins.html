@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Quick Wins & Growth — OLX · João Bosco</title>
-  <meta name="description" content="Quick wins and growth initiatives at OLX Brasil — identifying high-impact opportunities and delivering measurable results fast." />
+  <title>Quick Wins &amp; Growth — OLX · João Bosco</title>
+  <meta name="description" content="Applying influence techniques and cognitive biases across the OLX buying and selling funnel to quickly leverage key metrics." />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -76,55 +76,51 @@
     .sec-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:20px;}
     .sec-heading{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,3.4vw,2.8rem);letter-spacing:-.025em;line-height:1.1;margin:0 0 24px;}
     .sec-heading em{font-style:italic;}
-    .sub-heading{font-family:var(--serif);font-weight:400;font-size:clamp(1.2rem,2vw,1.7rem);letter-spacing:-.02em;line-height:1.2;margin:0 0 14px;color:var(--ink);}
     .body-text{font-size:clamp(.95rem,1.3vw,1.05rem);line-height:1.8;color:var(--muted);margin:0;}
-    .body-text+.body-text{margin-top:1em;}
 
     /* two-col */
     .two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,96px);align-items:start;}
     .two-col.center{align-items:center;}
-    .two-col.flip .col-text{order:2;}
-    .two-col.flip .col-media{order:1;}
-    @media(max-width:768px){
-      .two-col{grid-template-columns:1fr;gap:36px;}
-      .two-col.flip .col-text,.two-col.flip .col-media{order:0;}
-    }
+    @media(max-width:768px){.two-col{grid-template-columns:1fr;gap:32px;}}
 
-    /* three-col */
-    .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-    @media(max-width:768px){.three-col{grid-template-columns:1fr;gap:20px;}}
+    /* experiment section */
+    .exp-sec{padding:clamp(64px,8vw,110px) 0;border-bottom:1px solid var(--line);}
+    .exp-header{display:flex;align-items:baseline;gap:20px;margin-bottom:clamp(40px,5vw,72px);}
+    .exp-num{font-family:var(--serif);font-style:italic;font-size:clamp(3rem,6vw,5rem);color:var(--line);line-height:1;flex:none;}
+    .exp-title{font-family:var(--serif);font-weight:400;font-size:clamp(1.6rem,3vw,2.6rem);letter-spacing:-.025em;line-height:1.1;margin:0;}
+    .exp-title em{font-style:italic;color:var(--accent);}
+
+    /* sub-label */
+    .sub-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:12px;}
+
+    /* trigger card */
+    .trigger-card{background:var(--ink);color:var(--bg);border-radius:var(--r);padding:28px 28px 24px;}
+    .trigger-top{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+    .trigger-emoji{font-size:1.3rem;line-height:1;}
+    .trigger-name{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,242,236,.5);}
+    .trigger-title{font-family:var(--serif);font-size:1.15rem;font-weight:400;margin:0 0 10px;line-height:1.3;}
+    .trigger-body{font-size:.88rem;line-height:1.7;color:rgba(244,242,236,.65);margin:0;}
+
+    /* hypothesis */
+    .hypothesis-block{background:var(--bg-2);border-radius:var(--r);padding:36px 40px;margin:clamp(32px,4vw,56px) 0;}
+    .hypothesis-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:16px;}
+    .hypothesis-text{font-family:var(--serif);font-style:italic;font-size:clamp(1rem,1.8vw,1.3rem);line-height:1.65;letter-spacing:-.01em;margin:0;color:var(--ink);}
+
+    /* ab screens */
+    .ab-screens{margin:clamp(32px,4vw,56px) 0;}
+    .ab-screens img,.ab-screens video{width:100%;border-radius:var(--r);box-shadow:0 20px 50px rgba(20,19,15,.12);}
+
+    /* results */
+    .results-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:20px;}
+    .ab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+    @media(max-width:640px){.ab-grid{grid-template-columns:1fr 1fr;}}
+    .ab-card{background:var(--bg-2);border-radius:var(--r);padding:28px 24px 24px;}
+    .ab-value{font-family:var(--serif);font-weight:500;font-size:clamp(1.8rem,3.5vw,2.8rem);letter-spacing:-.03em;line-height:1;margin:0 0 8px;color:var(--ink);}
+    .ab-value .ab-pfx,.ab-value .ab-num,.ab-value .ab-sfx{color:var(--accent);}
+    .ab-desc{font-size:.82rem;color:var(--muted);line-height:1.55;margin:0;}
 
     /* media */
     .full-media img,.full-media video{width:100%;border-radius:var(--r);box-shadow:0 20px 50px rgba(20,19,15,.12);}
-    .col-media img,.col-media video{width:100%;border-radius:var(--r);box-shadow:0 16px 40px rgba(20,19,15,.12);}
-    .media-caption{font-size:.8rem;letter-spacing:.04em;color:var(--muted);margin-top:12px;}
-
-    /* phone video */
-    .phone-media{display:flex;justify-content:center;}
-    .phone-media video,.phone-media img{width:100%;max-width:340px;border-radius:36px;box-shadow:0 32px 80px rgba(20,19,15,.28);}
-
-    /* feature cards */
-    .feature-card{background:var(--bg-2);border-radius:var(--r);padding:32px 28px;}
-    .feature-card-label{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:14px;}
-
-    /* HMW circles */
-    .hmw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-    @media(max-width:640px){.hmw-grid{grid-template-columns:1fr;}}
-    .hmw-circle{border-radius:50%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;padding:32px;text-align:center;}
-    .hmw-circle p{font-family:var(--serif);font-style:italic;font-size:clamp(.9rem,1.3vw,1.1rem);line-height:1.5;margin:0;}
-
-    /* sub-section divider */
-    .sub-sec{padding:clamp(48px,6vw,80px) 0;border-top:1px solid var(--line);}
-    .sub-sec:first-child{border-top:none;padding-top:0;}
-
-    /* metrics */
-    .ab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-    @media(max-width:640px){.ab-grid{grid-template-columns:1fr 1fr;}}
-    .ab-card{background:var(--bg-2);border-radius:var(--r);padding:32px 24px 28px;}
-    .ab-value{font-family:var(--serif);font-weight:500;font-size:clamp(2rem,4vw,3rem);letter-spacing:-.03em;line-height:1;margin:0 0 10px;color:var(--ink);}
-    .ab-value .ab-pfx,.ab-value .ab-num,.ab-value .ab-sfx{color:var(--accent);}
-    .ab-desc{font-size:.85rem;color:var(--muted);line-height:1.6;margin:0;}
-    .metrics-intro{margin-bottom:48px;}
 
     /* explore nav */
     .explore-label{font-family:var(--serif);font-style:italic;font-size:clamp(1.1rem,2vw,1.4rem);color:var(--muted);margin:0 0 40px;display:block;}
@@ -187,276 +183,172 @@
       </div>
     </section>
 
-    <!-- INTRO VIDEO -->
-    <section class="sec" style="padding-top:clamp(40px,5vw,72px);padding-bottom:clamp(40px,5vw,72px);">
-      <div class="wrap">
-        <div class="full-media reveal">
-          <video autoplay loop muted playsinline>
-            <source src="assets/pv-intro.mp4" type="video/mp4" />
-          </video>
-        </div>
-      </div>
-    </section>
-
     <!-- CONTEXT -->
     <section class="sec">
       <div class="wrap">
         <div class="two-col center">
-          <div class="col-text reveal">
+          <div class="reveal">
             <span class="sec-label">Context</span>
-            <h2 class="sec-heading"><!-- heading --></h2>
+            <h2 class="sec-heading">Influence at <em>every step</em></h2>
           </div>
-          <div class="col-text reveal" data-d="1">
-            <p class="body-text"><!-- paragraph --></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- RESEARCH -->
-    <section class="sec">
-      <div class="wrap">
-        <span class="sec-label reveal">Research</span>
-
-        <!-- Market perception -->
-        <div class="sub-sec">
-          <div class="two-col center">
-            <div class="col-text reveal">
-              <h2 class="sec-heading">Market<br><em>perception</em></h2>
-              <p class="body-text">Strategic analysis of product perception by users, compared to other similar players. Functional, emotional and social factors were considered in the study.</p>
-            </div>
-            <div class="col-media reveal" data-d="1">
-              <img src="assets/marketperception.webp" alt="Market perception chart" />
-            </div>
-          </div>
-        </div>
-
-        <!-- Visual appeal -->
-        <div class="sub-sec">
-          <div class="two-col center flip">
-            <div class="col-media reveal">
-              <img src="assets/lackofvisual.webp" alt="Old OLX interface" style="max-width:320px;" />
-            </div>
-            <div class="col-text reveal" data-d="1">
-              <h2 class="sec-heading">Lack of visual appeal and <em>usability problems</em></h2>
-              <p class="body-text">Old fashioned interface, not following market trends and increasing the feeling of insecurity.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pains and needs -->
-        <div class="sub-sec">
-          <div class="reveal" style="margin-bottom:40px;">
-            <h2 class="sec-heading">Pains and <em>needs</em></h2>
-            <p class="body-text" style="max-width:56ch;">Prioritization of pain points in buyer and seller journeys, in private and professional profiles.</p>
-          </div>
-          <div class="full-media reveal" data-d="1">
-            <img src="assets/painandneeds.webp" alt="Pain points mapping" />
+          <div class="reveal" data-d="1">
+            <p class="body-text">With the key objective of increasing buyers and sellers on the platform, we analyzed the main pain points throughout the journey and applied influence techniques such as mental triggers and cognitive biases across the entire buying and selling funnel. Each team was responsible for applying these techniques within their scope and monitoring the impact. Some initiatives were not tested, but others allowed us to quickly leverage important metrics.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- HOW MIGHT WE -->
-    <section class="sec">
+    <!-- EXPERIMENT 01 — LISTING PAGE -->
+    <section class="exp-sec">
       <div class="wrap">
-        <span class="sec-label reveal">How might we…</span>
-        <div class="hmw-grid" style="margin-top:40px;">
-          <div class="hmw-circle reveal" style="background:#f5ede0;">
-            <p style="color:#b5631a;">make us transactional while keeping it simple of use and flexibility?</p>
+        <div class="exp-header reveal">
+          <span class="exp-num">01</span>
+          <h2 class="exp-title">Listing / <em>Results page</em></h2>
+        </div>
+
+        <div class="two-col reveal" data-d="1">
+          <div>
+            <span class="sub-label">Problem / Opportunity</span>
+            <p class="body-text">Buyers consistently find the same ads for their search, affecting engagement with the platform.</p>
           </div>
-          <div class="hmw-circle reveal" data-d="1" style="background:#eaf1e8;">
-            <p style="color:#4a7a3d;">increase perception security and credibility?</p>
+          <div class="trigger-card">
+            <div class="trigger-top">
+              <span class="trigger-emoji">🧠</span>
+              <span class="trigger-name">Trigger / Bias</span>
+            </div>
+            <p class="trigger-title">Self-initiated triggers</p>
+            <p class="trigger-body">Users are more likely to interact with prompts that they configure themselves.</p>
           </div>
-          <div class="hmw-circle reveal" data-d="2" style="background:#eceaf6;">
-            <p style="color:#5a4fa0;">Make the shopping experience more specialized and attractive?</p>
+        </div>
+
+        <div class="hypothesis-block reveal">
+          <span class="hypothesis-label">Hypothesis</span>
+          <p class="hypothesis-text">With a "save search" feature linked to notifications and alerts for new ads, we will see 19% of Listing viewers coming from saved searches and an increase in Adviewers making contact in less than 7 days.</p>
+        </div>
+
+        <div class="ab-screens reveal">
+          <img src="assets/qw-listing-ab.png" alt="A/B test screens — Listing page" />
+        </div>
+
+        <div class="reveal">
+          <span class="results-label">A/B test results</span>
+          <div class="ab-grid">
+            <div class="ab-card">
+              <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="7.4">0</span><span class="ab-sfx">%</span></p>
+              <p class="ab-desc">iOS Autos Replies</p>
+            </div>
+            <div class="ab-card">
+              <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="4.9">0</span><span class="ab-sfx">%</span></p>
+              <p class="ab-desc">Android Autos Replies</p>
+            </div>
+            <div class="ab-card">
+              <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="300">0</span><span class="ab-sfx">K</span></p>
+              <p class="ab-desc">Total Replies</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- IDEATION -->
-    <section class="sec">
+    <!-- EXPERIMENT 02 — PRODUCT PAGE -->
+    <section class="exp-sec">
       <div class="wrap">
-        <span class="sec-label reveal">Ideation</span>
-        <div class="two-col center" style="margin-top:8px;">
-          <div class="col-text reveal">
-            <h2 class="sec-heading">Co-creation <em>workshop</em></h2>
-            <p class="body-text">Co-creation workshop involving stakeholders and technology teams. Participants were divided into groups and generated low-fidelity prototypes at the end of the dynamic.</p>
+        <div class="exp-header reveal">
+          <span class="exp-num">02</span>
+          <h2 class="exp-title"><em>Product</em> page</h2>
+        </div>
+
+        <div class="two-col reveal" data-d="1">
+          <div>
+            <span class="sub-label">Problem / Opportunity</span>
+            <p class="body-text">Many buyers avoid messaging via chat and negotiating price because of the advertiser's slow response time in the chat.</p>
           </div>
-          <div class="col-media reveal" data-d="1">
-            <img src="assets/ideation.webp" alt="Concept poster from ideation workshop" />
+          <div class="trigger-card">
+            <div class="trigger-top">
+              <span class="trigger-emoji">🧠</span>
+              <span class="trigger-name">Trigger / Bias</span>
+            </div>
+            <p class="trigger-title">Law of Least Effort</p>
+            <p class="trigger-body">Choose the path of least resistance.</p>
+          </div>
+        </div>
+
+        <div class="hypothesis-block reveal">
+          <span class="hypothesis-label">Hypothesis</span>
+          <p class="hypothesis-text">A quick shortcut to make an offer on the product page will make the negotiation more objective for both buyer and seller, generating more contacts and transactions on the platform.</p>
+        </div>
+
+        <div class="ab-screens reveal">
+          <img src="assets/qw-product-ab.png" alt="A/B test screens — Product page" />
+        </div>
+
+        <div class="reveal">
+          <span class="results-label">A/B test results</span>
+          <div class="ab-grid">
+            <div class="ab-card">
+              <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="28">0</span><span class="ab-sfx">%</span></p>
+              <p class="ab-desc">Offer Repliers</p>
+            </div>
+            <div class="ab-card">
+              <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="11.52">0</span><span class="ab-sfx">%</span></p>
+              <p class="ab-desc">Offer Goods Replies</p>
+            </div>
+            <div class="ab-card">
+              <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="2">0</span><span class="ab-sfx">%</span></p>
+              <p class="ab-desc">Total Replies</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- VALIDATION -->
-    <section class="sec">
+    <!-- EXPERIMENT 03 — PHOTO GALLERY -->
+    <section class="exp-sec">
       <div class="wrap">
-        <div class="two-col center">
-          <div class="col-text reveal">
-            <span class="sec-label">Validation</span>
-            <h2 class="sec-heading">Testing with <em>real users</em></h2>
+        <div class="exp-header reveal">
+          <span class="exp-num">03</span>
+          <h2 class="exp-title">Photo <em>Gallery</em></h2>
+        </div>
+
+        <div class="two-col reveal" data-d="1">
+          <div>
+            <span class="sub-label">Problem / Opportunity</span>
+            <p class="body-text">By analyzing heatmaps and session recordings, we observed that most buyers, upon landing on the listing page, immediately click on the image gallery. After viewing all the photos, many of them leave the listing page without taking further action.</p>
           </div>
-          <div class="col-text reveal" data-d="1">
-            <p class="body-text">The prototypes generated in the dynamics had a quick and remote conceptual validation with real users and segmented by category and region. After analyzing the tests, adjustments and visual refinements were made to the interface and the teams from each vertical were responsible for the adoption and monitoring of the new proposals.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- UI PRESENTATION -->
-    <section class="sec">
-      <div class="wrap">
-        <div class="reveal" style="margin-bottom:48px;">
-          <span class="sec-label">UI Presentation</span>
-          <h2 class="sec-heading">A new <em>experience</em></h2>
-        </div>
-        <div class="reveal" data-d="1" style="display:flex;justify-content:center;">
-          <img src="assets/pv-ui-phones.webp" alt="New OLX UI on multiple screens" style="width:100%;max-width:720px;border-radius:var(--r);box-shadow:0 20px 50px rgba(20,19,15,.12);" />
-        </div>
-      </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section class="sec">
-      <div class="wrap">
-        <span class="sec-label reveal">Features</span>
-
-        <!-- Simple navigation -->
-        <div class="sub-sec">
-          <div class="two-col center">
-            <div class="col-text reveal">
-              <h2 class="sec-heading">Simple <em>navigation</em></h2>
-              <p class="body-text">Simpler, more objective and accessible way of navigating. The goal is to highlight the features on all platforms, ending with inconsistencies.</p>
+          <div class="trigger-card">
+            <div class="trigger-top">
+              <span class="trigger-emoji">🧠</span>
+              <span class="trigger-name">Trigger / Bias</span>
             </div>
-            <div class="col-media reveal" data-d="1">
-              <img src="assets/simplenavigation.webp" alt="Simple navigation" />
-            </div>
+            <p class="trigger-title">Peak-End Rule</p>
+            <p class="trigger-body">Users are more likely to take action based on how an experience ends, especially after a highly engaging moment.</p>
           </div>
         </div>
 
-        <!-- Communication with quality -->
-        <div class="sub-sec">
-          <div class="two-col center flip">
-            <div class="phone-media reveal">
-              <video autoplay loop muted playsinline>
-                <source src="assets/pv-communication.mp4" type="video/mp4" />
-              </video>
-            </div>
-            <div class="col-text reveal" data-d="1">
-              <h2 class="sec-heading">Communication <em>with quality</em></h2>
-              <p class="body-text">Chat, notifications and support in a single, easy-to-access location for better contact management. Communication by audio and video call, simplifying negotiation between buyers and sellers.</p>
-            </div>
-          </div>
+        <div class="hypothesis-block reveal">
+          <span class="hypothesis-label">Hypothesis</span>
+          <p class="hypothesis-text">Adding a shortcut button and displaying the listing price directly within the photo gallery leverages the Peak-End Rule by turning the final, most engaging moment of the experience into a clear conversion opportunity, increasing purchases and contacts on the platform.</p>
         </div>
 
-        <!-- Transaction Flexibility -->
-        <div class="sub-sec">
-          <div class="two-col center">
-            <div class="col-text reveal">
-              <h2 class="sec-heading">Transaction <em>flexibility</em></h2>
-              <p class="body-text">Delivery mode choice feature, giving both buyer and seller flexibility and security.</p>
-            </div>
-            <div class="phone-media reveal" data-d="1">
-              <video autoplay loop muted playsinline>
-                <source src="assets/pv-transaction.mp4" type="video/mp4" />
-              </video>
-            </div>
-          </div>
+        <div class="ab-screens reveal">
+          <img src="assets/qw-gallery-ab.png" alt="A/B test screens — Photo gallery" />
         </div>
 
-        <!-- Customization for user profiles -->
-        <div class="sub-sec">
-          <div class="two-col center flip">
-            <div class="phone-media reveal">
-              <video autoplay loop muted playsinline>
-                <source src="assets/pv-customization.mp4" type="video/mp4" />
-              </video>
+        <div class="reveal">
+          <span class="results-label">A/B test results</span>
+          <div class="ab-grid">
+            <div class="ab-card">
+              <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="22">0</span><span class="ab-sfx">%</span></p>
+              <p class="ab-desc">Clicks on Buy</p>
             </div>
-            <div class="col-text reveal" data-d="1">
-              <h2 class="sec-heading">Customization for <em>user profiles</em></h2>
-              <p class="body-text">Personalized account page that provides access to the most relevant parts of OLX, considering both private and professional profiles.</p>
+            <div class="ab-card">
+              <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="12">0</span><span class="ab-sfx">%</span></p>
+              <p class="ab-desc">Opening Checkout</p>
             </div>
-          </div>
-        </div>
-
-        <!-- Reliability -->
-        <div class="sub-sec">
-          <div class="two-col center">
-            <div class="col-text reveal">
-              <h2 class="sec-heading">Reliability and <em>security</em></h2>
-              <p class="body-text">Reliable and safe environment for everyone, seeking to eliminate fraudulent users without harming the experience on the platform.</p>
+            <div class="ab-card">
+              <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="1.3">0</span><span class="ab-sfx">%</span></p>
+              <p class="ab-desc">Chat Repliers</p>
             </div>
-            <div class="col-media reveal" data-d="1">
-              <img src="assets/reliability.webp" alt="Reliability and security" />
-            </div>
-          </div>
-        </div>
-
-        <!-- Diverse inventory -->
-        <div class="sub-sec">
-          <div class="two-col center flip">
-            <div class="phone-media reveal">
-              <video autoplay loop muted playsinline>
-                <source src="assets/pv-inventory.mp4" type="video/mp4" />
-              </video>
-            </div>
-            <div class="col-text reveal" data-d="1">
-              <h2 class="sec-heading">Diverse inventory and more <em>user control</em></h2>
-              <p class="body-text">Quick and specialized filters and ad cards with different formats to make it easier to choose the right one.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Ease of use for the seller -->
-        <div class="sub-sec">
-          <div class="two-col center">
-            <div class="col-text reveal">
-              <h2 class="sec-heading">Ease of use <em>for the seller</em></h2>
-              <p class="body-text">Ad insertion specialized by vertical and in steps, optimizing the seller's journey.</p>
-            </div>
-            <div class="col-media reveal" data-d="1">
-              <img src="assets/easyuseofseller.webp" alt="Ease of use for the seller" />
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- RESULTS -->
-    <section class="sec">
-      <div class="wrap">
-        <div class="metrics-intro reveal">
-          <span class="sec-label">Results</span>
-          <h2 class="sec-heading">Results that <em style="color:var(--accent)">matter</em></h2>
-        </div>
-        <div class="ab-grid">
-          <div class="ab-card reveal">
-            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="11">0</span><span class="ab-sfx">%</span></p>
-            <p class="ab-desc">Overall conversion</p>
-          </div>
-          <div class="ab-card reveal" data-d="1">
-            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="2">0</span><span class="ab-sfx">M</span></p>
-            <p class="ab-desc">User sessions</p>
-          </div>
-          <div class="ab-card reveal" data-d="2">
-            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="5">0</span><span class="ab-sfx">%</span></p>
-            <p class="ab-desc">Total Buyers</p>
-          </div>
-          <div class="ab-card reveal">
-            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="6.5">0</span><span class="ab-sfx">%</span></p>
-            <p class="ab-desc">User satisfaction</p>
-          </div>
-          <div class="ab-card reveal" data-d="1">
-            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="320">0</span><span class="ab-sfx">K</span></p>
-            <p class="ab-desc">Total Replies</p>
-          </div>
-          <div class="ab-card reveal" data-d="2">
-            <p class="ab-value"><span class="ab-pfx">+</span><span class="ab-num" data-target="12">0</span><span class="ab-sfx">%</span></p>
-            <p class="ab-desc">Checkout opens</p>
           </div>
         </div>
       </div>
@@ -502,7 +394,7 @@
         (function frame(now){
           var t = Math.min((now-start)/dur,1);
           var v = ease(t)*target;
-          el.textContent = isFloat ? v.toFixed(1) : Math.round(v);
+          el.textContent = isFloat ? v.toFixed(target<10?1:2) : Math.round(v);
           if(t<1) requestAnimationFrame(frame);
         })(performance.now());
       }
